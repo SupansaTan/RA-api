@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1700.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegulationAssessment.Api", "RegulationAssessment.Api\RegulationAssessment.Api.csproj", "{50D8F4A4-7CF9-4E90-ACB8-E7AE860D3CBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegulationAssessment.Logic", "RegulationAssessment.Logic\RegulationAssessment.Logic.csproj", "{7DECE10D-6831-4B55-91B3-E6A34908D7D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegulationAssessment.DataAccess.Postgres", "RegulationAssessment.DataAccess.Postgres\RegulationAssessment.DataAccess.Postgres.csproj", "{1C9C9C21-661C-4DB9-A896-EEC1D557E6C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50D8F4A4-7CF9-4E90-ACB8-E7AE860D3CBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50D8F4A4-7CF9-4E90-ACB8-E7AE860D3CBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50D8F4A4-7CF9-4E90-ACB8-E7AE860D3CBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50D8F4A4-7CF9-4E90-ACB8-E7AE860D3CBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DECE10D-6831-4B55-91B3-E6A34908D7D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DECE10D-6831-4B55-91B3-E6A34908D7D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DECE10D-6831-4B55-91B3-E6A34908D7D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DECE10D-6831-4B55-91B3-E6A34908D7D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C9C9C21-661C-4DB9-A896-EEC1D557E6C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C9C9C21-661C-4DB9-A896-EEC1D557E6C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C9C9C21-661C-4DB9-A896-EEC1D557E6C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C9C9C21-661C-4DB9-A896-EEC1D557E6C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FCA33E6E-4D84-40FB-BDB7-28BB5A16AA12}
+	EndGlobalSection
+EndGlobal
