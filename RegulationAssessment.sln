@@ -5,8 +5,6 @@ VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegulationAssessment.Api", "RegulationAssessment.Api\RegulationAssessment.Api.csproj", "{50D8F4A4-7CF9-4E90-ACB8-E7AE860D3CBF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegulationAssessment.Logic", "RegulationAssessment.Logic\RegulationAssessment.Logic.csproj", "{7DECE10D-6831-4B55-91B3-E6A34908D7D9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegulationAssessment.DataAccess.EntityFramework", "RegulationAssessment.DataAccess.EntityFramework\RegulationAssessment.DataAccess.EntityFramework.csproj", "{0178EB4F-64BA-489B-B493-9FB6C3E94E43}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{50D8F4A4-7CF9-4E90-ACB8-E7AE860D3CBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50D8F4A4-7CF9-4E90-ACB8-E7AE860D3CBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50D8F4A4-7CF9-4E90-ACB8-E7AE860D3CBF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DECE10D-6831-4B55-91B3-E6A34908D7D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DECE10D-6831-4B55-91B3-E6A34908D7D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DECE10D-6831-4B55-91B3-E6A34908D7D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DECE10D-6831-4B55-91B3-E6A34908D7D9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0178EB4F-64BA-489B-B493-9FB6C3E94E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0178EB4F-64BA-489B-B493-9FB6C3E94E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0178EB4F-64BA-489B-B493-9FB6C3E94E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
