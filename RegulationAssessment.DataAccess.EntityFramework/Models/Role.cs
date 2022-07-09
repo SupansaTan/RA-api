@@ -6,17 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RegulationAssessment.DataAccess.EntityFramework.Models
 {
-    [Table("Task")]
-    public partial class Tasks
+    [Table("Role")]
+    public partial class Role
     {
         [Key]
         public Guid Id { get; set; }
-        public Guid LocationId { get; set; }
         [StringLength(255)]
-        public string Notation { get; set; }
-        public int Process { get; set; }
-        public bool Status { get; set; }
-        public DateTime DueDate { get; set; }
-        public DateTime? CompleteDate { get; set; }
+        public string Name { get; set; } = null!;
     }
 }

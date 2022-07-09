@@ -11,9 +11,9 @@ namespace RegulationAssessment.DataAccess.EntityFramework.UnitOfWork.Implement
 {
     public class EntityFrameworkNpgsqlRepository<T> : IEntityFrameworkNpgsqlRepository<T> where T : class
     {
-        protected readonly RaContext dbContext;
+        protected readonly RAContext dbContext;
 
-        public EntityFrameworkNpgsqlRepository(RaContext dbContext)
+        public EntityFrameworkNpgsqlRepository(RAContext dbContext)
         {
             this.dbContext = dbContext;
         }

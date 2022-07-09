@@ -19,7 +19,7 @@ ConnectionResolver.IsProduction = bool.Parse(builder.Configuration.GetConnection
 ConnectionResolver.FrontendUrl = builder.Configuration.GetConnectionString("FrontendUrl");
 
 // data access service
-builder.Services.AddDbContext<RaContext>(options =>
+builder.Services.AddDbContext<RAContext>(options =>
 {
     options.UseNpgsql(ConnectionResolver.RaConnection)
             .EnableSensitiveDataLogging()

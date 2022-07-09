@@ -11,7 +11,6 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Implement
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        //wait for scaffold db
         protected readonly DbContext _dbContext;
         public BaseRepository(DbContext dbContext)
         {
