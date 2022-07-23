@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RegulationAssessment.Common\RegulationAssessment.Common.csproj" />
     <ProjectReference Include="..\RegulationAssessment.DataAccess.EntityFramework\RegulationAssessment.DataAccess.EntityFramework.csproj" />
+    <ProjectReference Include="..\RegulationAssessment.Logic\RegulationAssessment.Logic.csproj" />
   </ItemGroup>
 
 </Project>

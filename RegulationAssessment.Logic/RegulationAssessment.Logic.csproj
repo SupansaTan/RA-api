@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="QueryCommand\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RegulationAssessment.DataAccess.EntityFramework\RegulationAssessment.DataAccess.EntityFramework.csproj" />
+  </ItemGroup>
+
+</Project>
