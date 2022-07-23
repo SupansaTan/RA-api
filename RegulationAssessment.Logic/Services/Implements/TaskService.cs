@@ -28,7 +28,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                                                             LocationId = x.LocationId,
                                                             Notation = x.Notation,
                                                             Process = x.Process,
-                                                            Status = (bool)x.Status,
+                                                            Status = x.Status.GetValueOrDefault(),
                                                             DueDate = x.DueDate,
                                                             CompleteDate = x.CompleteDate
                                                         }).ToList();
