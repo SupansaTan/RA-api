@@ -40,7 +40,7 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql("Host=teletubbies-test.ca8d4ygqo7d5.us-west-2.rds.amazonaws.com;Database=RA;Username=postgres;Password=hgxBGnzgF85n6y2J3J");
+                optionsBuilder.UseNpgsql(ConnectionResolver.RAConnection);
             }
         }
 

@@ -3,6 +3,8 @@ using RegulationAssessment.Common;
 using RegulationAssessment.DataAccess.EntityFramework.Models;
 using RegulationAssessment.DataAccess.EntityFramework.UnitOfWork.Implement;
 using RegulationAssessment.DataAccess.EntityFramework.UnitOfWork.Interface;
+using RegulationAssessment.Logic.UnitOfWork.Implement;
+using RegulationAssessment.Logic.UnitOfWork.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,20 +16,21 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // connection resolver
-ConnectionResolver.RaConnection = builder.Configuration.GetConnectionString("RaConnection");
+ConnectionResolver.RAConnection = builder.Configuration.GetConnectionString("RAConnection");
 ConnectionResolver.IsProduction = bool.Parse(builder.Configuration.GetConnectionString("IsProduction"));
 ConnectionResolver.FrontendUrl = builder.Configuration.GetConnectionString("FrontendUrl");
 
 // data access service
 builder.Services.AddDbContext<RAContext>(options =>
 {
-    options.UseNpgsql(ConnectionResolver.RaConnection)
+    options.UseNpgsql(ConnectionResolver.RAConnection)
             .EnableSensitiveDataLogging()
             .UseLoggerFactory(LoggerFactory.Create(builder => { builder.AddConsole(); }));
 });
 
 // Add unit of work service 
 builder.Services.AddScoped<IEntityUnitOfWork, EntityUnitOfWork>();
+builder.Services.AddScoped<ILogicUnitOfWork, LogicUnitOfWork>();
 
 var app = builder.Build();
 
