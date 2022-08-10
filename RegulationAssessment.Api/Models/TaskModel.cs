@@ -9,10 +9,9 @@ namespace RegulationAssessment.Api.Models
     {
         public Guid Id { get; set; }
         public Guid LocationId { get; set; }
-        public string Notation { get; set; }
+        public Guid LawId {get; set;}
         public int Process { get; set; }
-        public bool Status { get; set; }
         public DateTime DueDate { get; set; }
-        public DateTime CompleteDate { get; set; }
+        public DateTime? CompleteDate { get; set; }
     }
 }
