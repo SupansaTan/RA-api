@@ -1,0 +1,22 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RegulationAssessment.Logic.DomainModel
+{
+    public class EmployeeDto
+    {
+        public Guid Id { get; set; }
+        public string? Ssn { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public DateTime CreateAt { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+        public bool? Darktheme { get; set; }
+        public bool NotificationStatus { get; set; }
+        public int AdvanceNotify { get; set; }
+    }
+}

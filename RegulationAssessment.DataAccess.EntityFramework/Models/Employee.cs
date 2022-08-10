@@ -18,11 +18,11 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
         [Key]
         public Guid Id { get; set; }
         [StringLength(255)]
-        public string Ssn { get; set; } = null!;
+        public string? Ssn { get; set; } = null!;
         [StringLength(255)]
-        public string FirstName { get; set; } = null!;
+        public string? FirstName { get; set; } = null!;
         [StringLength(255)]
-        public string LastName { get; set; } = null!;
+        public string? LastName { get; set; } = null!;
         [Column(TypeName = "timestamp without time zone")]
         public DateTime CreateAt { get; set; }
         [StringLength(255)]

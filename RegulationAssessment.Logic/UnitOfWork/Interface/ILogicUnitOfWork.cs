@@ -10,5 +10,6 @@ namespace RegulationAssessment.Logic.UnitOfWork.Interface
     public interface ILogicUnitOfWork
     {
         ITaskService TaskService { get; set; }
+        IEmployeeService EmployeeService { get; set; }
     }
 }

@@ -28,5 +28,13 @@ namespace RegulationAssessment.Logic.UnitOfWork.Implement
             get { return _taskService ?? (_taskService = new TaskService(_entityUnitOfWork)); }
             set { _taskService = value; }
         }
+
+        private IEmployeeService _employeeService;
+
+        public IEmployeeService EmployeeService
+        {
+            get { return _employeeService ?? (_employeeService = new EmployeeService(_entityUnitOfWork)); }
+            set { _employeeService = value; }
+        }
     }
 }
