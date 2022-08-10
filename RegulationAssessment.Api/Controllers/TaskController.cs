@@ -32,9 +32,8 @@ namespace RegulationAssessment.Api.Controllers
                     {
                         Id = x.Id,
                         LocationId = x.LocationId,
-                        Notation = x.Notation,
+                        LawId = x.LawId,
                         Process = x.Process,
-                        Status = x.Status,
                         DueDate = x.DueDate,
                         CompleteDate = x.CompleteDate
                     }).ToList(),
@@ -62,5 +61,217 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
+
+        [HttpGet("GetApproveRelevantTaskList")]
+        public ResponseModel<List<TaskModel>> GetApproveRelevantTaskList()
+        {
+            ResponseModel<List<TaskModel>> response;
+            try
+            {
+                var result = _logicUnitOfWork.TaskService.GetApproveRelevantTaskList();
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = result.Select(x => new TaskModel()
+                    {
+                        Id = x.Id,
+                        LocationId = x.LocationId,
+                        LawId = x.LawId,
+                        Process = x.Process,
+                        DueDate = x.DueDate,
+                        CompleteDate = x.CompleteDate
+                    }).ToList(),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+        [HttpGet("GetConsistanceTaskList")]
+        public ResponseModel<List<TaskModel>> GetConsistanceTaskList()
+        {
+            ResponseModel<List<TaskModel>> response;
+            try
+            {
+                var result = _logicUnitOfWork.TaskService.GetConsistanceTaskList();
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = result.Select(x => new TaskModel()
+                    {
+                        Id = x.Id,
+                        LocationId = x.LocationId,
+                        LawId = x.LawId,
+                        Process = x.Process,
+                        DueDate = x.DueDate,
+                        CompleteDate = x.CompleteDate
+                    }).ToList(),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+        [HttpGet("GetApproveConsistanceTaskList")]
+        public ResponseModel<List<TaskModel>> GetApproveConsistanceTaskList()
+        {
+            ResponseModel<List<TaskModel>> response;
+            try
+            {
+                var result = _logicUnitOfWork.TaskService.GetApproveConsistanceTaskList();
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = result.Select(x => new TaskModel()
+                    {
+                        Id = x.Id,
+                        LocationId = x.LocationId,
+                        LawId = x.LawId,
+                        Process = x.Process,
+                        DueDate = x.DueDate,
+                        CompleteDate = x.CompleteDate
+                    }).ToList(),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+        [HttpGet("GetResponseTaskList")]
+        public ResponseModel<List<TaskModel>> GetResponseTaskList()
+        {
+            ResponseModel<List<TaskModel>> response;
+            try
+            {
+                var result = _logicUnitOfWork.TaskService.GetResponseTaskList();
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = result.Select(x => new TaskModel()
+                    {
+                        Id = x.Id,
+                        LocationId = x.LocationId,
+                        LawId = x.LawId,
+                        Process = x.Process,
+                        DueDate = x.DueDate,
+                        CompleteDate = x.CompleteDate
+                    }).ToList(),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+        [HttpGet("GetDoneTaskList")]
+        public ResponseModel<List<TaskModel>> GetDoneTaskList()
+        {
+            ResponseModel<List<TaskModel>> response;
+            try
+            {
+                var result = _logicUnitOfWork.TaskService.GetDoneTaskList();
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = result.Select(x => new TaskModel()
+                    {
+                        Id = x.Id,
+                        LocationId = x.LocationId,
+                        LawId = x.LawId,
+                        Process = x.Process,
+                        DueDate = x.DueDate,
+                        CompleteDate = x.CompleteDate
+                    }).ToList(),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<TaskModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+        
     }
 }
