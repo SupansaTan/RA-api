@@ -118,7 +118,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                 var query = QueryService.GetCommand(QUERY_PATH + "getTaskList",
                             new ParamCommand { Key = "_empLocationId", Value = employeeInfo.LocationId.ToString() }
                         );
-                return (await _dapperUnitOfWork.RARepository.QueryAsync<TaskItemDto>(query)).ToList();
+                return (await _dapperUnitOfWork.RARepository.QueryAsync<TaskItemDto>(query)).Take(5).ToList();
             }
         }
     }
