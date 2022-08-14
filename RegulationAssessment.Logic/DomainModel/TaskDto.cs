@@ -13,6 +13,14 @@ namespace RegulationAssessment.Logic.DomainModel
         public Guid LawId {get; set;}
         public int Process { get; set; }
         public DateTime DueDate { get; set; }
-        public DateTime? CompleteDate { get; set; }
+        public DateTime CompleteDate { get; set; }
+    }
+
+    public class TaskItemDto
+    {
+        public Guid TaskId { get; set; }
+        public string TaskTitle { get; set; }
+        public string LocationName { get; set; }
+        public DateTime DueDate { get; set; }
     }
 }

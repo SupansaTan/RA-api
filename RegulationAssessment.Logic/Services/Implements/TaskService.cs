@@ -7,16 +7,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RegulationAssessment.DataAccess.Dapper.Interface;
+using RegulationAssessment.Common.Helper;
 
 namespace RegulationAssessment.Logic.Services.Implements
 {
     public class TaskService : ITaskService
     {
         private readonly IEntityUnitOfWork _entityUnitOfWork;
+        private readonly IDapperUnitOfWork _dapperUnitOfWork;
+        private readonly string QUERY_PATH;
 
-        public TaskService(IEntityUnitOfWork entityUnitOfWork)
+        public TaskService(
+            IEntityUnitOfWork entityUnitOfWork,
+            IDapperUnitOfWork dapperUnitOfWork
+            )
         {
+            QUERY_PATH = this.GetType().Name.Split("Service")[0] + "/";
             _entityUnitOfWork = entityUnitOfWork;
+            _dapperUnitOfWork = dapperUnitOfWork;
         }
 
         public List<TaskDto> GetRelevantTaskList()
@@ -96,6 +105,21 @@ namespace RegulationAssessment.Logic.Services.Implements
                                                             DueDate = x.DueDate,
                                                             CompleteDate = x.CompleteDate.GetValueOrDefault()
                                                         }).ToList();
+        }
+        public async Task<List<TaskItemDto>> GetTaskListByEmpId(Guid empId)
+        {
+            var employeeInfo = await _entityUnitOfWork.DutyRepository.GetSingleAsync(x => x.EmpId == empId);
+            if (employeeInfo == null)
+            {
+                throw new ArgumentException("Employee does not exist.");
+            }
+            else
+            {
+                var query = QueryService.GetCommand(QUERY_PATH + "getTaskList",
+                            new ParamCommand { Key = "_empLocationId", Value = employeeInfo.LocationId.ToString() }
+                        );
+                return (await _dapperUnitOfWork.RARepository.QueryAsync<TaskItemDto>(query)).ToList();
+            }
         }
     }
 }

@@ -14,4 +14,12 @@ namespace RegulationAssessment.Api.Models
         public DateTime DueDate { get; set; }
         public DateTime? CompleteDate { get; set; }
     }
+
+    public class TaskItemModel
+    {
+        public Guid TaskId { get; set; }
+        public string TaskTitle { get; set; }
+        public string LocationName { get; set; }
+        public DateTime DueDate { get; set; }
+    }
 }

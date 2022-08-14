@@ -271,6 +271,45 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-        
+        [HttpGet("GetTaskListByEmpId")]
+        public async Task<ResponseModel<List<TaskItemModel>>> GetTaskListByEmpId([FromQuery] Guid empId)
+        {
+            var response = new ResponseModel<List<TaskItemModel>>();
+            try
+            {
+                var result = await _logicUnitOfWork.TaskService.GetTaskListByEmpId(empId);
+                response = new ResponseModel<List<TaskItemModel>>
+                {
+                    Data = result.Select(x => new TaskItemModel()
+                    {
+                        TaskId = x.TaskId,
+                        TaskTitle = x.TaskTitle,
+                        LocationName = x.LocationName,
+                        DueDate = x.DueDate
+                    }).ToList(),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<TaskItemModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<TaskItemModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
     }
 }

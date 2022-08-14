@@ -15,5 +15,6 @@ namespace RegulationAssessment.Logic.Services.Interfaces
         List<TaskDto> GetApproveConsistanceTaskList();
         List<TaskDto> GetResponseTaskList();
         List<TaskDto> GetDoneTaskList();
+        Task<List<TaskItemDto>> GetTaskListByEmpId(Guid empId);
     }
 }
