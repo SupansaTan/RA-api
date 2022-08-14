@@ -1,0 +1,80 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using RegulationAssessment.Api.Models;
+using RegulationAssessment.Logic.DomainModel;
+using RegulationAssessment.Logic.UnitOfWork.Interface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace RegulationAssessment.Api.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LawController : ControllerBase
+    {
+        private readonly ILogicUnitOfWork _logicUnitOfWork;
+        public LawController(ILogicUnitOfWork logicUnitOfWork)
+        {
+            _logicUnitOfWork = logicUnitOfWork;
+        }
+
+        [HttpGet("GetLawList")]
+        public ResponseModel<LawListModel> GetLawList([FromQuery] LawListFilterModel request)
+        {
+            ResponseModel<LawListModel> response;
+            try
+            {   
+                var filter = new LawListFilterDto()
+                {
+                    Keyword = request.Keyword,
+                    Catagory = request.Catagory,
+                    ActType = request.ActType,
+                    LegislationUnit = request.LegislationUnit,
+                    AnnounceDate = request.AnnounceDate,
+                    EnforceDate = request.EnforceDate,
+                    CancelDate = request.CancelDate,
+                    IsFilterByAnnounceDate = request.IsFilterByAnnounceDate,
+                    IsFilterByEnforceDate = request.IsFilterByEnforceDate,
+                    IsFilterByCancelDate = request.IsFilterByCancelDate
+                };
+                var result = _logicUnitOfWork.LawService.GetLawList(filter);
+                response = new ResponseModel<LawListModel>
+                {
+                    Data = new LawListModel()
+                    {
+                        TotalLaw = result.TotalLaw,
+                        LawList = result.LawList.Select(x => new LawModel()
+                        {
+                            LawId = x.LawId,
+                            Title = x.Title,
+                            LegislationType = x.LegislationType
+                        }).ToList()
+                    },
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<LawListModel>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<LawListModel>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+    }
+}

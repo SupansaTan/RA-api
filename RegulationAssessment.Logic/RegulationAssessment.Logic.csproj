@@ -22,4 +22,8 @@
     <ProjectReference Include="..\RegulationAssessment.DataAccess.EntityFramework\RegulationAssessment.DataAccess.EntityFramework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="QueryCommand\NewFolder\" />
+  </ItemGroup>
+
 </Project>
