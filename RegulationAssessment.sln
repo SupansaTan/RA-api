@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegulationAssessment.DataAc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegulationAssessment.Common", "RegulationAssessment.Common\RegulationAssessment.Common.csproj", "{31DE05AB-B341-433D-A568-4806B5C577ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegulationAssessment.Logic", "RegulationAssessment.Logic\RegulationAssessment.Logic.csproj", "{04F799C3-497C-42C3-871C-FCF6C4E90C09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegulationAssessment.Logic", "RegulationAssessment.Logic\RegulationAssessment.Logic.csproj", "{04F799C3-497C-42C3-871C-FCF6C4E90C09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegulationAssessment.DataAccess.Dapper", "RegulationAssessment.DataAccess.Dapper\RegulationAssessment.DataAccess.Dapper.csproj", "{E62D57F0-384C-4D23-8605-024A69FFA672}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{04F799C3-497C-42C3-871C-FCF6C4E90C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04F799C3-497C-42C3-871C-FCF6C4E90C09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04F799C3-497C-42C3-871C-FCF6C4E90C09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E62D57F0-384C-4D23-8605-024A69FFA672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E62D57F0-384C-4D23-8605-024A69FFA672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E62D57F0-384C-4D23-8605-024A69FFA672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E62D57F0-384C-4D23-8605-024A69FFA672}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
