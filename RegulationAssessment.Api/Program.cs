@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegulationAssessment.Common;
+using RegulationAssessment.DataAccess.Dapper.Implement;
+using RegulationAssessment.DataAccess.Dapper.Interface;
 using RegulationAssessment.DataAccess.EntityFramework.Models;
 using RegulationAssessment.DataAccess.EntityFramework.UnitOfWork.Implement;
 using RegulationAssessment.DataAccess.EntityFramework.UnitOfWork.Interface;
@@ -31,6 +33,7 @@ builder.Services.AddDbContext<RAContext>(options =>
 // Add unit of work service 
 builder.Services.AddScoped<IEntityUnitOfWork, EntityUnitOfWork>();
 builder.Services.AddScoped<ILogicUnitOfWork, LogicUnitOfWork>();
+builder.Services.AddScoped<IDapperUnitOfWork>(_ => new DapperUnitOfWork(ConnectionResolver.RAConnection));
 
 var app = builder.Build();
 
