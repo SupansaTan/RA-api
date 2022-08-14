@@ -21,63 +21,59 @@ namespace RegulationAssessment.Logic.Services.Implements
 
         public List<TaskDto> GetRelevantTaskList()
         {
-            var tasks = _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.Relevant)
-                                                        .Select(x => new TaskDto()
-                                                        {
-                                                            Id = x.Id,
-                                                            LocationId = x.LocationId,
-                                                            LawId = x.LawId,
-                                                            Process = x.Process,
-                                                            DueDate = x.DueDate,
-                                                            CompleteDate = x.CompleteDate == null? new DateTime() : x.CompleteDate
-                                                        }).ToList();
-            return tasks;
+            return _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.Relevant)
+                                                    .Select(x => new TaskDto()
+                                                    {
+                                                        Id = x.Id,
+                                                        LocationId = x.LocationId,
+                                                        LawId = x.LawId,
+                                                        Process = x.Process,
+                                                        DueDate = x.DueDate,
+                                                        CompleteDate = x.CompleteDate.GetValueOrDefault()
+                                                    }).ToList();
         }
         public List<TaskDto> GetApproveRelevantTaskList()
         {
-            var tasks = _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.ApproveRelevant)
-                                                        .Select(x => new TaskDto()
-                                                        {
-                                                            Id = x.Id,
-                                                            LocationId = x.LocationId,
-                                                            LawId = x.LawId,
-                                                            Process = x.Process,
-                                                            DueDate = x.DueDate,
-                                                            CompleteDate = x.CompleteDate == null? new DateTime() : x.CompleteDate
-                                                        }).ToList();
-            return tasks;
+            return _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.ApproveRelevant)
+                                                    .Select(x => new TaskDto()
+                                                    {
+                                                        Id = x.Id,
+                                                        LocationId = x.LocationId,
+                                                        LawId = x.LawId,
+                                                        Process = x.Process,
+                                                        DueDate = x.DueDate,
+                                                        CompleteDate = x.CompleteDate.GetValueOrDefault()
+                                                    }).ToList();
         }
         public List<TaskDto> GetConsistanceTaskList()
         {
-            var tasks = _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.Consistance)
-                                                        .Select(x => new TaskDto()
-                                                        {
-                                                            Id = x.Id,
-                                                            LocationId = x.LocationId,
-                                                            LawId = x.LawId,
-                                                            Process = x.Process,
-                                                            DueDate = x.DueDate,
-                                                            CompleteDate = x.CompleteDate == null? new DateTime() : x.CompleteDate
-                                                        }).ToList();
-            return tasks;
+            return _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.Consistance)
+                                                    .Select(x => new TaskDto()
+                                                    {
+                                                        Id = x.Id,
+                                                        LocationId = x.LocationId,
+                                                        LawId = x.LawId,
+                                                        Process = x.Process,
+                                                        DueDate = x.DueDate,
+                                                        CompleteDate = x.CompleteDate.GetValueOrDefault()
+                                                    }).ToList();
         }
         public List<TaskDto> GetApproveConsistanceTaskList()
         {
-            var tasks = _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.ApproveConsistance)
-                                                        .Select(x => new TaskDto()
-                                                        {
-                                                            Id = x.Id,
-                                                            LocationId = x.LocationId,
-                                                            LawId = x.LawId,
-                                                            Process = x.Process,
-                                                            DueDate = x.DueDate,
-                                                            CompleteDate = x.CompleteDate == null? new DateTime() : x.CompleteDate
-                                                        }).ToList();
-            return tasks;
+            return _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.ApproveConsistance)
+                                                    .Select(x => new TaskDto()
+                                                    {
+                                                        Id = x.Id,
+                                                        LocationId = x.LocationId,
+                                                        LawId = x.LawId,
+                                                        Process = x.Process,
+                                                        DueDate = x.DueDate,
+                                                        CompleteDate = x.CompleteDate.GetValueOrDefault()
+                                                    }).ToList();
         }
         public List<TaskDto> GetResponseTaskList()
         {
-            var tasks = _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.Response)
+            return _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.Response)
                                                         .Select(x => new TaskDto()
                                                         {
                                                             Id = x.Id,
@@ -85,13 +81,12 @@ namespace RegulationAssessment.Logic.Services.Implements
                                                             LawId = x.LawId,
                                                             Process = x.Process,
                                                             DueDate = x.DueDate,
-                                                            CompleteDate = x.CompleteDate == null? new DateTime() : x.CompleteDate
+                                                            CompleteDate = x.CompleteDate.GetValueOrDefault()
                                                         }).ToList();
-            return tasks;
         }
         public List<TaskDto> GetDoneTaskList()
         {
-            var tasks = _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.Done)
+            return _entityUnitOfWork.TaskRepository.GetAll(x => x.Process == (int)TaskProcess.Done)
                                                         .Select(x => new TaskDto()
                                                         {
                                                             Id = x.Id,
@@ -99,9 +94,8 @@ namespace RegulationAssessment.Logic.Services.Implements
                                                             LawId = x.LawId,
                                                             Process = x.Process,
                                                             DueDate = x.DueDate,
-                                                            CompleteDate = x.CompleteDate == null? new DateTime() : x.CompleteDate
+                                                            CompleteDate = x.CompleteDate.GetValueOrDefault()
                                                         }).ToList();
-            return tasks;
         }
     }
 }

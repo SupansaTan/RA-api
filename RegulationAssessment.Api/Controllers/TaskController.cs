@@ -61,7 +61,6 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-
         [HttpGet("GetApproveRelevantTaskList")]
         public ResponseModel<List<TaskModel>> GetApproveRelevantTaskList()
         {
