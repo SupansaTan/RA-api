@@ -6,4 +6,6 @@
 FROM "Task"
 LEFT JOIN "Law" ON "Law"."Id" = "Task"."LawId"
 LEFT JOIN "Location" ON "Location"."Id" = "Task"."LocationId"
-WHERE "Task"."LocationId" = '_empLocationId';
+LEFT JOIN "TaskKeyAct" ON "TaskKeyAct"."TaskId" = "Task"."Id" 
+WHERE "Task"."LocationId" = '_empLocationId' AND "TaskKeyAct"."Status" = FALSE
+ORDER BY "Task"."DueDate";
