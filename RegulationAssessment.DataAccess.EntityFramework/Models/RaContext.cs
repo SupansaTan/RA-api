@@ -95,12 +95,6 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
                     .WithMany(p => p.KeyActions)
                     .HasForeignKey(d => d.LawId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("keyaction_fk");
-
-                entity.HasOne(d => d.Task)
-                    .WithMany(p => p.KeyActions)
-                    .HasForeignKey(d => d.TaskId)
-                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("keyaction_fk_1");
             });
 
@@ -136,23 +130,17 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
                     .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("logging_fk_2");
 
-                entity.HasOne(d => d.KeyAct)
+                entity.HasOne(d => d.TaskKeyAct)
                     .WithMany(p => p.Loggings)
-                    .HasForeignKey(d => d.KeyActId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("logging_fk_1");
-
-                entity.HasOne(d => d.KeyActNavigation)
-                    .WithMany(p => p.Loggings)
-                    .HasForeignKey(d => d.KeyActId)
+                    .HasForeignKey(d => d.TaskKeyActId)
                     .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("logging_fk_3");
 
-                entity.HasOne(d => d.Task)
+                entity.HasOne(d => d.Resp)
                     .WithMany(p => p.Loggings)
-                    .HasForeignKey(d => d.TaskId)
+                    .HasForeignKey(d => d.RespId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("logging_fk");
+                    .HasConstraintName("logging_fk_1");
             });
 
             modelBuilder.Entity<Notification>(entity =>
@@ -210,9 +198,9 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.HasOne(d => d.KeyAct)
+                entity.HasOne(d => d.TaskKeyAct)
                     .WithMany(p => p.Responsibilities)
-                    .HasForeignKey(d => d.KeyActId)
+                    .HasForeignKey(d => d.TaskKeyActId)
                     .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("responsibility_fk");
             });

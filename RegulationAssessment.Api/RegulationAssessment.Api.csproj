@@ -20,4 +20,8 @@
     <ProjectReference Include="..\RegulationAssessment.Logic\RegulationAssessment.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extension\" />
+  </ItemGroup>
+
 </Project>

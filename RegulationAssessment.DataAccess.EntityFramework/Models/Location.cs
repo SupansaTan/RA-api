@@ -11,6 +11,7 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
     {
         public Location()
         {
+            Duties = new HashSet<Duty>();
             Tasks = new HashSet<Task>();
         }
 
@@ -27,6 +28,8 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
         [ForeignKey("ImplementUnitId")]
         [InverseProperty("Locations")]
         public virtual ImplementUnit ImplementUnit { get; set; } = null!;
+        [InverseProperty("Location")]
+        public virtual ICollection<Duty> Duties { get; set; }
         [InverseProperty("Location")]
         public virtual ICollection<Task> Tasks { get; set; }
     }

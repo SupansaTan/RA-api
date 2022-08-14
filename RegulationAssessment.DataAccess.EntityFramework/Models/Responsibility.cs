@@ -16,17 +16,20 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
 
         [Key]
         public Guid Id { get; set; }
-        public Guid? EmployeeId { get; set; }
+        public Guid? EmpId { get; set; }
         public int Cost { get; set; }
         [Column(TypeName = "timestamp without time zone")]
         public DateTime DueDate { get; set; }
-        public Guid KeyActId { get; set; }
+        public Guid TaskKeyActId { get; set; }
         public bool Status { get; set; }
 
-        [ForeignKey("KeyActId")]
+        [ForeignKey("EmpId")]
         [InverseProperty("Responsibilities")]
-        public virtual KeyAction KeyAct { get; set; } = null!;
-        [InverseProperty("KeyActNavigation")]
+        public virtual Employee? Emp { get; set; }
+        [ForeignKey("TaskKeyActId")]
+        [InverseProperty("Responsibilities")]
+        public virtual TaskKeyAct TaskKeyAct { get; set; } = null!;
+        [InverseProperty("Resp")]
         public virtual ICollection<Logging> Loggings { get; set; }
     }
 }

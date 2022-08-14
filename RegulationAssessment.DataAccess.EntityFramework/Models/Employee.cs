@@ -11,18 +11,20 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
     {
         public Employee()
         {
+            Duties = new HashSet<Duty>();
             Loggings = new HashSet<Logging>();
             Notifications = new HashSet<Notification>();
+            Responsibilities = new HashSet<Responsibility>();
         }
 
         [Key]
         public Guid Id { get; set; }
         [StringLength(255)]
-        public string? Ssn { get; set; } = null!;
+        public string Ssn { get; set; } = null!;
         [StringLength(255)]
-        public string? FirstName { get; set; } = null!;
+        public string FirstName { get; set; } = null!;
         [StringLength(255)]
-        public string? LastName { get; set; } = null!;
+        public string LastName { get; set; } = null!;
         [Column(TypeName = "timestamp without time zone")]
         public DateTime CreateAt { get; set; }
         [StringLength(255)]
@@ -34,8 +36,12 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
         public int AdvanceNotify { get; set; }
 
         [InverseProperty("Emp")]
+        public virtual ICollection<Duty> Duties { get; set; }
+        [InverseProperty("Emp")]
         public virtual ICollection<Logging> Loggings { get; set; }
         [InverseProperty("Emp")]
         public virtual ICollection<Notification> Notifications { get; set; }
+        [InverseProperty("Emp")]
+        public virtual ICollection<Responsibility> Responsibilities { get; set; }
     }
 }

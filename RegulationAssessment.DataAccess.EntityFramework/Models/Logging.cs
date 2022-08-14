@@ -17,22 +17,18 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
         public string? Notation { get; set; }
         public int Process { get; set; }
         public bool Status { get; set; }
-        public Guid TaskId { get; set; }
-        public Guid KeyActId { get; set; }
+        public Guid TaskKeyActId { get; set; }
         public Guid RespId { get; set; }
         public Guid EmpId { get; set; }
 
         [ForeignKey("EmpId")]
         [InverseProperty("Loggings")]
         public virtual Employee Emp { get; set; } = null!;
-        [ForeignKey("KeyActId")]
+        [ForeignKey("RespId")]
         [InverseProperty("Loggings")]
-        public virtual KeyAction KeyAct { get; set; } = null!;
-        [ForeignKey("KeyActId")]
+        public virtual Responsibility Resp { get; set; } = null!;
+        [ForeignKey("TaskKeyActId")]
         [InverseProperty("Loggings")]
-        public virtual Responsibility KeyActNavigation { get; set; } = null!;
-        [ForeignKey("TaskId")]
-        [InverseProperty("Loggings")]
-        public virtual Task Task { get; set; } = null!;
+        public virtual TaskKeyAct TaskKeyAct { get; set; } = null!;
     }
 }

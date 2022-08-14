@@ -14,6 +14,7 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
             KeyActions = new HashSet<KeyAction>();
             RelatedBusinesses = new HashSet<RelatedBusiness>();
             RelatedSystems = new HashSet<RelatedSystem>();
+            Tasks = new HashSet<Task>();
         }
 
         [Key]
@@ -43,5 +44,7 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
         public virtual ICollection<RelatedBusiness> RelatedBusinesses { get; set; }
         [InverseProperty("Law")]
         public virtual ICollection<RelatedSystem> RelatedSystems { get; set; }
+        [InverseProperty("Law")]
+        public virtual ICollection<Task> Tasks { get; set; }
     }
 }
