@@ -28,6 +28,7 @@ namespace RegulationAssessment.Logic.UnitOfWork.Implement
         private ITaskService _taskService;
         private IEmployeeService _employeeService;
         private ILawService _lawService;
+        private IKeyActionService _keyactionService;
 
         public ITaskService TaskService
         {
@@ -45,6 +46,12 @@ namespace RegulationAssessment.Logic.UnitOfWork.Implement
         {
             get { return _lawService ?? (_lawService = new LawService(_entityUnitOfWork, _dapperUnitOfWork)); }
             set { _lawService = value; }
+        }
+
+        public IKeyActionService KeyActionService
+        {
+            get { return _keyactionService ?? (_keyactionService = new KeyActionService(_entityUnitOfWork, _dapperUnitOfWork)); }
+            set { _keyactionService = value; }
         }
     }
 }
