@@ -38,7 +38,54 @@ namespace RegulationAssessment.Api.Controllers
                         CreateAt = x.CreateAt,
                         Email = x.Email,
                         Password = x.Password,
-                        Darktheme = x.Darktheme,
+                        DarkTheme = x.DarkTheme,
+                        NotificationStatus = x.NotificationStatus,
+                        AdvanceNotify = x.AdvanceNotify,
+                    }).ToList(),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<EmployeeModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<EmployeeModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+
+        [HttpGet("GetEmployee")]
+        public ResponseModel<List<EmployeeModel>> GetEmployee(Guid empId)
+        {
+            ResponseModel<List<EmployeeModel>> response;
+            try
+            {
+                var result = _logicUnitOfWork.EmployeeService.GetEmployeeById(empId);
+                response = new ResponseModel<List<EmployeeModel>>
+                {
+                    Data = result.Select(x => new EmployeeModel()
+                    {
+                        Id = x.Id,
+                        Ssn = x.Ssn,
+                        FirstName = x.FirstName,
+                        LastName = x.LastName,
+                        CreateAt = x.CreateAt,
+                        Email = x.Email,
+                        Password = x.Password,
+                        DarkTheme = x.DarkTheme,
                         NotificationStatus = x.NotificationStatus,
                         AdvanceNotify = x.AdvanceNotify,
                     }).ToList(),

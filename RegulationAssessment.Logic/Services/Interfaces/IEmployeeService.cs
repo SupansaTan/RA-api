@@ -10,5 +10,6 @@ namespace RegulationAssessment.Logic.Services.Interfaces
     public interface IEmployeeService
     {
         List<EmployeeDto> GetAllEmployees();
+        List<EmployeeDto> GetEmployeeById(Guid empId);
     }
 }

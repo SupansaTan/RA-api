@@ -31,11 +31,30 @@ namespace RegulationAssessment.Logic.Services.Implements
                                                                     CreateAt = x.CreateAt,
                                                                     Email = x.Email,
                                                                     Password = x.Password,
-                                                                    Darktheme = x.DarkTheme,
+                                                                    DarkTheme = x.DarkTheme,
                                                                     NotificationStatus = x.NotificationStatus,
                                                                     AdvanceNotify = x.AdvanceNotify,
                                                                 }).ToList();
             return employees;
+        }
+
+        public List<EmployeeDto> GetEmployeeById(Guid empId)
+        {
+            var employee = _entityUnitOfWork.EmployeeRepository.GetAll(x => x.Id == empId)
+                                                                .Select(x => new EmployeeDto()
+                                                                {
+                                                                    Id = x.Id,
+                                                                    Ssn = x.Ssn,
+                                                                    FirstName = x.FirstName,
+                                                                    LastName = x.LastName,
+                                                                    CreateAt = x.CreateAt,
+                                                                    Email = x.Email,
+                                                                    Password = x.Password,
+                                                                    DarkTheme = x.DarkTheme,
+                                                                    NotificationStatus = x.NotificationStatus,
+                                                                    AdvanceNotify = x.AdvanceNotify,
+                                                                }).ToList();
+            return employee;
         }
 
     }

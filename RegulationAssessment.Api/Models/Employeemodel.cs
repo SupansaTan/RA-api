@@ -14,7 +14,7 @@ namespace RegulationAssessment.Api.Models
         public DateTime CreateAt { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
-        public bool? Darktheme { get; set; }
+        public bool? DarkTheme { get; set; }
         public bool NotificationStatus { get; set; }
         public int AdvanceNotify { get; set; }
     }
