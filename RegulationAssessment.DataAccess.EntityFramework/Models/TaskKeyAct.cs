@@ -19,18 +19,6 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
         public Guid Id { get; set; }
         public Guid TaskId { get; set; }
         public Guid KeyActId { get; set; }
-        [StringLength(50)]
-        public string? CreateDate { get; set; }
-        [StringLength(50)]
-        public string? Notation { get; set; }
-        public int? Process { get; set; }
-        public bool? Status { get; set; }
-        [StringLength(50)]
-        public string? TaskKeyActId { get; set; }
-        [StringLength(50)]
-        public string? RespId { get; set; }
-        [StringLength(50)]
-        public string? EmpId { get; set; }
 
         [ForeignKey("KeyActId")]
         [InverseProperty("TaskKeyActs")]

@@ -16,4 +16,10 @@ namespace RegulationAssessment.Logic.DomainModel
         public int Order { get; set; }
         public Guid LawId { get; set; }
     }
+    public class TaskKeyActionDto 
+    {
+        public Guid Id { get; set; }
+        public Guid TaskId { get; set; }
+        public Guid KeyActId { get; set; }
+    }
 }

@@ -106,5 +106,51 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
+
+        [HttpGet("GetLoggingAssessment")]
+        public ResponseModel<List<LoggingModel>> GetLoggingAssessment(Guid keyactId, Guid taskId)
+        {
+            ResponseModel<List<LoggingModel>> response;
+            try
+            {
+                var taskkeyactId = _logicUnitOfWork.KeyActionService.GetTaskKeyActionId(keyactId, taskId);
+                var result = _logicUnitOfWork.LoggingService.GetLoggingByTaskKeyactId(taskkeyactId);
+                response = new ResponseModel<List<LoggingModel>>
+                {
+                    Data = result.Select(x => new LoggingModel()
+                    {
+                        Id = x.Id,
+                        CreateDate = x.CreateDate,
+                        Notation = x.Notation,
+                        Process = x.Process,
+                        Status = x.Status,
+                        TaskKeyActId = x.TaskKeyActId,
+                        RespId = x.RespId,
+                        EmpId = x.EmpId
+                    }).ToList(),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<LoggingModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<LoggingModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
     }
 }

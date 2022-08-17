@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace RegulationAssessment.Logic.Services.Interfaces
 {
-    public interface IKeyActionService
+    public interface ILoggingService
     {
-        List<KeyActionDto> GetAllKeyAction();
-        List<KeyActionDto> GetKeyActionByLawId(Guid lawId);
-        Guid GetTaskKeyActionId(Guid keyactId, Guid taskId);
+        List<LoggingDto> GetLoggingByTaskKeyactId(Guid taskkeyactId);
         
     }
 }

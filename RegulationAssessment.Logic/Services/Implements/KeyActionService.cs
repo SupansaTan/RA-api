@@ -58,5 +58,17 @@ namespace RegulationAssessment.Logic.Services.Implements
             return keyactions;
         }
 
+        public Guid GetTaskKeyActionId(Guid keyactId, Guid taskId)
+        {
+            var data = _entityUnitOfWork.TaskKeyActionRepository.GetAll(x => x.TaskId == taskId  && x.KeyActId == keyactId)
+                                                                .Select(x => new TaskKeyActionDto()
+                                                                {
+                                                                    Id = x.Id,
+                                                                    TaskId = x.TaskId,
+                                                                    KeyActId = x.KeyActId
+                                                                }).ToList();
+            return data.First().Id;
+        }
+
     }
 }

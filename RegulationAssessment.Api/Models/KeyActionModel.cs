@@ -11,4 +11,10 @@ namespace RegulationAssessment.Api.Models
         public int Order { get; set; }
         public Guid LawId { get; set; }
     }
+    public class TaskKeyActionModel
+    {
+        public Guid Id { get; set; }
+        public Guid TaskId { get; set; }
+        public Guid KeyActId { get; set; }
+    }
 }
