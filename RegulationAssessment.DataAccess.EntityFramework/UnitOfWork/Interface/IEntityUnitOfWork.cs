@@ -27,5 +27,6 @@ namespace RegulationAssessment.DataAccess.EntityFramework.UnitOfWork.Interface
         IEntityFrameworkNpgsqlRepository<Responsibility> ResponsibilityRepository { get; set; }
         IEntityFrameworkNpgsqlRepository<Role> RoleRepository { get; set; }
         IEntityFrameworkNpgsqlRepository<Models.System> SystemRepository { get; set; }
+        IEntityFrameworkNpgsqlRepository<TaskKeyAct> TaskKeyActionRepository { get; set; }
     }
 }

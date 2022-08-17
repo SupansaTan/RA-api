@@ -31,6 +31,7 @@ namespace RegulationAssessment.DataAccess.EntityFramework.UnitOfWork.Implement
         private IEntityFrameworkNpgsqlRepository<Responsibility> _responsibilityRepository;
         private IEntityFrameworkNpgsqlRepository<Role> _roleRepository;
         private IEntityFrameworkNpgsqlRepository<Models.System> _systemRepository;
+        private IEntityFrameworkNpgsqlRepository<TaskKeyAct> _taskkeyactionRepository;
 
         public EntityUnitOfWork(RAContext dbContext)
         {
@@ -121,6 +122,11 @@ namespace RegulationAssessment.DataAccess.EntityFramework.UnitOfWork.Implement
         {
             get { return _systemRepository ?? (_systemRepository = new EntityFrameworkNpgsqlRepository<Models.System>(_dbContext)); }
             set { _systemRepository = value; }
+        }
+        public IEntityFrameworkNpgsqlRepository<TaskKeyAct> TaskKeyActionRepository
+        {
+            get { return _taskkeyactionRepository ?? (_taskkeyactionRepository = new EntityFrameworkNpgsqlRepository<TaskKeyAct>(_dbContext)); }
+            set { _taskkeyactionRepository = value; }
         }
         public async Task<int> SaveAsync()
         {
