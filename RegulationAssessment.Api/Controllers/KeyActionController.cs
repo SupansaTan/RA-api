@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RegulationAssessment.Api.Models;
+using RegulationAssessment.DataAccess.EntityFramework.Models;
 using RegulationAssessment.Logic.UnitOfWork.Interface;
 using System;
 using System.Collections.Generic;
@@ -144,6 +145,59 @@ namespace RegulationAssessment.Api.Controllers
             catch (Exception e)
             {
                 response = new ResponseModel<List<LoggingModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+
+        [HttpPost("LoggingAssessment/Add")]
+        public ResponseModel<Logging> AddLoggingAssessment(
+            int process,
+            bool status,
+            Guid taskkeyactId,
+            Guid empId,
+            Guid? respId,
+            string? notation
+        )
+        {
+            ResponseModel<Logging> response;
+            try
+            {
+                var log = new Logging()
+                {
+                    Id = Guid.NewGuid(),
+                    CreateDate = DateTime.Now,
+                    Notation = notation,
+                    Process = process,
+                    Status = status,
+                    TaskKeyActId = taskkeyactId,
+                    RespId = respId,
+                    EmpId = empId
+                };
+                var result = _logicUnitOfWork.LoggingService.AddKeyActionLog(log);
+                response = new ResponseModel<Logging>
+                {
+                    Data = log,
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<Logging>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<Logging>
                 {
                     Data = null,
                     Message = e.Message,

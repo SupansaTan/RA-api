@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RegulationAssessment.DataAccess.EntityFramework.Models;
+using Task = RegulationAssessment.DataAccess.EntityFramework.Models.Task;
 
 namespace RegulationAssessment.Logic.Services.Implements
 {
@@ -40,6 +42,24 @@ namespace RegulationAssessment.Logic.Services.Implements
                                                                     EmpId = x.EmpId
                                                                 }).ToList();
             return Logs;
+        }
+
+        public async Task<Logging> AddKeyActionLog(Logging logging)
+        {
+            var log = new Logging()
+            {
+                Id = logging.Id,
+                CreateDate = logging.CreateDate,
+                Notation = logging.Notation,
+                Process = logging.Process,
+                Status = logging.Status,
+                TaskKeyActId = logging.TaskKeyActId,
+                RespId = logging.RespId,
+                EmpId = logging.EmpId
+            };
+            _entityUnitOfWork.LoggingRepository.Add(log);
+            await _entityUnitOfWork.SaveAsync();
+            return log;
         }
 
     }
