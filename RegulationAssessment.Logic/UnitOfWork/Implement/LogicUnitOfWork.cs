@@ -30,6 +30,7 @@ namespace RegulationAssessment.Logic.UnitOfWork.Implement
         private ILawService _lawService;
         private IKeyActionService _keyactionService;
         private ILoggingService _loggingService;
+        private IResponsibilityService _responsibilityService;
 
         public ITaskService TaskService
         {
@@ -59,6 +60,12 @@ namespace RegulationAssessment.Logic.UnitOfWork.Implement
         {
             get { return _loggingService ?? (_loggingService = new LoggingService(_entityUnitOfWork, _dapperUnitOfWork)); }
             set { _loggingService = value; }
+        }
+
+        public IResponsibilityService ResponsibilityService
+        {
+            get { return _responsibilityService ?? (_responsibilityService = new ResponsibilityService(_entityUnitOfWork, _dapperUnitOfWork)); }
+            set { _responsibilityService = value; }
         }
     }
 }

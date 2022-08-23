@@ -46,20 +46,9 @@ namespace RegulationAssessment.Logic.Services.Implements
 
         public async Task<Logging> AddKeyActionLog(Logging logging)
         {
-            var log = new Logging()
-            {
-                Id = logging.Id,
-                CreateDate = logging.CreateDate,
-                Notation = logging.Notation,
-                Process = logging.Process,
-                Status = logging.Status,
-                TaskKeyActId = logging.TaskKeyActId,
-                RespId = logging.RespId,
-                EmpId = logging.EmpId
-            };
-            _entityUnitOfWork.LoggingRepository.Add(log);
+            _entityUnitOfWork.LoggingRepository.Add(logging);
             await _entityUnitOfWork.SaveAsync();
-            return log;
+            return logging;
         }
 
     }

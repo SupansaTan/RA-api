@@ -313,8 +313,8 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-        [HttpPut("Task/{id}")]
-        public ResponseModel<Task> AddLoggingAssessment(
+        [HttpPut("{id}")]
+        public ResponseModel<Task> UpdateTask(
             Guid id,
             Guid locationId,
             Guid lawId,

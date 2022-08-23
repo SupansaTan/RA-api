@@ -14,5 +14,6 @@ namespace RegulationAssessment.Logic.UnitOfWork.Interface
         ILawService LawService { get; set; }
         IKeyActionService KeyActionService { get; set; }
         ILoggingService LoggingService { get; set; }
+        IResponsibilityService ResponsibilityService { get; set; }
     }
 }

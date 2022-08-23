@@ -206,5 +206,55 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
+
+        [HttpPost("Responsibility/Add")]
+        public ResponseModel<Responsibility> AddResponsibility(
+            int cost,
+            bool status,
+            Guid taskkeyactId,
+            Guid empId
+        )
+        {
+            ResponseModel<Responsibility> response;
+            try
+            {
+                var resp = new Responsibility()
+                {
+                    Id = Guid.NewGuid(),
+                    DueDate = DateTime.Now.AddDays(7),
+                    Cost = cost,
+                    Status = status,
+                    TaskKeyActId = taskkeyactId,
+                    EmpId = empId
+                };
+                var result = _logicUnitOfWork.ResponsibilityService.AddResponsibility(resp);
+                response = new ResponseModel<Responsibility>
+                {
+                    Data = resp,
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<Responsibility>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<Responsibility>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+
     }
 }
