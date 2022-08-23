@@ -256,5 +256,57 @@ namespace RegulationAssessment.Api.Controllers
             return response;
         }
 
+        [HttpPost("Add")]
+        public ResponseModel<KeyAction> AddKeyAction(
+            string keyReq,
+            string standard,
+            string practice,
+            string frequency,
+            int order,
+            Guid lawId
+        )
+        {
+            ResponseModel<KeyAction> response;
+            try
+            {
+                var newkeyact = new KeyAction()
+                {
+                    Id = Guid.NewGuid(),
+                    KeyReq = keyReq,
+                    Standard = standard,
+                    Practice = practice,
+                    Frequency = frequency,
+                    Order = order,
+                    LawId = lawId
+                };
+                var result = _logicUnitOfWork.KeyActionService.AddKeyAction(newkeyact);
+                response = new ResponseModel<KeyAction>
+                {
+                    Data = newkeyact,
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<KeyAction>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<KeyAction>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+
     }
 }

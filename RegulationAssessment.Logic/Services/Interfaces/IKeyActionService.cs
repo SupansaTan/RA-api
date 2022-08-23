@@ -1,3 +1,4 @@
+using RegulationAssessment.DataAccess.EntityFramework.Models;
 using RegulationAssessment.Logic.DomainModel;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,6 @@ namespace RegulationAssessment.Logic.Services.Interfaces
         List<KeyActionDto> GetAllKeyAction();
         List<KeyActionDto> GetKeyActionByLawId(Guid lawId);
         Guid GetTaskKeyActionId(Guid keyactId, Guid taskId);
-        
+        Task<KeyAction> AddKeyAction(KeyAction keyaction);
     }
 }

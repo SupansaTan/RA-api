@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RegulationAssessment.DataAccess.EntityFramework.Models;
 
 namespace RegulationAssessment.Logic.Services.Implements
 {
@@ -68,6 +69,13 @@ namespace RegulationAssessment.Logic.Services.Implements
                                                                     KeyActId = x.KeyActId
                                                                 }).ToList();
             return data.First().Id;
+        }
+
+        public async Task<KeyAction> AddKeyAction(KeyAction keyaction)
+        {
+            var result = _entityUnitOfWork.KeyActionRepository.Add(keyaction);
+            await _entityUnitOfWork.SaveAsync();
+            return keyaction;
         }
     }
 }
