@@ -1,4 +1,5 @@
-﻿using RegulationAssessment.Logic.DomainModel;
+﻿using RegulationAssessment.DataAccess.EntityFramework.Models;
+using RegulationAssessment.Logic.DomainModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,7 @@ namespace RegulationAssessment.Logic.Services.Interfaces
     public interface ILawService
     {
         LawListDto GetLawList(LawListFilterDto model);
+        Task<Law> AddLaw(Law law);
+        LawDetailDto GetLawbyId(Guid lawid);
     }
 }

@@ -26,4 +26,18 @@
         public bool IsFilterByEnforceDate { get; set; }
         public bool IsFilterByCancelDate { get; set; }
     }
+
+    public class LawDetailModel
+    {
+        public Guid Id { get; set; }
+        public string Title { get; set; } = null!;
+        public DateTime AnnounceDate { get; set; }
+        public DateTime? EnforceDate { get; set; }
+        public DateTime? CancelDate { get; set; }
+        public string? PdfUrl { get; set; }
+        public string Catagory { get; set; } = null!;
+        public string ActType { get; set; } = null!;
+        public string LegislationType { get; set; } = null!;
+        public string LegislationUnit { get; set; } = null!;
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RegulationAssessment.Api.Models;
+using RegulationAssessment.DataAccess.EntityFramework.Models;
 using RegulationAssessment.Logic.DomainModel;
 using RegulationAssessment.Logic.UnitOfWork.Interface;
 using System;
@@ -68,6 +69,111 @@ namespace RegulationAssessment.Api.Controllers
             catch (Exception e)
             {
                 response = new ResponseModel<LawListModel>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+
+        [HttpPost("Add")]
+        public ResponseModel<Law> GetLawbyId(
+            string title,
+            DateTime announceDate,
+            DateTime? enforceDate,
+            DateTime? cancelDate,
+            string? pdfUrl,
+            string catagory,
+            string actType,
+            string legislationType,
+            string legislationUnit
+         )
+        {
+            ResponseModel<Law> response;
+            try
+            {
+                var newlaw = new Law()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = title,
+                    AnnounceDate = announceDate,
+                    EnforceDate = enforceDate,
+                    CancelDate = cancelDate,
+                    PdfUrl = pdfUrl,
+                    Catagory = catagory,
+                    ActType = actType,
+                    LegislationType = legislationType,
+                    LegislationUnit = legislationUnit
+                };
+                var result = _logicUnitOfWork.LawService.AddLaw(newlaw);
+                response = new ResponseModel<Law>
+                {
+                    Data = newlaw,
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<Law>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<Law>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+
+        [HttpGet("id")]
+        public ResponseModel<LawDetailModel> GetLawbyId(Guid id)
+        {
+            ResponseModel<LawDetailModel> response;
+            try
+            {
+                var result = _logicUnitOfWork.LawService.GetLawbyId(id);
+                response = new ResponseModel<LawDetailModel>
+                {
+                    Data = new LawDetailModel()
+                    {
+                        Id = id,
+                        Title = result.Title,
+                        AnnounceDate = result.AnnounceDate,
+                        EnforceDate = result.EnforceDate,
+                        CancelDate = result.CancelDate,
+                        PdfUrl = result.PdfUrl,
+                        Catagory = result.Catagory,
+                        ActType = result.ActType,
+                        LegislationType = result.LegislationType,
+                        LegislationUnit = result.LegislationUnit,
+                    },
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<LawDetailModel>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<LawDetailModel>
                 {
                     Data = null,
                     Message = e.Message,

@@ -1,4 +1,5 @@
 ﻿using RegulationAssessment.DataAccess.Dapper.Interface;
+using RegulationAssessment.DataAccess.EntityFramework.Models;
 using RegulationAssessment.DataAccess.EntityFramework.UnitOfWork.Interface;
 using RegulationAssessment.Logic.DomainModel;
 using RegulationAssessment.Logic.Services.Interfaces;
@@ -83,6 +84,32 @@ namespace RegulationAssessment.Logic.Services.Implements
                 }).ToList()
             };
             return result;
+        }
+
+        public LawDetailDto GetLawbyId(Guid lawid)
+        {
+            var data = _entityUnitOfWork.LawRepository.GetSingle(x => x.Id == lawid);
+            var law = new LawDetailDto()
+            {
+                Id = lawid,
+                Title = data.Title,
+                AnnounceDate = data.AnnounceDate,
+                EnforceDate = data.EnforceDate,
+                CancelDate = data.CancelDate,
+                PdfUrl = data.PdfUrl,
+                Catagory = data.Catagory,
+                ActType = data.ActType,
+                LegislationType = data.LegislationType,
+                LegislationUnit = data.LegislationUnit,
+            };
+            return law;
+        }
+
+        public async Task<Law> AddLaw(Law law)
+        {
+            _entityUnitOfWork.LawRepository.Add(law);
+            await _entityUnitOfWork.SaveAsync();
+            return law;
         }
     }
 }
