@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskResult = RegulationAssessment.DataAccess.EntityFramework.Models.Task;
 
 namespace RegulationAssessment.Logic.Services.Interfaces
 {
@@ -16,5 +17,6 @@ namespace RegulationAssessment.Logic.Services.Interfaces
         List<TaskDto> GetResponseTaskList();
         List<TaskDto> GetDoneTaskList();
         Task<List<TaskItemDto>> GetTaskListByEmpId(Guid empId);
+        Task<TaskResult> UpdateTask(TaskResult task);
     }
 }

@@ -69,6 +69,5 @@ namespace RegulationAssessment.Logic.Services.Implements
                                                                 }).ToList();
             return data.First().Id;
         }
-
     }
 }

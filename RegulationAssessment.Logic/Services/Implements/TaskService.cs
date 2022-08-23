@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RegulationAssessment.DataAccess.Dapper.Interface;
 using RegulationAssessment.Common.Helper;
+using TaskResult = RegulationAssessment.DataAccess.EntityFramework.Models.Task;
 
 namespace RegulationAssessment.Logic.Services.Implements
 {
@@ -120,6 +121,22 @@ namespace RegulationAssessment.Logic.Services.Implements
                         );
                 return (await _dapperUnitOfWork.RARepository.QueryAsync<TaskItemDto>(query)).Take(5).ToList();
             }
+        }
+
+        public async Task<TaskResult> UpdateTask(TaskResult task)
+        {
+            var newtask = new TaskResult()
+            {
+                Id = task.Id,
+                LocationId = task.LocationId,
+                LawId = task.LawId,
+                Process = task.Process,
+                DueDate = task.DueDate,
+                CompleteDate = task.CompleteDate.GetValueOrDefault()
+            };
+            _entityUnitOfWork.TaskRepository.Update(newtask);
+            await _entityUnitOfWork.SaveAsync();
+            return newtask;
         }
     }
 }

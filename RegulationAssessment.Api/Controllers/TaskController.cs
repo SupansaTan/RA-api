@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RegulationAssessment.Api.Models;
+using RegulationAssessment.DataAccess.EntityFramework.Models;
 using RegulationAssessment.Logic.UnitOfWork.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Task = RegulationAssessment.DataAccess.EntityFramework.Models.Task;
 
 namespace RegulationAssessment.Api.Controllers
 {
@@ -303,6 +305,56 @@ namespace RegulationAssessment.Api.Controllers
             catch (Exception e)
             {
                 response = new ResponseModel<List<TaskItemModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+        [HttpPut("Task/{id}")]
+        public ResponseModel<Task> AddLoggingAssessment(
+            Guid id,
+            Guid locationId,
+            Guid lawId,
+            int process,
+            DateTime dueDate,
+            DateTime? completeDate
+        )
+        {
+            ResponseModel<Task> response;
+            try
+            {
+                var newtask = new Task()
+                {
+                    Id = id,
+                    LocationId = locationId,
+                    LawId = lawId,
+                    Process = process,
+                    DueDate = dueDate,
+                    CompleteDate = completeDate==null? null : completeDate
+                };
+                var result = _logicUnitOfWork.TaskService.UpdateTask(newtask);
+                response = new ResponseModel<Task>
+                {
+                    Data = newtask,
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<Task>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<Task>
                 {
                     Data = null,
                     Message = e.Message,
