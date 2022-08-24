@@ -123,20 +123,22 @@ namespace RegulationAssessment.Logic.Services.Implements
             }
         }
 
-        public async Task<TaskResult> UpdateTask(TaskResult task)
+        public async Task<bool> UpdateTask(TaskResult task)
         {
-            var newtask = new TaskResult()
+            var taskItem = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == task.Id);
+            if (taskItem == null)
             {
-                Id = task.Id,
-                LocationId = task.LocationId,
-                LawId = task.LawId,
-                Process = task.Process,
-                DueDate = task.DueDate,
-                CompleteDate = task.CompleteDate.GetValueOrDefault()
-            };
-            _entityUnitOfWork.TaskRepository.Update(newtask);
-            await _entityUnitOfWork.SaveAsync();
-            return newtask;
+                throw new ArgumentException("Task does not exist.");
+            }
+            else
+            {
+                taskItem.Process = task.Process;
+                taskItem.DueDate = task.DueDate;
+                taskItem.CompleteDate = task.CompleteDate;
+                _entityUnitOfWork.TaskRepository.Update(taskItem);
+                await _entityUnitOfWork.SaveAsync();
+                return true;
+            }
         }
     }
 }

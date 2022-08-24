@@ -313,8 +313,8 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-        [HttpPut("{id}")]
-        public ResponseModel<Task> UpdateTask(
+        [HttpPut("UpdateTask")]
+        public async Task<ResponseModel<bool>> UpdateTask([FromBody]
             Guid id,
             Guid locationId,
             Guid lawId,
@@ -323,7 +323,7 @@ namespace RegulationAssessment.Api.Controllers
             DateTime? completeDate
         )
         {
-            ResponseModel<Task> response;
+            ResponseModel<bool> response;
             try
             {
                 var newtask = new Task()
@@ -333,30 +333,30 @@ namespace RegulationAssessment.Api.Controllers
                     LawId = lawId,
                     Process = process,
                     DueDate = dueDate,
-                    CompleteDate = completeDate==null? null : completeDate
+                    CompleteDate = completeDate ?? null
                 };
-                var result = _logicUnitOfWork.TaskService.UpdateTask(newtask);
-                response = new ResponseModel<Task>
+                var result = await _logicUnitOfWork.TaskService.UpdateTask(newtask);
+                response = new ResponseModel<bool>
                 {
-                    Data = newtask,
+                    Data = result,
                     Message = "success",
                     Status = 200
                 };
             }
             catch (ArgumentException e)
             {
-                response = new ResponseModel<Task>
+                response = new ResponseModel<bool>
                 {
-                    Data = null,
+                    Data = false,
                     Message = e.Message,
                     Status = 400
                 };
             }
             catch (Exception e)
             {
-                response = new ResponseModel<Task>
+                response = new ResponseModel<bool>
                 {
-                    Data = null,
+                    Data = false,
                     Message = e.Message,
                     Status = 500
                 };
