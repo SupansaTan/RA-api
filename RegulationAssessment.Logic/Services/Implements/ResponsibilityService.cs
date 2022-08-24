@@ -33,7 +33,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                                                     .Select(x => new ResponsibilityDto()
                                                     {
                                                         Id = x.Id,
-                                                        EmpId = x.EmpId,
+                                                        EmpId = (Guid)x.EmpId,
                                                         Cost = x.Cost,
                                                         DueDate = x.DueDate,
                                                         TaskKeyActId = x.TaskKeyActId,
@@ -47,7 +47,7 @@ namespace RegulationAssessment.Logic.Services.Implements
             var resp = new ResponsibilityDto()
             {
                 Id = data.Id,
-                EmpId = data.EmpId,
+                EmpId = (Guid)data.EmpId,
                 Cost = data.Cost,
                 DueDate = data.DueDate,
                 TaskKeyActId = data.TaskKeyActId,
