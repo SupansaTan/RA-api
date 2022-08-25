@@ -122,7 +122,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                 return (await _dapperUnitOfWork.RARepository.QueryAsync<TaskItemDto>(query)).Skip(0).Take(5).ToList();
             }
         }
-        public async Task<List<TaskItemDto>> GetTaskListByLocationId(Guid locationId)
+        public async Task<List<TaskListSortByProcessDto>> GetTaskListByLocationId(Guid locationId)
         {
             var location = await _entityUnitOfWork.LocationRepository.GetSingleAsync(x => x.Id == locationId);
             if (location == null)
@@ -134,7 +134,24 @@ namespace RegulationAssessment.Logic.Services.Implements
                 var query = QueryService.GetCommand(QUERY_PATH + "getTaskListByLocationId",
                             new ParamCommand { Key = "_locationId", Value = locationId.ToString() }
                         );
-                return (await _dapperUnitOfWork.RARepository.QueryAsync<TaskItemDto>(query)).ToList();
+                var taskList = (await _dapperUnitOfWork.RARepository.QueryAsync<TaskItemDto>(query)).ToList();
+
+                List<TaskListSortByProcessDto> result = new List<TaskListSortByProcessDto>();
+                var currentTaskProcess = 0;
+                foreach (var task in taskList)
+                {
+                    if (currentTaskProcess != (int)task.Process)
+                    {
+                        var taskItem = new TaskListSortByProcessDto()
+                        {
+                            TaskProcess = (TaskProcess)task.Process,
+                            TaskList = taskList.FindAll(x => x.Process == task.Process).ToList()
+                        };
+                        currentTaskProcess = (int)task.Process;
+                        result.Add(taskItem);
+                    }
+                }
+                return result;
             }
         }
         public async Task<bool> UpdateTask(TaskResult task)

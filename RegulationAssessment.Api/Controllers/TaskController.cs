@@ -315,21 +315,25 @@ namespace RegulationAssessment.Api.Controllers
             return response;
         }
         [HttpGet("GetTaskListByLocationId")]
-        public async Task<ResponseModel<List<TaskItemModel>>> GetTaskListByLocationId([FromQuery] Guid locationId)
+        public async Task<ResponseModel<List<TaskListSortByProcessModel>>> GetTaskListByLocationId([FromQuery] Guid locationId)
         {
-            var response = new ResponseModel<List<TaskItemModel>>();
+            var response = new ResponseModel<List<TaskListSortByProcessModel>>();
             try
             {
                 var result = await _logicUnitOfWork.TaskService.GetTaskListByLocationId(locationId);
-                response = new ResponseModel<List<TaskItemModel>>
+                response = new ResponseModel<List<TaskListSortByProcessModel>>
                 {
-                    Data = result.Select(x => new TaskItemModel()
+                    Data = result.Select(x => new TaskListSortByProcessModel()
                     {
-                        TaskId = x.TaskId,
-                        TaskTitle = x.TaskTitle,
-                        DueDate = x.DueDate,
-                        Process = x.Process,
-                        DatetimeStatus = x.DatetimeStatus
+                        TaskProcess = x.TaskProcess,
+                        TaskList = x.TaskList.Select(y => new TaskItemModel()
+                        {
+                            TaskId = y.TaskId,
+                            TaskTitle = y.TaskTitle,
+                            Process = y.Process,
+                            DatetimeStatus = y.DatetimeStatus,
+                            DueDate = y.DueDate
+                        }).ToList()
                     }).ToList(),
                     Message = "success",
                     Status = 200
@@ -337,7 +341,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             catch (ArgumentException e)
             {
-                response = new ResponseModel<List<TaskItemModel>>
+                response = new ResponseModel<List<TaskListSortByProcessModel>>
                 {
                     Data = null,
                     Message = e.Message,
@@ -346,7 +350,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             catch (Exception e)
             {
-                response = new ResponseModel<List<TaskItemModel>>
+                response = new ResponseModel<List<TaskListSortByProcessModel>>
                 {
                     Data = null,
                     Message = e.Message,

@@ -1,4 +1,5 @@
 ﻿using RegulationAssessment.Common.Enum;
+using RegulationAssessment.Logic.DomainModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,13 @@ namespace RegulationAssessment.Api.Models
         public string TaskTitle { get; set; }
         public string LocationName { get; set; }
         public DateTime DueDate { get; set; }
-        public int? Process { get; set; }
+        public TaskProcess? Process { get; set; }
         public TaskTimeStatus DatetimeStatus { get; set; }
+    }
+
+    public class TaskListSortByProcessModel
+    {
+        public TaskProcess TaskProcess { get; set; }
+        public List<TaskItemModel> TaskList { get; set; }
     }
 }
