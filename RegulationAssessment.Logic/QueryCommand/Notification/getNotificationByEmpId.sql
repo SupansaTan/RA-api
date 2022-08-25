@@ -6,4 +6,5 @@
 FROM "Notification"
 INNER JOIN "Task" ON "Task"."Id" = "Notification"."TaskId"
 INNER JOIN "Law" ON "Law"."Id" = "Task"."LawId"
-WHERE "Notification"."EmpId" = '_employeeId';
+WHERE "Notification"."EmpId" = '_employeeId'
+ORDER BY "Notification"."NotifyDate" DESC;
