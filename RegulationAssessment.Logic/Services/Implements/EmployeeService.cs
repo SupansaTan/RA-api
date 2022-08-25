@@ -32,14 +32,10 @@ namespace RegulationAssessment.Logic.Services.Implements
             var employees = _entityUnitOfWork.EmployeeRepository.GetAll()
                                                                 .Select(x => new EmployeeDto()
                                                                 {
-                                                                    Id = x.Id,
-                                                                    Ssn = x.Ssn,
                                                                     FirstName = x.FirstName,
                                                                     LastName = x.LastName,
                                                                     CreateAt = x.CreateAt,
-                                                                    Email = x.Email,
-                                                                    Password = x.Password,
-                                                                    DarkTheme = x.DarkTheme,
+                                                                    DarkTheme = (bool)x.DarkTheme,
                                                                     NotificationStatus = x.NotificationStatus,
                                                                     AdvanceNotify = x.AdvanceNotify,
                                                                 }).ToList();

@@ -31,13 +31,8 @@ namespace RegulationAssessment.Api.Controllers
                 {
                     Data = result.Select(x => new EmployeeModel()
                     {
-                        Id = x.Id,
-                        Ssn = x.Ssn,
                         FirstName = x.FirstName,
                         LastName = x.LastName,
-                        CreateAt = x.CreateAt,
-                        Email = x.Email,
-                        Password = x.Password,
                         DarkTheme = x.DarkTheme,
                         NotificationStatus = x.NotificationStatus,
                         AdvanceNotify = x.AdvanceNotify,
