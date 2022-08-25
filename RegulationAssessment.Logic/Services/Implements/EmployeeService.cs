@@ -88,5 +88,23 @@ namespace RegulationAssessment.Logic.Services.Implements
                 return result;
             }
         }
+
+        public async Task<bool> UpdateEmployeeInfo(UpdateEmployeeInfoDto model)
+        {
+            var employee = await _entityUnitOfWork.EmployeeRepository.GetSingleAsync(x => x.Id == model.EmployeeId);
+            if (employee == null)
+            {
+                throw new ArgumentException("Employee does not exist.");
+            }
+            else
+            {
+                employee.DarkTheme = model.DarkTheme;
+                employee.AdvanceNotify = model.AdvanceNotify;
+                employee.NotificationStatus = model.NotificationStatus;
+                _entityUnitOfWork.EmployeeRepository.Update(employee);
+                await _entityUnitOfWork.SaveAsync();
+                return true;
+            }
+        }
     }
 }

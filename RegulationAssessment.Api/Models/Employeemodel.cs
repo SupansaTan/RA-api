@@ -27,4 +27,12 @@ namespace RegulationAssessment.Api.Models
         public string RoleName { get; set; }
         public string Location { get; set; }
     }
+
+    public class UpdateEmployeeInfoModel
+    {
+        public Guid EmployeeId { get; set; }
+        public bool DarkTheme { get; set; }
+        public bool NotificationStatus { get; set; }
+        public int AdvanceNotify { get; set; }
+    }
 }

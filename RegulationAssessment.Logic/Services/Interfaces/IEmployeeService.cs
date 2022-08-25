@@ -12,5 +12,6 @@ namespace RegulationAssessment.Logic.Services.Interfaces
         List<EmployeeDto> GetAllEmployees();
         Task<EmployeeDto> GetEmployeeById(Guid empId);
         Task<EmployeeProfileDto> GetEmployeeProfile(Guid empId);
+        Task<bool> UpdateEmployeeInfo(UpdateEmployeeInfoDto model);
     }
 }

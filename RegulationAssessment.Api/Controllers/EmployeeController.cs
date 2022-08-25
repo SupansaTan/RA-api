@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RegulationAssessment.Api.Models;
+using RegulationAssessment.Logic.DomainModel;
 using RegulationAssessment.Logic.UnitOfWork.Interface;
 using System;
 using System.Collections.Generic;
@@ -142,6 +143,48 @@ namespace RegulationAssessment.Api.Controllers
                 response = new ResponseModel<EmployeeProfileModel>
                 {
                     Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+
+        [HttpPut("UpdateEmployeeInfo")]
+        public async Task<ResponseModel<bool>> UpdateEmployeeInfo([FromBody] UpdateEmployeeInfoModel request)
+        {
+            ResponseModel<bool> response;
+            try
+            {
+                var empInfo = new UpdateEmployeeInfoDto()
+                {
+                    EmployeeId = request.EmployeeId,
+                    NotificationStatus = request.NotificationStatus,
+                    AdvanceNotify = request.AdvanceNotify,
+                    DarkTheme = request.DarkTheme,
+                };
+
+                response = new ResponseModel<bool>
+                {
+                    Data = await _logicUnitOfWork.EmployeeService.UpdateEmployeeInfo(empInfo),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<bool>
+                {
+                    Data = false,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<bool>
+                {
+                    Data = false,
                     Message = e.Message,
                     Status = 500
                 };
