@@ -42,5 +42,21 @@ namespace RegulationAssessment.Logic.Services.Implements
                 return (await _dapperUnitOfWork.RARepository.QueryAsync<NotificationDto>(query)).ToList();
             }
         }
+
+        public async Task<List<NotificationDateDto>> GetNotificationDateByEmpId(Guid empId)
+        {
+            var employeeInfo = await _entityUnitOfWork.NotificationRepository.GetSingleAsync(x => x.EmpId == empId);
+            if (employeeInfo == null)
+            {
+                throw new ArgumentException("Employee does not exist.");
+            }
+            else
+            {
+                var query = QueryService.GetCommand(QUERY_PATH + "getNotiDate",
+                            new ParamCommand { Key = "_employeeId", Value = empId.ToString() }
+                        );
+                return (await _dapperUnitOfWork.RARepository.QueryAsync<NotificationDateDto>(query)).ToList();
+            }
+        }
     }
 }

@@ -21,20 +21,26 @@ namespace RegulationAssessment.Api.Controllers
         }
 
         [HttpGet("GetNotificationByEmpId")]
-        public async Task<ResponseModel<List<NotificationModel>>> GetNotificationByEmpId([FromQuery] Guid empId)
+        public async Task<ResponseModel<List<NotificationListDataModel>>> GetNotificationByEmpId([FromQuery] Guid empId)
         {
-            var response = new ResponseModel<List<NotificationModel>>();
+            var response = new ResponseModel<List<NotificationListDataModel>>();
             try
             {
                 var result = await _logicUnitOfWork.NotificationService.GetNotificationByEmpId(empId);
-                response = new ResponseModel<List<NotificationModel>>
+                var date_ = await _logicUnitOfWork.NotificationService.GetNotificationDateByEmpId(empId);
+                response = new ResponseModel<List<NotificationListDataModel>>
                 {
-                    Data = result.Select(x => new NotificationModel()
+                    Data = date_.Select(x => new NotificationListDataModel()
                     {
-                        LawTitle = x.LawTitle,
-                        Process = x.Process,
-                        NotifyDate = x.NotifyDate,
-                        Read = x.Read,
+                        date = x.date,
+                        data = result.Select(i => new NotificationModel()
+                        {
+                            type = i.type,
+                            title = i.title,
+                            content = i.content,
+                            time = i.time,
+                            readStatus = i.readStatus,
+                        }).ToList()
                     }).ToList(),
                     Message = "success",
                     Status = 200
@@ -42,7 +48,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             catch (ArgumentException e)
             {
-                response = new ResponseModel<List<NotificationModel>>
+                response = new ResponseModel<List<NotificationListDataModel>>
                 {
                     Data = null,
                     Message = e.Message,
@@ -51,7 +57,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             catch (Exception e)
             {
-                response = new ResponseModel<List<NotificationModel>>
+                response = new ResponseModel<List<NotificationListDataModel>>
                 {
                     Data = null,
                     Message = e.Message,

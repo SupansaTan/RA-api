@@ -1,10 +1,23 @@
 ﻿namespace RegulationAssessment.Api.Models
 {
+    public class NotificationListDataModel
+    {
+        public DateTime date { get; set; }
+        public List<NotificationModel> data { get; set; }
+    }
+
+    public class NotificationDateModel
+    {
+        public DateTime date { get; set; }
+    }
+
     public class NotificationModel
     {
-        public string LawTitle { get; set; }
-        public int Process { get; set; }
-        public DateTime NotifyDate { get; set; }
-        public bool Read { get; set; }
+        public string type { get; set; }
+        public string title { get; set; }
+        public string content { get; set; }
+        public DateTime time { get; set; }
+        public bool readStatus { get; set; }
     }
+
 }
