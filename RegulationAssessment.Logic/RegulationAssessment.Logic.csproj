@@ -9,10 +9,14 @@
   <ItemGroup>
     <None Remove="QueryCommand\Employee\getRoleList.sql" />
     <None Remove="QueryCommand\getTaskList.sql" />
+    <None Remove="QueryCommand\Location\getLocationListByEmpId.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="QueryCommand\Employee\getRoleList.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="QueryCommand\Location\getLocationListByEmpId.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="QueryCommand\Task\getTaskList.sql">
