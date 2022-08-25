@@ -15,5 +15,10 @@
 	END AS "DatetimeStatus"
 FROM "Task"
 LEFT JOIN "Law" ON "Law"."Id" = "Task"."LawId"
-WHERE "Task"."LocationId" = 'a2f78363-bb14-4419-a7f9-305295204eb3' AND "Process" != 6
+WHERE 
+	"Task"."LocationId" = '_locationId'
+	AND "Process" != 6
+
+	-- search by keywords 
+	AND LOWER("Law"."Title") LIKE ALL(string_to_array('_keyword', ' '))
 ORDER BY "Process", "DatetimeStatus" DESC;

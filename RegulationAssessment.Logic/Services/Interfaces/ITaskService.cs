@@ -17,7 +17,7 @@ namespace RegulationAssessment.Logic.Services.Interfaces
         List<TaskDto> GetResponseTaskList();
         List<TaskDto> GetDoneTaskList();
         Task<List<TaskItemDto>> GetTaskListByEmpId(Guid empId);
-        Task<List<TaskListSortByProcessDto>> GetTaskListByLocationId(Guid locationId);
+        Task<List<TaskListSortByProcessDto>> GetTaskListByLocationId(Guid locationId, string searchTerms);
         Task<bool> UpdateTask(TaskResult task);
     }
 }

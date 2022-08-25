@@ -315,12 +315,12 @@ namespace RegulationAssessment.Api.Controllers
             return response;
         }
         [HttpGet("GetTaskListByLocationId")]
-        public async Task<ResponseModel<List<TaskListSortByProcessModel>>> GetTaskListByLocationId([FromQuery] Guid locationId)
+        public async Task<ResponseModel<List<TaskListSortByProcessModel>>> GetTaskListByLocationId([FromQuery] Guid locationId, string? keyword = "")
         {
             var response = new ResponseModel<List<TaskListSortByProcessModel>>();
             try
             {
-                var result = await _logicUnitOfWork.TaskService.GetTaskListByLocationId(locationId);
+                var result = await _logicUnitOfWork.TaskService.GetTaskListByLocationId(locationId, keyword);
                 response = new ResponseModel<List<TaskListSortByProcessModel>>
                 {
                     Data = result.Select(x => new TaskListSortByProcessModel()

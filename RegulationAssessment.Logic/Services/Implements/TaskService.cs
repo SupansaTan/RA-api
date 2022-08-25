@@ -122,7 +122,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                 return (await _dapperUnitOfWork.RARepository.QueryAsync<TaskItemDto>(query)).Skip(0).Take(5).ToList();
             }
         }
-        public async Task<List<TaskListSortByProcessDto>> GetTaskListByLocationId(Guid locationId)
+        public async Task<List<TaskListSortByProcessDto>> GetTaskListByLocationId(Guid locationId, string searchTerms)
         {
             var location = await _entityUnitOfWork.LocationRepository.GetSingleAsync(x => x.Id == locationId);
             if (location == null)
@@ -131,8 +131,17 @@ namespace RegulationAssessment.Logic.Services.Implements
             }
             else
             {
+                string keyword = "";
+                if (!string.IsNullOrEmpty(searchTerms))
+                {
+                    var keywords = searchTerms.Split();
+                    keywords = keywords.Select(x => x = $"%{x.ToLower()}%").ToArray();
+                    keyword = string.Join(" ", keywords);
+                }
+
                 var query = QueryService.GetCommand(QUERY_PATH + "getTaskListByLocationId",
-                            new ParamCommand { Key = "_locationId", Value = locationId.ToString() }
+                            new ParamCommand { Key = "_locationId", Value = locationId.ToString() },
+                            new ParamCommand { Key = "_keyword", Value = keyword }
                         );
                 var taskList = (await _dapperUnitOfWork.RARepository.QueryAsync<TaskItemDto>(query)).ToList();
 
