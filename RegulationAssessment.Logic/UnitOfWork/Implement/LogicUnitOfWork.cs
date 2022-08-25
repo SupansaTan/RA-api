@@ -32,6 +32,7 @@ namespace RegulationAssessment.Logic.UnitOfWork.Implement
         private ILoggingService _loggingService;
         private IResponsibilityService _responsibilityService;
         private ILocationService _locationService;
+        private INotificationService _notificationService;
 
         public ITaskService TaskService
         {
@@ -73,6 +74,12 @@ namespace RegulationAssessment.Logic.UnitOfWork.Implement
         {
             get { return _locationService ?? (_locationService = new LocationService(_entityUnitOfWork, _dapperUnitOfWork)); }
             set { _locationService = value; }
+        }
+
+        public INotificationService NotificationService
+        {
+            get { return _notificationService ?? (_notificationService = new NotificationService(_entityUnitOfWork, _dapperUnitOfWork)); }
+            set { _notificationService = value; }
         }
     }
 }

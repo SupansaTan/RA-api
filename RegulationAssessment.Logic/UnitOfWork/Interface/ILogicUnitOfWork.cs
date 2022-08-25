@@ -16,5 +16,6 @@ namespace RegulationAssessment.Logic.UnitOfWork.Interface
         ILoggingService LoggingService { get; set; }
         IResponsibilityService ResponsibilityService { get; set; }
         ILocationService LocationService { get; set; }
+        INotificationService NotificationService { get; set; }
     }
 }
