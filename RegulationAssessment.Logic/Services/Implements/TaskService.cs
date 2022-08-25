@@ -122,7 +122,21 @@ namespace RegulationAssessment.Logic.Services.Implements
                 return (await _dapperUnitOfWork.RARepository.QueryAsync<TaskItemDto>(query)).Skip(0).Take(5).ToList();
             }
         }
-
+        public async Task<List<TaskItemDto>> GetTaskListByLocationId(Guid locationId)
+        {
+            var location = await _entityUnitOfWork.LocationRepository.GetSingleAsync(x => x.Id == locationId);
+            if (location == null)
+            {
+                throw new ArgumentException("Location does not exist.");
+            }
+            else
+            {
+                var query = QueryService.GetCommand(QUERY_PATH + "getTaskListByLocationId",
+                            new ParamCommand { Key = "_locationId", Value = locationId.ToString() }
+                        );
+                return (await _dapperUnitOfWork.RARepository.QueryAsync<TaskItemDto>(query)).ToList();
+            }
+        }
         public async Task<bool> UpdateTask(TaskResult task)
         {
             var taskItem = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == task.Id);

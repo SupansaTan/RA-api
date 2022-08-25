@@ -22,6 +22,7 @@ namespace RegulationAssessment.Api.Models
         public string TaskTitle { get; set; }
         public string LocationName { get; set; }
         public DateTime DueDate { get; set; }
+        public int? Process { get; set; }
         public TaskTimeStatus DatetimeStatus { get; set; }
     }
 }
