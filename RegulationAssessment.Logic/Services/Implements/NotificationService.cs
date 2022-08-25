@@ -39,7 +39,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                 var query = QueryService.GetCommand(QUERY_PATH + "getNotificationByEmpId",
                             new ParamCommand { Key = "_employeeId", Value = empId.ToString() }
                         );
-                return (await _dapperUnitOfWork.RARepository.QueryAsync<NotificationDto>(query)).Skip(0).ToList();
+                return (await _dapperUnitOfWork.RARepository.QueryAsync<NotificationDto>(query)).ToList();
             }
         }
     }

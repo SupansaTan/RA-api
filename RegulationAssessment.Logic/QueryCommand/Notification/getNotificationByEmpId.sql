@@ -4,6 +4,6 @@
 	"Notification"."NotifyDate" AS "NotifyDate",
 	"Notification"."Read" AS "Read"
 FROM "Notification"
-INNER JOIN "Task" ON "Task"."Id" = "Notiification"."TaskId"
+INNER JOIN "Task" ON "Task"."Id" = "Notification"."TaskId"
 INNER JOIN "Law" ON "Law"."Id" = "Task"."LawId"
 WHERE "Notification"."EmpId" = '_employeeId';
