@@ -7,10 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="QueryCommand\Employee\getRoleList.sql" />
     <None Remove="QueryCommand\getTaskList.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="QueryCommand\Employee\getRoleList.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="QueryCommand\Task\getTaskList.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -20,10 +24,6 @@
     <ProjectReference Include="..\RegulationAssessment.Common\RegulationAssessment.Common.csproj" />
     <ProjectReference Include="..\RegulationAssessment.DataAccess.Dapper\RegulationAssessment.DataAccess.Dapper.csproj" />
     <ProjectReference Include="..\RegulationAssessment.DataAccess.EntityFramework\RegulationAssessment.DataAccess.EntityFramework.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="QueryCommand\NewFolder\" />
   </ItemGroup>
 
 </Project>

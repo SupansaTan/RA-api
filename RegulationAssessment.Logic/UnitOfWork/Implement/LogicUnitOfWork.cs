@@ -40,7 +40,7 @@ namespace RegulationAssessment.Logic.UnitOfWork.Implement
 
         public IEmployeeService EmployeeService
         {
-            get { return _employeeService ?? (_employeeService = new EmployeeService(_entityUnitOfWork)); }
+            get { return _employeeService ?? (_employeeService = new EmployeeService(_entityUnitOfWork, _dapperUnitOfWork)); }
             set { _employeeService = value; }
         }
 
