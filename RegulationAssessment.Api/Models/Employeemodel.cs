@@ -17,6 +17,8 @@ namespace RegulationAssessment.Api.Models
     public class EmployeeProfileModel
     {
         public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public List<RoleInfoModel> RoleList { get; set; }
     }
 

@@ -19,6 +19,8 @@ namespace RegulationAssessment.Logic.DomainModel
     public class EmployeeProfileDto
     {
         public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public List<RoleInfoDto> RoleList { get; set; }
     }
 

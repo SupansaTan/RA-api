@@ -116,6 +116,8 @@ namespace RegulationAssessment.Api.Controllers
                     Data = new EmployeeProfileModel()
                     {
                         Email = result.Email,
+                        FirstName = result.FirstName,
+                        LastName = result.LastName,
                         RoleList = result.RoleList.Select(x => new RoleInfoModel()
                         {
                             RoleName = x.RoleName,

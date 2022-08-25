@@ -73,6 +73,8 @@ namespace RegulationAssessment.Logic.Services.Implements
                 var result = new EmployeeProfileDto()
                 {
                     Email = employee.Email,
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
                     RoleList = roleList
                 };
                 return result;
