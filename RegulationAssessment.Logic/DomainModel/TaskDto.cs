@@ -32,4 +32,15 @@ namespace RegulationAssessment.Logic.DomainModel
         public TaskProcess TaskProcess { get; set; }
         public List<TaskItemDto> TaskList { get; set; }
     }
+
+    public class TaskDetailDto
+    {
+        public string TaskTitle { get; set; }
+        public string Catagory { get; set; }
+        public string ActType { get; set; }
+        public string LegislationType { get; set; }
+        public string LegislationUnit { get; set; }
+        public DateTime AnnounceDate { get; set; }
+        public DateTime EnforceDate { get; set; }
+    }
 }

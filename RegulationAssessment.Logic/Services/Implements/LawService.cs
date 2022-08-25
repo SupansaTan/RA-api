@@ -1,4 +1,5 @@
-﻿using RegulationAssessment.DataAccess.Dapper.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using RegulationAssessment.DataAccess.Dapper.Interface;
 using RegulationAssessment.DataAccess.EntityFramework.Models;
 using RegulationAssessment.DataAccess.EntityFramework.UnitOfWork.Interface;
 using RegulationAssessment.Logic.DomainModel;
@@ -6,6 +7,7 @@ using RegulationAssessment.Logic.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -103,6 +105,50 @@ namespace RegulationAssessment.Logic.Services.Implements
                 LegislationUnit = data.LegislationUnit,
             };
             return law;
+        }
+
+        public async Task<LawDetailDto> GetLawDetailByTaskId(Guid taskId)
+        {
+            var task = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == taskId);
+            if (task == null)
+            {
+                throw new ArgumentException("Task does not exist.");
+            }
+            else
+            {
+                var lawDetail = await _entityUnitOfWork.LawRepository.GetSingleAsync(x => x.Id == task.LawId);
+                if (lawDetail == null)
+                {
+                    throw new ArgumentException("Law does not exist.");
+                }
+                else
+                {
+                    var systems = await _entityUnitOfWork.RelatedSystemRepository.GetAll(x => x.LawId == task.LawId)
+                                                                      .Select(x => x.SystemId)
+                                                                      .ToListAsync();
+                    List<string> systemList = new List<string>();
+                    foreach (var system in systems)
+                    {
+                        var sys = await _entityUnitOfWork.SystemRepository.GetSingleAsync(x => x.Id == system);
+                        systemList.Add(sys.Name);
+                    }
+
+                    return new LawDetailDto()
+                    {
+                        Id = task.Id,
+                        Title = lawDetail.Title,
+                        AnnounceDate = lawDetail.AnnounceDate,
+                        EnforceDate = lawDetail.EnforceDate,
+                        CancelDate = lawDetail.CancelDate,
+                        PdfUrl = lawDetail.PdfUrl,
+                        Catagory = lawDetail.Catagory,
+                        ActType = lawDetail.ActType,
+                        LegislationType = lawDetail.LegislationType,
+                        LegislationUnit = lawDetail.LegislationUnit,
+                        SystemList = systemList
+                    };
+                }
+            }
         }
 
         public async Task<Law> AddLaw(Law law)

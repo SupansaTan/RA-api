@@ -45,5 +45,6 @@ namespace RegulationAssessment.Logic.DomainModel
         public string ActType { get; set; } = null!;
         public string LegislationType { get; set; } = null!;
         public string LegislationUnit { get; set; } = null!;
+        public List<string>? SystemList { get; set; }
     }
 }

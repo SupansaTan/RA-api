@@ -182,5 +182,53 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
+
+        [HttpGet("GetLawDetailByTaskId")]
+        public async Task<ResponseModel<LawDetailModel>> GetLawDetailByTaskId(Guid taskId)
+        {
+            ResponseModel<LawDetailModel> response;
+            try
+            {
+                var result = await _logicUnitOfWork.LawService.GetLawDetailByTaskId(taskId);
+                response = new ResponseModel<LawDetailModel>
+                {
+                    Data = new LawDetailModel()
+                    {
+                        Id = result.Id,
+                        Title = result.Title,
+                        AnnounceDate = result.AnnounceDate,
+                        EnforceDate = result.EnforceDate,
+                        CancelDate = result.CancelDate,
+                        PdfUrl = result.PdfUrl,
+                        Catagory = result.Catagory,
+                        ActType = result.ActType,
+                        LegislationType = result.LegislationType,
+                        LegislationUnit = result.LegislationUnit,
+                        SystemList = result.SystemList
+                    },
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<LawDetailModel>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<LawDetailModel>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
     }
 }
