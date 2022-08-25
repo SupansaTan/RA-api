@@ -8,7 +8,7 @@
 		WHEN "Task"."DueDate" < now()
 			THEN 3
 		-- today
-		WHEN ("Task"."DueDate" = now()::date AND "Task"."DueDate" < now())
+		WHEN ("Task"."DueDate" = now()::date AND "Task"."DueDate" >= now())
 			THEN 2
 		-- remain
 		ELSE 1
