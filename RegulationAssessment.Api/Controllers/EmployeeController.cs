@@ -63,29 +63,29 @@ namespace RegulationAssessment.Api.Controllers
         }
 
         [HttpGet("GetEmployee")]
-        public ResponseModel<List<EmployeeModel>> GetEmployee(Guid empId)
+        public async Task<ResponseModel<EmployeeModel>> GetEmployee(Guid empId)
         {
-            ResponseModel<List<EmployeeModel>> response;
+            ResponseModel<EmployeeModel> response;
             try
             {
-                var result = _logicUnitOfWork.EmployeeService.GetEmployeeById(empId);
-                response = new ResponseModel<List<EmployeeModel>>
+                var result = await _logicUnitOfWork.EmployeeService.GetEmployeeById(empId);
+                response = new ResponseModel<EmployeeModel>
                 {
-                    Data = result.Select(x => new EmployeeModel()
+                    Data = new EmployeeModel()
                     {
-                        FirstName = x.FirstName,
-                        LastName = x.LastName,
-                        DarkTheme = x.DarkTheme,
-                        NotificationStatus = x.NotificationStatus,
-                        AdvanceNotify = x.AdvanceNotify,
-                    }).ToList(),
+                        FirstName = result.FirstName,
+                        LastName = result.LastName,
+                        DarkTheme = result.DarkTheme,
+                        NotificationStatus = result.NotificationStatus,
+                        AdvanceNotify = result.AdvanceNotify,
+                    },
                     Message = "success",
                     Status = 200
                 };
             }
             catch (ArgumentException e)
             {
-                response = new ResponseModel<List<EmployeeModel>>
+                response = new ResponseModel<EmployeeModel>
                 {
                     Data = null,
                     Message = e.Message,
@@ -94,7 +94,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             catch (Exception e)
             {
-                response = new ResponseModel<List<EmployeeModel>>
+                response = new ResponseModel<EmployeeModel>
                 {
                     Data = null,
                     Message = e.Message,

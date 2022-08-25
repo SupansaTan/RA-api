@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RegulationAssessment.Common.Helper;
 using RegulationAssessment.DataAccess.Dapper.Interface;
+using RegulationAssessment.DataAccess.EntityFramework.Models;
 
 namespace RegulationAssessment.Logic.Services.Implements
 {
@@ -42,18 +43,25 @@ namespace RegulationAssessment.Logic.Services.Implements
             return employees;
         }
 
-        public List<EmployeeDto> GetEmployeeById(Guid empId)
+        public async Task<EmployeeDto> GetEmployeeById(Guid empId)
         {
-            var employee = _entityUnitOfWork.EmployeeRepository.GetAll(x => x.Id == empId)
-                                                                .Select(x => new EmployeeDto()
-                                                                {
-                                                                    FirstName = x.FirstName,
-                                                                    LastName = x.LastName,
-                                                                    DarkTheme = (bool)x.DarkTheme,
-                                                                    NotificationStatus = x.NotificationStatus,
-                                                                    AdvanceNotify = x.AdvanceNotify,
-                                                                }).ToList();
-            return employee;
+            var employee = await _entityUnitOfWork.EmployeeRepository.GetSingleAsync(x => x.Id == empId);
+            if (employee == null)
+            {
+                throw new ArgumentException("Employee does not exist.");
+            }
+            else
+            {
+                var result = new EmployeeDto()
+                {
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    DarkTheme = (bool)employee.DarkTheme,
+                    NotificationStatus = employee.NotificationStatus,
+                    AdvanceNotify = employee.AdvanceNotify,
+                };
+                return result;
+            }
         }
 
         public async Task<EmployeeProfileDto> GetEmployeeProfile(Guid empId)
