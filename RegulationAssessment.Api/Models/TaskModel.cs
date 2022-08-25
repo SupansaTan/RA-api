@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RegulationAssessment.Common.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,5 +22,6 @@ namespace RegulationAssessment.Api.Models
         public string TaskTitle { get; set; }
         public string LocationName { get; set; }
         public DateTime DueDate { get; set; }
+        public TaskTimeStatus DatetimeStatus { get; set; }
     }
 }
