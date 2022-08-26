@@ -21,12 +21,13 @@ namespace RegulationAssessment.Api.Controllers
         }
 
         [HttpGet("GetAllKeyAction")]
-        public ResponseModel<List<KeyActionModel>> GetAllKeyAction()
+        public async Task<ResponseModel<List<KeyActionModel>>> GetAllKeyAction([FromQuery] Guid taskId)
         {
             ResponseModel<List<KeyActionModel>> response;
             try
             {
-                var result = _logicUnitOfWork.KeyActionService.GetAllKeyAction();
+                // for only task process: Relevant Assessment
+                var result = await _logicUnitOfWork.KeyActionService.GetAllKeyAction(taskId);
                 response = new ResponseModel<List<KeyActionModel>>
                 {
                     Data = result.Select(x => new KeyActionModel()

@@ -10,7 +10,7 @@ namespace RegulationAssessment.Logic.Services.Interfaces
 {
     public interface IKeyActionService
     {
-        List<KeyActionDto> GetAllKeyAction();
+        Task<List<KeyActionDto>> GetAllKeyAction(Guid taskId);
         List<KeyActionDto> GetKeyActionByLawId(Guid lawId);
         Guid GetTaskKeyActionId(Guid keyactId, Guid taskId);
         Task<KeyAction> AddKeyAction(KeyAction keyaction);

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RegulationAssessment.DataAccess.EntityFramework.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace RegulationAssessment.Logic.Services.Implements
 {
@@ -26,9 +27,10 @@ namespace RegulationAssessment.Logic.Services.Implements
             _dapperUnitOfWork = dapperUnitOfWork;
         }
 
-        public List<KeyActionDto> GetAllKeyAction()
+        public async Task<List<KeyActionDto>> GetAllKeyAction(Guid taskId)
         {
-            var keyactions = _entityUnitOfWork.KeyActionRepository.GetAll()
+            var task = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == taskId);
+            var keyactions = await _entityUnitOfWork.KeyActionRepository.GetAll(x => x.LawId == task.LawId)
                                                                 .Select(x => new KeyActionDto()
                                                                 {
                                                                     Id = x.Id,
@@ -38,8 +40,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                                                                     Frequency = x.Frequency,
                                                                     Order = x.Order,
                                                                     LawId = x.LawId,
-                                                                    
-                                                                }).ToList();
+                                                                }).OrderBy(x => x.Order).ToListAsync();
             return keyactions;
         }
 
