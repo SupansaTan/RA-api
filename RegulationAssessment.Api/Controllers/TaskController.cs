@@ -288,6 +288,7 @@ namespace RegulationAssessment.Api.Controllers
                         TaskTitle = x.TaskTitle,
                         LocationName = x.LocationName,
                         DueDate = x.DueDate,
+                        Process = x.Process,
                         DatetimeStatus = x.DatetimeStatus
                     }).ToList(),
                     Message = "success",

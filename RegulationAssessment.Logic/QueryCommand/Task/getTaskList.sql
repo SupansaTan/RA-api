@@ -3,6 +3,7 @@
 	"Law"."Title" AS "TaskTitle",
 	"Location"."Name" AS "LocationName",
 	"Task"."DueDate" AS "DueDate",
+	"Task"."Process" AS "Process",
 	CASE
 		-- overdue
 		WHEN "Task"."DueDate" < now()
