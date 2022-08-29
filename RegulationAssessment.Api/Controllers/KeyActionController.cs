@@ -156,51 +156,54 @@ namespace RegulationAssessment.Api.Controllers
         }
 
         [HttpPost("LoggingAssessment/Add")]
-        public ResponseModel<Logging> AddLoggingAssessment(
-            int process,
-            bool status,
-            Guid taskkeyactId,
-            Guid empId,
-            Guid? respId,
-            string? notation
-        )
+        public async Task<ResponseModel<bool>> AddLoggingAssessment([FromBody] RelevantAssessmentModel request)
         {
-            ResponseModel<Logging> response;
+            ResponseModel<bool> response;
             try
             {
-                var log = new Logging()
+                var assessmentInfo = new RelevantAssessmentModel()
                 {
-                    Id = Guid.NewGuid(),
-                    CreateDate = DateTime.Now,
-                    Notation = notation,
-                    Process = process,
-                    Status = status,
-                    TaskKeyActId = taskkeyactId,
-                    RespId = respId,
-                    EmpId = empId
+                    EmployeeId = request.EmployeeId,
+                    TaskId = request.TaskId,
+                    KeyActList = request.KeyActList,
                 };
-                var result = _logicUnitOfWork.LoggingService.AddKeyActionLog(log);
-                response = new ResponseModel<Logging>
+
+                var log = new Logging();
+                var result = false;
+                assessmentInfo.KeyActList.ForEach(async x =>
                 {
-                    Data = log,
+                    log.Id = Guid.NewGuid();
+                    log.CreateDate = DateTime.Now;
+                    log.Notation = x.notation;
+                    log.Process = assessmentInfo.Process;
+                    log.Status = x.isRelated;
+                    log.TaskKeyActId = _logicUnitOfWork.KeyActionService.GetTaskKeyActionId(x.keyActId, assessmentInfo.TaskId);
+                    log.EmpId = assessmentInfo.EmployeeId;
+                    result = await _logicUnitOfWork.LoggingService.AddKeyActionLog(log);
+                });
+
+
+                response = new ResponseModel<bool>
+                {
+                    Data = result,
                     Message = "success",
                     Status = 200
                 };
             }
             catch (ArgumentException e)
             {
-                response = new ResponseModel<Logging>
+                response = new ResponseModel<bool>
                 {
-                    Data = null,
+                    Data = false,
                     Message = e.Message,
                     Status = 400
                 };
             }
             catch (Exception e)
             {
-                response = new ResponseModel<Logging>
+                response = new ResponseModel<bool>
                 {
-                    Data = null,
+                    Data = false,
                     Message = e.Message,
                     Status = 500
                 };
@@ -302,6 +305,41 @@ namespace RegulationAssessment.Api.Controllers
                 response = new ResponseModel<KeyAction>
                 {
                     Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+
+        [HttpGet("GetTaskKeyActionId")]
+        public ResponseModel<Guid> GetTaskKeyActionId(Guid keyactId, Guid taskId)
+        {
+            ResponseModel<Guid> response;
+            try
+            {
+                var taskkeyactId = _logicUnitOfWork.KeyActionService.GetTaskKeyActionId(keyactId, taskId);
+                response = new ResponseModel<Guid>
+                {
+                    Data = taskkeyactId,
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<Guid>
+                {
+                    Data = Guid.NewGuid(),
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<Guid>
+                {
+                    Data = Guid.NewGuid(),
                     Message = e.Message,
                     Status = 500
                 };

@@ -17,4 +17,19 @@ namespace RegulationAssessment.Api.Models
         public Guid TaskId { get; set; }
         public Guid KeyActId { get; set; }
     }
+
+    public class KeyAssessmentDetail
+    {
+        public Guid keyActId { get; set; }
+        public bool isRelated { get; set; }
+        public string notation { get; set; }
+    }
+
+    public class RelevantAssessmentModel
+    {
+        public Guid EmployeeId { get; set; }
+        public Guid TaskId { get; set; }
+        public int Process { get; set; }
+        public List<KeyAssessmentDetail> KeyActList { get; set; }
+    }
 }
