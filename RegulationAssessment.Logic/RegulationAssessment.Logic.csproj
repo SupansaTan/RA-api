@@ -10,7 +10,6 @@
     <None Remove="QueryCommand\Employee\getRoleList.sql" />
     <None Remove="QueryCommand\getTaskList.sql" />
     <None Remove="QueryCommand\Location\getLocationListByEmpId.sql" />
-    <None Remove="QueryCommand\Log\getLogKeyByTaskId.sql" />
     <None Remove="QueryCommand\Notification\getNotiDate.sql" />
     <None Remove="QueryCommand\Notification\getNotificationByEmpId.sql" />
     <None Remove="QueryCommand\Task\getTaskListByLocationId.sql" />
@@ -21,9 +20,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="QueryCommand\Location\getLocationListByEmpId.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="QueryCommand\Log\getLogKeyByTaskId.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="QueryCommand\Notification\getNotiDate.sql">
