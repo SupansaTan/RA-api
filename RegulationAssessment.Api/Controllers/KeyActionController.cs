@@ -165,6 +165,7 @@ namespace RegulationAssessment.Api.Controllers
                 {
                     EmployeeId = request.EmployeeId,
                     TaskId = request.TaskId,
+                    Process = request.Process,
                     KeyActList = request.KeyActList,
                 };
 
