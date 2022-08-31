@@ -109,27 +109,23 @@ namespace RegulationAssessment.Api.Controllers
             return response;
         }
 
-        /*
+        
         [HttpGet("GetLoggingAssessment")]
-        public async ResponseModel<List<LoggingModel>> GetLoggingAssessment(Guid keyactId, Guid taskId)
+        public async Task<ResponseModel<List<LoggingAssessmentModel>>> GetLoggingAssessment(Guid taskId, int process)
         {
-            ResponseModel<List<LoggingModel>> response;
+            ResponseModel<List<LoggingAssessmentModel>> response;
             try
             {
-                var taskkeyactId = _logicUnitOfWork.KeyActionService.GetTaskKeyActionId(keyactId, taskId);
-                var result = await _logicUnitOfWork.LoggingService.GetLoggingByTaskKeyactId(taskkeyactId);
-                response = new ResponseModel<List<LoggingModel>>
+                var result = await _logicUnitOfWork.LoggingService.GetLogging(taskId, process);
+                response = new ResponseModel<List<LoggingAssessmentModel>>
                 {
-                    Data = result.Select(x => new LoggingModel()
+                    Data = result.Select(x => new LoggingAssessmentModel()
                     {
                         Id = x.Id,
-                        CreateDate = x.CreateDate,
-                        Notation = x.Notation,
                         Process = x.Process,
                         Status = x.Status,
-                        TaskKeyActId = x.TaskKeyActId,
-                        RespId = x.RespId,
-                        EmpId = x.EmpId
+                        Notation = x.Notation,
+                        KeyActId = x.KeyActId,
                     }).ToList(),
                     Message = "success",
                     Status = 200
@@ -137,7 +133,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             catch (ArgumentException e)
             {
-                response = new ResponseModel<List<LoggingModel>>
+                response = new ResponseModel<List<LoggingAssessmentModel>>
                 {
                     Data = null,
                     Message = e.Message,
@@ -146,7 +142,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             catch (Exception e)
             {
-                response = new ResponseModel<List<LoggingModel>>
+                response = new ResponseModel<List<LoggingAssessmentModel>>
                 {
                     Data = null,
                     Message = e.Message,
@@ -155,10 +151,10 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-        */
+
 
         [HttpPost("LoggingAssessment/Add")]
-        public async Task<ResponseModel<bool>> AddLoggingAssessment([FromBody] RelevantAssessmentModel request)
+        public ResponseModel<bool> AddLoggingAssessment([FromBody] RelevantAssessmentModel request)
         {
             ResponseModel<bool> response;
             try
@@ -180,7 +176,7 @@ namespace RegulationAssessment.Api.Controllers
                     log.Notation = x.notation;
                     log.Process = assessmentInfo.Process;
                     log.Status = x.isRelated;
-                    log.TaskKeyActId = await _logicUnitOfWork.KeyActionService.GetTaskKeyActionId(x.keyActId, assessmentInfo.TaskId);
+                    log.TaskKeyActId = await _logicUnitOfWork.KeyActionService.GetTaskKeyActionIdAsync(x.keyActId, assessmentInfo.TaskId);
                     log.EmpId = assessmentInfo.EmployeeId;
                     result = await _logicUnitOfWork.LoggingService.AddKeyActionLog(log);
                 });
@@ -314,44 +310,6 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-
-        /*
-
-        [HttpGet("GetTaskKeyActionId")]
-        public ResponseModel<Task<Guid>> GetTaskKeyActionId(Guid keyactId, Guid taskId)
-        {
-            ResponseModel<Task<Guid>> response;
-            try
-            {
-                var taskkeyactId = _logicUnitOfWork.KeyActionService.GetTaskKeyActionId(keyactId, taskId);
-                response = new ResponseModel<Task<Guid>>
-                {
-                    Data = taskkeyactId,
-                    Message = "success",
-                    Status = 200
-                };
-            }
-            catch (ArgumentException e)
-            {
-                response = new ResponseModel<Task<Guid>>
-                {
-                    Data = null,
-                    Message = e.Message,
-                    Status = 400
-                };
-            }
-            catch (Exception e)
-            {
-                response = new ResponseModel<Task<Guid>>
-                {
-                    Data = null,
-                    Message = e.Message,
-                    Status = 500
-                };
-            }
-            return response;
-        }
-        */
 
     }
 }

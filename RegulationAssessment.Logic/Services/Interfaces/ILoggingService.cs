@@ -11,7 +11,7 @@ namespace RegulationAssessment.Logic.Services.Interfaces
 {
     public interface ILoggingService
     {
-        List<LoggingDto> GetLoggingByTaskKeyactId(Guid taskkeyactId);
+        Task<List<LoggingAssessmentDto>> GetLogging(Guid taskId, int process);
         Task<bool> AddKeyActionLog(Logging logging);
     }
 }

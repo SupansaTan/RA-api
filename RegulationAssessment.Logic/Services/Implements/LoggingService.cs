@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RegulationAssessment.DataAccess.EntityFramework.Models;
-using Task = RegulationAssessment.DataAccess.EntityFramework.Models.Task;
+using RegulationAssessment.Common.Helper;
 
 namespace RegulationAssessment.Logic.Services.Implements
 {
@@ -17,31 +17,27 @@ namespace RegulationAssessment.Logic.Services.Implements
     {
         private readonly IEntityUnitOfWork _entityUnitOfWork;
         private readonly IDapperUnitOfWork _dapperUnitOfWork;
+        private readonly string QUERY_PATH;
 
-    public LoggingService(
+        public LoggingService(
             IEntityUnitOfWork entityUnitOfWork,
             IDapperUnitOfWork dapperUnitOfWork
             )
         {
+            QUERY_PATH = this.GetType().Name.Split("Service")[0] + "/";
             _entityUnitOfWork = entityUnitOfWork;
             _dapperUnitOfWork = dapperUnitOfWork;
         }
 
-        public List<LoggingDto> GetLoggingByTaskKeyactId(Guid taskkeyactId)
+        public async Task<List<LoggingAssessmentDto>> GetLogging(Guid taskId, int process)
         {
-            var Logs = _entityUnitOfWork.LoggingRepository.GetAll(x => x.TaskKeyActId == taskkeyactId)
-                                                                .Select(x => new LoggingDto()
-                                                                {
-                                                                    Id = x.Id,
-                                                                    CreateDate = x.CreateDate,
-                                                                    Notation = x.Notation,
-                                                                    Process = x.Process,
-                                                                    Status = x.Status,
-                                                                    TaskKeyActId = x.TaskKeyActId,
-                                                                    RespId = x.RespId,
-                                                                    EmpId = x.EmpId
-                                                                }).ToList();
-            return Logs;
+                var queryGetLog = QueryService.GetCommand(QUERY_PATH + "getLogging",
+                            new ParamCommand { Key = "_taskId", Value = taskId.ToString() }
+                        );
+                var logList = (await _dapperUnitOfWork.RARepository.QueryAsync<LoggingAssessmentDto>(queryGetLog)).ToList();
+                var result = logList.FindAll(x => x.Process == process);
+                
+                return result;
         }
 
         public async Task<bool> AddKeyActionLog(Logging logging)
