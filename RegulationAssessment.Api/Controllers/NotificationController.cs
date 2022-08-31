@@ -27,10 +27,10 @@ namespace RegulationAssessment.Api.Controllers
             try
             {
                 var result = await _logicUnitOfWork.NotificationService.GetNotificationByEmpId(empId);
-                var date_ = await _logicUnitOfWork.NotificationService.GetNotificationDateByEmpId(empId);
+                var data_ = await _logicUnitOfWork.NotificationService.GetNotificationDateByEmpId(empId);
                 response = new ResponseModel<List<NotificationListDataModel>>
                 {
-                    Data = date_.Select(x => new NotificationListDataModel()
+                    Data = data_.Select(x => new NotificationListDataModel()
                     {
                         date = x.date,
                         data = result.Select(i => new NotificationModel()
