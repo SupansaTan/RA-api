@@ -109,14 +109,15 @@ namespace RegulationAssessment.Api.Controllers
             return response;
         }
 
+        /*
         [HttpGet("GetLoggingAssessment")]
-        public ResponseModel<List<LoggingModel>> GetLoggingAssessment(Guid keyactId, Guid taskId)
+        public async ResponseModel<List<LoggingModel>> GetLoggingAssessment(Guid keyactId, Guid taskId)
         {
             ResponseModel<List<LoggingModel>> response;
             try
             {
                 var taskkeyactId = _logicUnitOfWork.KeyActionService.GetTaskKeyActionId(keyactId, taskId);
-                var result = _logicUnitOfWork.LoggingService.GetLoggingByTaskKeyactId(taskkeyactId);
+                var result = await _logicUnitOfWork.LoggingService.GetLoggingByTaskKeyactId(taskkeyactId);
                 response = new ResponseModel<List<LoggingModel>>
                 {
                     Data = result.Select(x => new LoggingModel()
@@ -154,6 +155,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
+        */
 
         [HttpPost("LoggingAssessment/Add")]
         public async Task<ResponseModel<bool>> AddLoggingAssessment([FromBody] RelevantAssessmentModel request)
@@ -178,7 +180,7 @@ namespace RegulationAssessment.Api.Controllers
                     log.Notation = x.notation;
                     log.Process = assessmentInfo.Process;
                     log.Status = x.isRelated;
-                    log.TaskKeyActId = _logicUnitOfWork.KeyActionService.GetTaskKeyActionId(x.keyActId, assessmentInfo.TaskId);
+                    log.TaskKeyActId = await _logicUnitOfWork.KeyActionService.GetTaskKeyActionId(x.keyActId, assessmentInfo.TaskId);
                     log.EmpId = assessmentInfo.EmployeeId;
                     result = await _logicUnitOfWork.LoggingService.AddKeyActionLog(log);
                 });
@@ -313,14 +315,16 @@ namespace RegulationAssessment.Api.Controllers
             return response;
         }
 
+        /*
+
         [HttpGet("GetTaskKeyActionId")]
-        public ResponseModel<Guid> GetTaskKeyActionId(Guid keyactId, Guid taskId)
+        public ResponseModel<Task<Guid>> GetTaskKeyActionId(Guid keyactId, Guid taskId)
         {
-            ResponseModel<Guid> response;
+            ResponseModel<Task<Guid>> response;
             try
             {
                 var taskkeyactId = _logicUnitOfWork.KeyActionService.GetTaskKeyActionId(keyactId, taskId);
-                response = new ResponseModel<Guid>
+                response = new ResponseModel<Task<Guid>>
                 {
                     Data = taskkeyactId,
                     Message = "success",
@@ -329,24 +333,25 @@ namespace RegulationAssessment.Api.Controllers
             }
             catch (ArgumentException e)
             {
-                response = new ResponseModel<Guid>
+                response = new ResponseModel<Task<Guid>>
                 {
-                    Data = Guid.NewGuid(),
+                    Data = null,
                     Message = e.Message,
                     Status = 400
                 };
             }
             catch (Exception e)
             {
-                response = new ResponseModel<Guid>
+                response = new ResponseModel<Task<Guid>>
                 {
-                    Data = Guid.NewGuid(),
+                    Data = null,
                     Message = e.Message,
                     Status = 500
                 };
             }
             return response;
         }
+        */
 
     }
 }

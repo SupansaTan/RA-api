@@ -60,9 +60,9 @@ namespace RegulationAssessment.Logic.Services.Implements
             return keyactions;
         }
 
-        public Guid GetTaskKeyActionId(Guid keyactId, Guid taskId)
+        public async Task<Guid> GetTaskKeyActionId(Guid keyactId, Guid taskId)
         {
-            var data = _entityUnitOfWork.TaskKeyActionRepository.GetSingle(x => x.TaskId == taskId && x.KeyActId == keyactId);
+            var data = await _entityUnitOfWork.TaskKeyActionRepository.GetSingleAsync(x => x.TaskId == taskId && x.KeyActId == keyactId);
             if (data == null)
             {
                 throw new ArgumentException("TaskKeyAction does not exist.");

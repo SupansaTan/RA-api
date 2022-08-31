@@ -12,7 +12,7 @@ namespace RegulationAssessment.Logic.Services.Interfaces
     {
         Task<List<KeyActionDto>> GetAllKeyAction(Guid taskId);
         List<KeyActionDto> GetKeyActionByLawId(Guid lawId);
-        Guid GetTaskKeyActionId(Guid keyactId, Guid taskId);
+        Task<Guid> GetTaskKeyActionId(Guid keyactId, Guid taskId);
         Task<KeyAction> AddKeyAction(KeyAction keyaction);
     }
 }
