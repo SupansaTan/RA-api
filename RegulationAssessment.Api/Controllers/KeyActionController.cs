@@ -64,7 +64,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-
+        /*
         [HttpGet("GetKeyActionByLawId")]
         public ResponseModel<List<KeyActionModel>> GetKeyActionByLawId(Guid lawId)
         {
@@ -108,7 +108,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-
+        */
         
         [HttpGet("GetLoggingAssessment")]
         public async Task<ResponseModel<List<LoggingAssessmentModel>>> GetLoggingAssessment(Guid taskId, int process)
@@ -161,23 +161,23 @@ namespace RegulationAssessment.Api.Controllers
             {
                 var assessmentInfo = new RelevantAssessmentModel()
                 {
-                    EmployeeId = request.EmployeeId,
-                    TaskId = request.TaskId,
-                    Process = request.Process,
-                    KeyActList = request.KeyActList,
+                    employeeId = request.employeeId,
+                    taskId = request.taskId,
+                    process = request.process,
+                    keyActList = request.keyActList,
                 };
 
                 var log = new Logging();
                 var result = false;
-                assessmentInfo.KeyActList.ForEach(async x =>
+                assessmentInfo.keyActList.ForEach(async x =>
                 {
                     log.Id = Guid.NewGuid();
                     log.CreateDate = DateTime.Now;
                     log.Notation = x.notation;
-                    log.Process = assessmentInfo.Process;
+                    log.Process = assessmentInfo.process;
                     log.Status = x.isRelated;
-                    log.TaskKeyActId = await _logicUnitOfWork.KeyActionService.GetTaskKeyActionIdAsync(x.keyActId, assessmentInfo.TaskId);
-                    log.EmpId = assessmentInfo.EmployeeId;
+                    log.TaskKeyActId = await _logicUnitOfWork.KeyActionService.GetTaskKeyActionIdAsync(x.keyActId, assessmentInfo.taskId);
+                    log.EmpId = assessmentInfo.employeeId;
                     result = await _logicUnitOfWork.LoggingService.AddKeyActionLog(log);
                 });
 
