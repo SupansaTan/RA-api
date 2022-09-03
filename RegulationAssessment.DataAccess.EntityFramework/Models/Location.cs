@@ -18,16 +18,16 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
         [Key]
         public Guid Id { get; set; }
         [StringLength(255)]
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
         public Guid ImplementUnitId { get; set; }
         public Guid BusinessId { get; set; }
 
         [ForeignKey("BusinessId")]
         [InverseProperty("Locations")]
-        public virtual Business Business { get; set; } = null!;
+        public virtual Business Business { get; set; }
         [ForeignKey("ImplementUnitId")]
         [InverseProperty("Locations")]
-        public virtual ImplementUnit ImplementUnit { get; set; } = null!;
+        public virtual ImplementUnit ImplementUnit { get; set; }
         [InverseProperty("Location")]
         public virtual ICollection<Duty> Duties { get; set; }
         [InverseProperty("Location")]

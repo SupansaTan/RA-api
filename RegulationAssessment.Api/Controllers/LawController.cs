@@ -196,6 +196,7 @@ namespace RegulationAssessment.Api.Controllers
                     {
                         Id = result.Id,
                         Title = result.Title,
+                        LocationName = result.LocationName,
                         AnnounceDate = result.AnnounceDate,
                         EnforceDate = result.EnforceDate,
                         CancelDate = result.CancelDate,

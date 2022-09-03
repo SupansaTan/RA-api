@@ -27,10 +27,10 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
 
         [ForeignKey("LawId")]
         [InverseProperty("Tasks")]
-        public virtual Law Law { get; set; } = null!;
+        public virtual Law Law { get; set; }
         [ForeignKey("LocationId")]
         [InverseProperty("Tasks")]
-        public virtual Location Location { get; set; } = null!;
+        public virtual Location Location { get; set; }
         [InverseProperty("Task")]
         public virtual ICollection<Notification> Notifications { get; set; }
         [InverseProperty("Task")]

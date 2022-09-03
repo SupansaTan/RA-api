@@ -109,7 +109,7 @@ namespace RegulationAssessment.Logic.Services.Implements
 
         public async Task<LawDetailDto> GetLawDetailByTaskId(Guid taskId)
         {
-            var task = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == taskId);
+            var task = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == taskId, x => x.Location);
             if (task == null)
             {
                 throw new ArgumentException("Task does not exist.");
@@ -137,6 +137,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                     {
                         Id = task.Id,
                         Title = lawDetail.Title,
+                        LocationName = task.Location.Name,
                         AnnounceDate = lawDetail.AnnounceDate,
                         EnforceDate = lawDetail.EnforceDate,
                         CancelDate = lawDetail.CancelDate,
