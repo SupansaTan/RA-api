@@ -27,6 +27,13 @@ namespace RegulationAssessment.Logic.DomainModel
         public TaskTimeStatus DatetimeStatus { get; set; }
     }
 
+    public class TaskDataDto
+    {
+        public Guid TaskId { get; set; }
+        public string TaskTitle { get; set; }
+        public string LocationName { get; set; }
+    }
+
     public class TaskListSortByProcessDto
     {
         public TaskProcess TaskProcess { get; set; }

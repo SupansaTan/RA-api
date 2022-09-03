@@ -180,5 +180,21 @@ namespace RegulationAssessment.Logic.Services.Implements
                 return true;
             }
         }
+
+        public async Task<TaskDataDto> GetTaskById(Guid taskId)
+        {
+            var taskinfo = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == taskId);
+            if (taskinfo == null)
+            {
+                throw new ArgumentException("Task does not exist.");
+            }
+            else
+            {
+                var query = QueryService.GetCommand(QUERY_PATH + "getTaskDataById",
+                            new ParamCommand { Key = "_taskId", Value = taskinfo.Id.ToString() }
+                        );
+                return (await _dapperUnitOfWork.RARepository.QueryAsync<TaskDataDto>(query)).First();
+            }
+        }
     }
 }

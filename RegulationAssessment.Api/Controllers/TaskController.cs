@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RegulationAssessment.Api.Models;
 using RegulationAssessment.DataAccess.EntityFramework.Models;
+using RegulationAssessment.Logic.DomainModel;
 using RegulationAssessment.Logic.UnitOfWork.Interface;
 using System;
 using System.Collections.Generic;
@@ -404,6 +405,40 @@ namespace RegulationAssessment.Api.Controllers
                 response = new ResponseModel<bool>
                 {
                     Data = false,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+        [HttpGet("GetTaskDataById")]
+        public async Task<ResponseModel<TaskDataDto>> GetTaskDataById([FromQuery] Guid taskId)
+        {
+            var response = new ResponseModel<TaskDataDto>();
+            try
+            {
+                var result = await _logicUnitOfWork.TaskService.GetTaskById(taskId);
+                response = new ResponseModel<TaskDataDto>
+                {
+                    Data = result,
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<TaskDataDto>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<TaskDataDto>
+                {
+                    Data = null,
                     Message = e.Message,
                     Status = 500
                 };
