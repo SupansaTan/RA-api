@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 using Task = RegulationAssessment.DataAccess.EntityFramework.Models.Task;
 
 namespace RegulationAssessment.Api.Controllers
@@ -353,6 +354,49 @@ namespace RegulationAssessment.Api.Controllers
             catch (Exception e)
             {
                 response = new ResponseModel<List<TaskListSortByProcessModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+        [HttpGet("GetTaskDetail")]
+        public async Task<ResponseModel<TaskInfoModel>> GetTaskDetail([FromQuery] Guid taskId)
+        {
+            var response = new ResponseModel<TaskInfoModel>();
+            try
+            {
+                var result = await _logicUnitOfWork.TaskService.GetTaskDetail(taskId);
+                response = new ResponseModel<TaskInfoModel>
+                {
+                    Data = new TaskInfoModel()
+                    {
+                        TaskId = result.TaskId,
+                        TaskTitle = result.TaskTitle,
+                        LocationName = result.LocationName,
+                        ActType = result.ActType,
+                        TotalKeyAct = result.TotalKeyAct,
+                        DueDate = result.DueDate,
+                        DatetimeStatus = result.DatetimeStatus
+                    },
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<TaskInfoModel>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<TaskInfoModel>
                 {
                     Data = null,
                     Message = e.Message,

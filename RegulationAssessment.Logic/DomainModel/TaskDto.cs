@@ -50,4 +50,15 @@ namespace RegulationAssessment.Logic.DomainModel
         public DateTime AnnounceDate { get; set; }
         public DateTime EnforceDate { get; set; }
     }
+
+    public class TaskInfoDto
+    {
+        public Guid TaskId { get; set; }
+        public string TaskTitle { get; set; }
+        public string LocationName { get; set; }
+        public DateTime DueDate { get; set; }
+        public string ActType { get; set; }
+        public int TotalKeyAct { get; set; }
+        public TaskTimeStatus DatetimeStatus { get; set; }
+    }
 }

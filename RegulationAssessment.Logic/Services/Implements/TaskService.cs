@@ -196,5 +196,35 @@ namespace RegulationAssessment.Logic.Services.Implements
                 return (await _dapperUnitOfWork.RARepository.QueryAsync<TaskDataDto>(query)).First();
             }
         }
+        public async Task<TaskInfoDto> GetTaskDetail(Guid taskId)
+        {
+            var task = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == taskId,
+                                                                             x => x.Location,
+                                                                             x => x.Law,
+                                                                             x => x.Law.KeyActions);
+            if (task == null)
+            {
+                throw new ArgumentException("Task does not exist.");
+            }
+            else
+            {
+                var now = DateTime.UtcNow;
+                return new TaskInfoDto()
+                {
+                    TaskId = task.Id,
+                    TaskTitle = task.Law.Title,
+                    DueDate = task.DueDate,
+                    LocationName = task.Location.Name,
+                    ActType = task.Law.ActType,
+                    TotalKeyAct = task.Law.KeyActions.Count,
+                    DatetimeStatus = task.DueDate < now
+                                     ? TaskTimeStatus.Remain
+                                     : (task.DueDate == DateTime.Today) && (task.DueDate >= now)
+                                     ? TaskTimeStatus.Today
+                                     : TaskTimeStatus.Overdue
+                };
+            }
+        }
     }
 }
+    
