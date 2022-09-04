@@ -136,19 +136,20 @@ namespace RegulationAssessment.Api.Controllers
             return response;
         }
 
-        [HttpGet("id")]
-        public ResponseModel<LawDetailModel> GetLawbyId(Guid id)
+        [HttpGet("GetLawDetailByTaskId")]
+        public async Task<ResponseModel<LawDetailModel>> GetLawDetailByTaskId(Guid taskId)
         {
             ResponseModel<LawDetailModel> response;
             try
             {
-                var result = _logicUnitOfWork.LawService.GetLawbyId(id);
+                var result = await _logicUnitOfWork.LawService.GetLawDetailByTaskId(taskId);
                 response = new ResponseModel<LawDetailModel>
                 {
                     Data = new LawDetailModel()
                     {
-                        Id = id,
+                        Id = result.Id,
                         Title = result.Title,
+                        LocationName = result.LocationName,
                         AnnounceDate = result.AnnounceDate,
                         EnforceDate = result.EnforceDate,
                         CancelDate = result.CancelDate,
@@ -157,6 +158,7 @@ namespace RegulationAssessment.Api.Controllers
                         ActType = result.ActType,
                         LegislationType = result.LegislationType,
                         LegislationUnit = result.LegislationUnit,
+                        SystemList = result.SystemList
                     },
                     Message = "success",
                     Status = 200
@@ -183,13 +185,13 @@ namespace RegulationAssessment.Api.Controllers
             return response;
         }
 
-        [HttpGet("GetLawDetailByTaskId")]
-        public async Task<ResponseModel<LawDetailModel>> GetLawDetailByTaskId(Guid taskId)
+        [HttpGet("GetLawbyId")]
+        public async Task<ResponseModel<LawDetailModel>> GetLawbyId(Guid lawId)
         {
             ResponseModel<LawDetailModel> response;
             try
             {
-                var result = await _logicUnitOfWork.LawService.GetLawDetailByTaskId(taskId);
+                var result = await _logicUnitOfWork.LawService.GetLawbyId(lawId);
                 response = new ResponseModel<LawDetailModel>
                 {
                     Data = new LawDetailModel()

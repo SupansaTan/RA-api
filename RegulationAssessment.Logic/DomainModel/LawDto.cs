@@ -37,7 +37,7 @@ namespace RegulationAssessment.Logic.DomainModel
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public string LocationName { get; set; }
+        public string? LocationName { get; set; }
         public DateTime AnnounceDate { get; set; }
         public DateTime? EnforceDate { get; set; }
         public DateTime? CancelDate { get; set; }

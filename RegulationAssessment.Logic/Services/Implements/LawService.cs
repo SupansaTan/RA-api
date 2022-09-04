@@ -88,23 +88,40 @@ namespace RegulationAssessment.Logic.Services.Implements
             return result;
         }
 
-        public LawDetailDto GetLawbyId(Guid lawid)
+        public async Task<LawDetailDto> GetLawbyId(Guid lawid)
         {
-            var data = _entityUnitOfWork.LawRepository.GetSingle(x => x.Id == lawid);
-            var law = new LawDetailDto()
+            var lawDetail = await _entityUnitOfWork.LawRepository.GetSingleAsync(x => x.Id == lawid);
+            if (lawDetail == null)
             {
-                Id = lawid,
-                Title = data.Title,
-                AnnounceDate = data.AnnounceDate,
-                EnforceDate = data.EnforceDate,
-                CancelDate = data.CancelDate,
-                PdfUrl = data.PdfUrl,
-                Catagory = data.Catagory,
-                ActType = data.ActType,
-                LegislationType = data.LegislationType,
-                LegislationUnit = data.LegislationUnit,
-            };
-            return law;
+                throw new ArgumentException("Law does not exist.");
+            }
+            else
+            {
+                var systems = await _entityUnitOfWork.RelatedSystemRepository.GetAll(x => x.LawId == lawid)
+                                                                  .Select(x => x.SystemId)
+                                                                  .ToListAsync();
+                List<string> systemList = new List<string>();
+                foreach (var system in systems)
+                {
+                    var sys = await _entityUnitOfWork.SystemRepository.GetSingleAsync(x => x.Id == system);
+                    systemList.Add(sys.Name);
+                }
+
+                return new LawDetailDto()
+                {
+                    Id = lawDetail.Id,
+                    Title = lawDetail.Title,
+                    AnnounceDate = lawDetail.AnnounceDate,
+                    EnforceDate = lawDetail.EnforceDate,
+                    CancelDate = lawDetail.CancelDate,
+                    PdfUrl = lawDetail.PdfUrl,
+                    Catagory = lawDetail.Catagory,
+                    ActType = lawDetail.ActType,
+                    LegislationType = lawDetail.LegislationType,
+                    LegislationUnit = lawDetail.LegislationUnit,
+                    SystemList = systemList
+                };
+            }
         }
 
         public async Task<LawDetailDto> GetLawDetailByTaskId(Guid taskId)
@@ -158,5 +175,6 @@ namespace RegulationAssessment.Logic.Services.Implements
             await _entityUnitOfWork.SaveAsync();
             return law;
         }
+
     }
 }

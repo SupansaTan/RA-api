@@ -12,7 +12,7 @@ namespace RegulationAssessment.Logic.Services.Interfaces
     {
         LawListDto GetLawList(LawListFilterDto model);
         Task<Law> AddLaw(Law law);
-        LawDetailDto GetLawbyId(Guid lawid);
+        Task<LawDetailDto> GetLawbyId(Guid lawid);
         Task<LawDetailDto> GetLawDetailByTaskId(Guid taskId);
     }
 }
