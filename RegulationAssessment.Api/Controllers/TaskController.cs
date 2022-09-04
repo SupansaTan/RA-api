@@ -405,29 +405,24 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-        [HttpPut("UpdateTask")]
-        public async Task<ResponseModel<bool>> UpdateTask([FromBody]
-            Guid id,
-            Guid locationId,
-            Guid lawId,
-            int process,
-            DateTime dueDate,
-            DateTime? completeDate
-        )
+        [HttpPut("UpdateTaskRelevant")]
+        public async Task<ResponseModel<bool>> UpdateTaskRelevant([FromBody] TaskAssessmentModel request)
         {
             ResponseModel<bool> response;
             try
             {
-                var newtask = new Task()
+                var result = await _logicUnitOfWork.TaskService.UpdateTaskRelevant(new TaskAssessmentDto()
                 {
-                    Id = id,
-                    LocationId = locationId,
-                    LawId = lawId,
-                    Process = process,
-                    DueDate = dueDate,
-                    CompleteDate = completeDate ?? null
-                };
-                var result = await _logicUnitOfWork.TaskService.UpdateTask(newtask);
+                    TaskId = request.TaskId,
+                    EmployeeId = request.EmployeeId,
+                    Process = request.Process,
+                    KeyActionList = request.KeyActionList.Select(x => new KeyActionAssessmentDto()
+                    {
+                        KeyActId = x.KeyActId,
+                        IsChecked = x.IsChecked,
+                        Notation = x.Notation
+                    }).ToList()
+                });
                 response = new ResponseModel<bool>
                 {
                     Data = result,

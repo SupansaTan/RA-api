@@ -61,4 +61,22 @@ namespace RegulationAssessment.Logic.DomainModel
         public int TotalKeyAct { get; set; }
         public TaskTimeStatus DatetimeStatus { get; set; }
     }
+
+    public class TaskAssessmentDto
+    {
+        public Guid TaskId { get; set; }
+        public Guid EmployeeId { get; set; }
+        public TaskProcess Process { get; set; }
+        public List<KeyActionAssessmentDto> KeyActionList { get; set; }
+    }
+
+    public class KeyActionAssessmentDto
+    {
+        public Guid KeyActId { get; set; }
+        public bool IsChecked { get; set; }
+        public string Notation { get; set; }
+        public List<Guid>? ResponsePersonId { get; set; }
+        public int? Cost { get; set; }
+        public DateTime? DueDate { get; set; }
+    }
 }

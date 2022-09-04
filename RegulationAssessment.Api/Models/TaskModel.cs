@@ -43,4 +43,22 @@ namespace RegulationAssessment.Api.Models
         public int TotalKeyAct { get; set; }
         public TaskTimeStatus DatetimeStatus { get; set; }
     }
+
+    public class TaskAssessmentModel
+    {
+        public Guid TaskId { get; set; }
+        public Guid EmployeeId { get; set; }
+        public TaskProcess Process { get; set; }
+        public List<KeyActionAssessmentModel> KeyActionList { get; set; }
+    }
+
+    public class KeyActionAssessmentModel
+    {
+        public Guid KeyActId { get; set; }
+        public bool IsChecked { get; set; }
+        public string Notation { get; set; }
+        public List<Guid>? ResponsePersonId { get; set; }
+        public int? Cost { get; set; }
+        public DateTime? DueDate { get; set; }
+    }
 }
