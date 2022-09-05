@@ -37,4 +37,11 @@ namespace RegulationAssessment.Logic.DomainModel
         public bool NotificationStatus { get; set; }
         public int AdvanceNotify { get; set; }
     }
+
+    public class EmployeeInfoDto
+    {
+        public Guid EmployeeId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
 }

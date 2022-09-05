@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using RegulationAssessment.Common.Helper;
 using RegulationAssessment.DataAccess.Dapper.Interface;
 using RegulationAssessment.DataAccess.EntityFramework.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace RegulationAssessment.Logic.Services.Implements
 {
@@ -105,6 +106,19 @@ namespace RegulationAssessment.Logic.Services.Implements
                 await _entityUnitOfWork.SaveAsync();
                 return true;
             }
+        }
+        public async Task<List<EmployeeInfoDto>> GetEmployeeList(Guid locationId)
+        {
+            var employee = await _entityUnitOfWork.DutyRepository.GetAll(x => x.Emp, x => x.Role)
+                                                                 .Where(x => x.LocationId == locationId && x.Role.Name == "Employee")
+                                                                 .ToListAsync();
+            var result = employee.Select(x => new EmployeeInfoDto()
+            {
+                EmployeeId = x.EmpId,
+                FirstName = x.Emp.FirstName,
+                LastName = x.Emp.LastName
+            }).ToList();
+            return result;
         }
     }
 }

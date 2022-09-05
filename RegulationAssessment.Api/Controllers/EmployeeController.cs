@@ -191,5 +191,45 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
+
+        [HttpGet("GetEmployeeList")]
+        public async Task<ResponseModel<List<EmployeeInfoModel>>> GetEmployeeList([FromQuery] Guid locationId)
+        {
+            ResponseModel<List<EmployeeInfoModel>> response;
+            try
+            {
+                var result = await _logicUnitOfWork.EmployeeService.GetEmployeeList(locationId);
+                response = new ResponseModel<List<EmployeeInfoModel>>
+                {
+                    Data = result.Select(x => new EmployeeInfoModel()
+                    {
+                        EmployeeId = x.EmployeeId,
+                        FirstName = x.FirstName,
+                        LastName = x.LastName
+                    }).ToList(),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<EmployeeInfoModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<EmployeeInfoModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
     }
 }
