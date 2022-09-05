@@ -526,6 +526,8 @@ namespace RegulationAssessment.Logic.Services.Implements
                                 notificationList.Add(noti);
                             }
                         }
+
+                        taskItem.Process = (int)TaskProcess.Response;
                         _entityUnitOfWork.ResponsibilityRepository.AddRange(responsibleList);
                     }
                 }
@@ -556,6 +558,70 @@ namespace RegulationAssessment.Logic.Services.Implements
                 if (!taskKeyActList.Any())
                 {
                     _entityUnitOfWork.TaskKeyActionRepository.AddRange(taskKeyActList);
+                }
+
+                taskItem.DueDate = DateTime.UtcNow.AddDays(7);
+                _entityUnitOfWork.TaskRepository.Update(taskItem);
+                _entityUnitOfWork.LoggingRepository.AddRange(loggingList);
+                _entityUnitOfWork.NotificationRepository.AddRange(notificationList);
+                await _entityUnitOfWork.SaveAsync();
+                return true;
+            }
+        }
+        public async Task<bool> UpdateTaskResponse(TaskAssessmentDto model)
+        {
+            var taskItem = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == model.TaskId);
+            if (taskItem == null)
+            {
+                throw new ArgumentException("Task does not exist.");
+            }
+            else
+            {
+                List<Logging> loggingList = new List<Logging>();
+                List<Notification> notificationList = new List<Notification>();
+
+                if (model.KeyActionList.Any(x => x.IsChecked == false))
+                {
+                    taskItem.Process = (int)TaskProcess.ApproveResponse;
+
+                    // add log
+                    foreach (var keyAct in model.KeyActionList)
+                    {
+                        var taskKeyAct = await _entityUnitOfWork.TaskKeyActionRepository.GetSingleAsync(x => x.TaskId == model.TaskId && x.KeyActId == keyAct.KeyActId);
+                        var log = new Logging()
+                        {
+                            Id = Guid.NewGuid(),
+                            CreateDate = DateTime.UtcNow,
+                            Notation = keyAct.Notation,
+                            Process = (int)model.Process,
+                            Status = keyAct.IsChecked,
+                            TaskKeyActId = taskKeyAct.Id,
+                            EmpId = model.EmployeeId,
+                        };
+                        loggingList.Add(log);
+                    }
+
+                    // add notification
+                    var employeeList = await _entityUnitOfWork.DutyRepository.GetAll(x => x.Role)
+                                                                             .Where(x => x.Role.Name == "Approver" && x.LocationId == taskItem.LocationId)
+                                                                             .ToListAsync();
+                    foreach (var employee in employeeList)
+                    {
+                        var noti = new Notification()
+                        {
+                            Id = Guid.NewGuid(),
+                            TaskId = model.TaskId,
+                            EmpId = employee.Id,
+                            NotifyDate = DateTime.UtcNow,
+                            Read = false,
+                            Process = (int)TaskProcess.ApproveResponse
+                        };
+                        notificationList.Add(noti);
+                    }
+                }
+                else
+                {
+                    return false;
                 }
 
                 taskItem.DueDate = DateTime.UtcNow.AddDays(7);
