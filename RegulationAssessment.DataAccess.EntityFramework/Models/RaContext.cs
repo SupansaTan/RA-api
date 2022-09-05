@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using RegulationAssessment.Common;
@@ -35,6 +36,7 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<System> Systems { get; set; } = null!;
         public virtual DbSet<Task> Tasks { get; set; } = null!;
+        public virtual DbSet<TaskKeyAct> TaskKeyActs { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -65,6 +67,28 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
             modelBuilder.Entity<CommiteeGroup>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
+            });
+
+            modelBuilder.Entity<Duty>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Emp)
+                    .WithMany(p => p.Duties)
+                    .HasForeignKey(d => d.EmpId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("duty_fk_emp");
+
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.Duties)
+                    .HasForeignKey(d => d.LocationId)
+                    .HasConstraintName("duty_fk_location");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Duties)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("duty_fk_role");
             });
 
             modelBuilder.Entity<Employee>(entity =>
@@ -130,17 +154,16 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
                     .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("logging_fk_2");
 
-                entity.HasOne(d => d.TaskKeyAct)
-                    .WithMany(p => p.Loggings)
-                    .HasForeignKey(d => d.TaskKeyActId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("logging_fk_3");
-
                 entity.HasOne(d => d.Resp)
                     .WithMany(p => p.Loggings)
                     .HasForeignKey(d => d.RespId)
-                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("logging_fk_1");
+
+                entity.HasOne(d => d.TaskKeyAct)
+                    .WithMany(p => p.Loggings)
+                    .HasForeignKey(d => d.TaskKeyActId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("logging_fk_3");
             });
 
             modelBuilder.Entity<Notification>(entity =>
@@ -156,8 +179,8 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
                 entity.HasOne(d => d.Task)
                     .WithMany(p => p.Notifications)
                     .HasForeignKey(d => d.TaskId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("notification_fk");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("notification_fk_2");
             });
 
             modelBuilder.Entity<RelatedBusiness>(entity =>
@@ -198,11 +221,16 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.HasOne(d => d.Emp)
+                    .WithMany(p => p.Responsibilities)
+                    .HasForeignKey(d => d.EmpId)
+                    .HasConstraintName("responsibility_fk_2");
+
                 entity.HasOne(d => d.TaskKeyAct)
                     .WithMany(p => p.Responsibilities)
                     .HasForeignKey(d => d.TaskKeyActId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("responsibility_fk");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("responsibility_fk_1");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -219,11 +247,34 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.HasOne(d => d.Law)
+                    .WithMany(p => p.Tasks)
+                    .HasForeignKey(d => d.LawId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("task_fk");
+
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Tasks)
                     .HasForeignKey(d => d.LocationId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("task_fk");
+                    .HasConstraintName("task_fk_1");
+            });
+
+            modelBuilder.Entity<TaskKeyAct>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.KeyAct)
+                    .WithMany(p => p.TaskKeyActs)
+                    .HasForeignKey(d => d.KeyActId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("keyactoftask_fk_2");
+
+                entity.HasOne(d => d.Task)
+                    .WithMany(p => p.TaskKeyActs)
+                    .HasForeignKey(d => d.TaskId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("keyactoftask_fk_1");
             });
 
             OnModelCreatingPartial(modelBuilder);
