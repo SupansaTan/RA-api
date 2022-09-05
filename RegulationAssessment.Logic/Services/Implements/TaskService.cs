@@ -578,6 +578,7 @@ namespace RegulationAssessment.Logic.Services.Implements
             else
             {
                 List<Logging> loggingList = new List<Logging>();
+                List<Responsibility> responsibilities = new List<Responsibility>();
                 List<Notification> notificationList = new List<Notification>();
 
                 if (model.KeyActionList.Any(x => x.IsChecked == false))
@@ -599,6 +600,10 @@ namespace RegulationAssessment.Logic.Services.Implements
                             EmpId = model.EmployeeId,
                         };
                         loggingList.Add(log);
+
+                        var responsible = await _entityUnitOfWork.ResponsibilityRepository.GetSingleAsync(x => x.TaskKeyActId == taskKeyAct.Id && x.EmpId == model.EmployeeId);
+                        responsible.Status = keyAct.IsChecked;
+                        responsibilities.Add(responsible);
                     }
 
                     // add notification
@@ -625,6 +630,80 @@ namespace RegulationAssessment.Logic.Services.Implements
                 }
 
                 taskItem.DueDate = DateTime.UtcNow.AddDays(7);
+                _entityUnitOfWork.TaskRepository.Update(taskItem);
+                _entityUnitOfWork.LoggingRepository.AddRange(loggingList);
+                _entityUnitOfWork.NotificationRepository.AddRange(notificationList);
+                _entityUnitOfWork.ResponsibilityRepository.UpdateRange(responsibilities);
+                await _entityUnitOfWork.SaveAsync();
+                return true;
+            }
+        }
+        public async Task<bool> UpdateTaskApproveResponse(TaskAssessmentDto model)
+        {
+            var taskItem = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == model.TaskId);
+            if (taskItem == null)
+            {
+                throw new ArgumentException("Task does not exist.");
+            }
+            else
+            {
+                List<Logging> loggingList = new List<Logging>();
+                List<Notification> notificationList = new List<Notification>();
+                List<Responsibility> responsibilityList = new List<Responsibility>();
+
+                // add log
+                foreach (var keyAct in model.KeyActionList)
+                {
+                    var taskKeyAct = await _entityUnitOfWork.TaskKeyActionRepository.GetSingleAsync(x => x.TaskId == model.TaskId && x.KeyActId == keyAct.KeyActId);
+                    var log = new Logging()
+                    {
+                        Id = Guid.NewGuid(),
+                        CreateDate = DateTime.UtcNow,
+                        Notation = keyAct.Notation,
+                        Process = (int)model.Process,
+                        Status = keyAct.IsChecked,
+                        TaskKeyActId = taskKeyAct.Id,
+                        EmpId = model.EmployeeId,
+                    };
+                    loggingList.Add(log);
+
+                    if (!keyAct.IsChecked)
+                    {
+                        var responsibility = await _entityUnitOfWork.ResponsibilityRepository.GetAll().Where(x => x.TaskKeyActId == taskKeyAct.Id).ToListAsync();
+                        foreach (var resp in responsibility)
+                        {
+                            resp.Status = false;
+                            responsibilityList.Add(resp);
+                        }
+                    }
+                }
+
+                // update task process
+                if (model.KeyActionList.Any(x => x.IsChecked == false))
+                {
+                    taskItem.Process = (int)TaskProcess.Done;
+                }
+                else
+                {
+                    taskItem.Process = (int)TaskProcess.Response;
+                    taskItem.DueDate = DateTime.UtcNow.AddDays(7);
+
+                    // add notification
+                    foreach (var person in responsibilityList)
+                    {
+                        var noti = new Notification()
+                        {
+                            Id = Guid.NewGuid(),
+                            TaskId = model.TaskId,
+                            EmpId = (Guid)person.EmpId,
+                            NotifyDate = DateTime.UtcNow,
+                            Read = false,
+                            Process = (int)TaskProcess.Response
+                        };
+                    }
+                    _entityUnitOfWork.ResponsibilityRepository.UpdateRange(responsibilityList);
+                }
+
                 _entityUnitOfWork.TaskRepository.Update(taskItem);
                 _entityUnitOfWork.LoggingRepository.AddRange(loggingList);
                 _entityUnitOfWork.NotificationRepository.AddRange(notificationList);
