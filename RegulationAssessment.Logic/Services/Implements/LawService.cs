@@ -41,10 +41,10 @@ namespace RegulationAssessment.Logic.Services.Implements
             }
 
             // filter by catagory
-            if (!string.IsNullOrEmpty(model.Catagory))
+            if (!string.IsNullOrEmpty(model.LegislationType))
             {
-                var keyword = model.Catagory.Trim().ToLower();
-                lawList = lawList.Where(x => x.Catagory.ToLower().Contains(keyword));
+                var keyword = model.LegislationType.Trim().ToLower();
+                lawList = lawList.Where(x => x.LegislationType.ToLower().Contains(keyword));
             }
 
             // filter by act type

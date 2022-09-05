@@ -30,7 +30,7 @@ namespace RegulationAssessment.Api.Controllers
                 var filter = new LawListFilterDto()
                 {
                     Keyword = request.Keyword,
-                    Catagory = request.Catagory,
+                    LegislationType = request.LegislationType,
                     ActType = request.ActType,
                     LegislationUnit = request.LegislationUnit,
                     AnnounceDate = request.AnnounceDate,

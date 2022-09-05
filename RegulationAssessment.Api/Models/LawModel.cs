@@ -16,7 +16,7 @@
     public class LawListFilterModel
     {
         public string? Keyword { get; set; }
-        public string? Catagory { get; set; }
+        public string? LegislationType { get; set; }
         public string? ActType { get; set; }
         public string? LegislationUnit { get; set; }
         public DateTime? AnnounceDate { get; set; }
