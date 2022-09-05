@@ -233,5 +233,74 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
+
+        [HttpGet("GetActTypeName")]
+        public ResponseModel<List<NameDataDto>> GetActTypeName()
+        {
+            ResponseModel<List<NameDataDto>> response;
+            try
+            {
+                var result = _logicUnitOfWork.LawService.GetActTypeName();
+                response = new ResponseModel<List<NameDataDto>>
+                {
+                    Data = result,
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<NameDataDto>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<NameDataDto>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+        [HttpGet("GetLegislationUnitName")]
+        public ResponseModel<List<NameDataDto>> GetLegislationUnitName()
+        {
+            ResponseModel<List<NameDataDto>> response;
+            try
+            {
+                var result = _logicUnitOfWork.LawService.GetLegislationUnitName();
+                response = new ResponseModel<List<NameDataDto>>
+                {
+                    Data = result,
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<NameDataDto>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<NameDataDto>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
     }
 }

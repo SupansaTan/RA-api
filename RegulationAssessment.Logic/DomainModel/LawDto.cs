@@ -48,4 +48,9 @@ namespace RegulationAssessment.Logic.DomainModel
         public string LegislationUnit { get; set; }
         public List<string>? SystemList { get; set; }
     }
+
+    public class NameDataDto
+    {
+        public string name { get; set; }
+    }
 }

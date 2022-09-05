@@ -14,5 +14,7 @@ namespace RegulationAssessment.Logic.Services.Interfaces
         Task<Law> AddLaw(Law law);
         Task<LawDetailDto> GetLawbyId(Guid lawid);
         Task<LawDetailDto> GetLawDetailByTaskId(Guid taskId);
+        List<NameDataDto> GetActTypeName();
+        List<NameDataDto> GetLegislationUnitName();
     }
 }

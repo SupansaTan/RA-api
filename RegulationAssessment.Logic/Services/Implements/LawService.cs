@@ -176,5 +176,27 @@ namespace RegulationAssessment.Logic.Services.Implements
             return law;
         }
 
+        public List<NameDataDto> GetActTypeName()
+        {
+            var data = _entityUnitOfWork.LawRepository.GetAll()
+                .OrderBy(x => x.ActType)
+                .Select(x => new NameDataDto()
+                {
+                    name = x.ActType
+                }).Distinct().ToList();
+            return data;
+        }
+
+        public List<NameDataDto> GetLegislationUnitName()
+        {
+            var data = _entityUnitOfWork.LawRepository.GetAll()
+                .OrderBy(x => x.LegislationUnit)
+                .Select(x => new NameDataDto()
+                {
+                    name = x.LegislationUnit
+                }).Distinct().ToList();
+            return data;
+        }
+
     }
 }
