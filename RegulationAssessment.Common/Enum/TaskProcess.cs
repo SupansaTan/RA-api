@@ -13,6 +13,7 @@ namespace RegulationAssessment.Common.Enum
         Consistance = 3,
         ApproveConsistance = 4,
         Response = 5,
-        Done = 6,
+        ApproveResponse = 6,
+        Done = 7,
     }
 }
