@@ -450,6 +450,51 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
+        [HttpPut("UpdateTaskApproveRelevant")]
+        public async Task<ResponseModel<bool>> UpdateTaskApproveRelevant([FromBody] TaskAssessmentModel request)
+        {
+            ResponseModel<bool> response;
+            try
+            {
+                var result = await _logicUnitOfWork.TaskService.UpdateTaskRelevant(new TaskAssessmentDto()
+                {
+                    TaskId = request.TaskId,
+                    EmployeeId = request.EmployeeId,
+                    Process = request.Process,
+                    KeyActionList = request.KeyActionList.Select(x => new KeyActionAssessmentDto()
+                    {
+                        KeyActId = x.KeyActId,
+                        IsChecked = x.IsChecked,
+                        Notation = x.Notation
+                    }).ToList()
+                });
+                response = new ResponseModel<bool>
+                {
+                    Data = result,
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<bool>
+                {
+                    Data = false,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<bool>
+                {
+                    Data = false,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
         [HttpGet("GetTaskDataById")]
         public async Task<ResponseModel<TaskDataDto>> GetTaskDataById([FromQuery] Guid taskId)
         {
