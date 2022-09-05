@@ -107,16 +107,16 @@ namespace RegulationAssessment.Logic.Services.Implements
                 return true;
             }
         }
-        public async Task<List<EmployeeInfoDto>> GetEmployeeList(Guid locationId)
+        public async Task<List<EmployeeInfoDto>> GetEmployeeList(Guid taskId)
         {
+            var task = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == taskId);
             var employee = await _entityUnitOfWork.DutyRepository.GetAll(x => x.Emp, x => x.Role)
-                                                                 .Where(x => x.LocationId == locationId && x.Role.Name == "Employee")
+                                                                 .Where(x => x.LocationId == task.LocationId && x.Role.Name == "Employee")
                                                                  .ToListAsync();
             var result = employee.Select(x => new EmployeeInfoDto()
             {
                 EmployeeId = x.EmpId,
-                FirstName = x.Emp.FirstName,
-                LastName = x.Emp.LastName
+                Name = $"{x.Emp.FirstName} {x.Emp.LastName}",
             }).ToList();
             return result;
         }

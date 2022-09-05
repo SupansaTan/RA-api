@@ -39,7 +39,6 @@ namespace RegulationAssessment.Api.Models
     public class EmployeeInfoModel
     {
         public Guid EmployeeId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string Name { get; set; }
     }
 }
