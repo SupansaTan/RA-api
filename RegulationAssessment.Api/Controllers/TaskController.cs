@@ -456,7 +456,7 @@ namespace RegulationAssessment.Api.Controllers
             ResponseModel<bool> response;
             try
             {
-                var result = await _logicUnitOfWork.TaskService.UpdateTaskRelevant(new TaskAssessmentDto()
+                var result = await _logicUnitOfWork.TaskService.UpdateTaskApproveRelevant(new TaskAssessmentDto()
                 {
                     TaskId = request.TaskId,
                     EmployeeId = request.EmployeeId,
@@ -466,6 +466,54 @@ namespace RegulationAssessment.Api.Controllers
                         KeyActId = x.KeyActId,
                         IsChecked = x.IsChecked,
                         Notation = x.Notation
+                    }).ToList()
+                });
+                response = new ResponseModel<bool>
+                {
+                    Data = result,
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<bool>
+                {
+                    Data = false,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<bool>
+                {
+                    Data = false,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+        [HttpPut("UpdateTaskConsistance")]
+        public async Task<ResponseModel<bool>> UpdateTaskConsistance([FromBody] TaskAssessmentModel request)
+        {
+            ResponseModel<bool> response;
+            try
+            {
+                var result = await _logicUnitOfWork.TaskService.UpdateTaskConsistance(new TaskAssessmentDto()
+                {
+                    TaskId = request.TaskId,
+                    EmployeeId = request.EmployeeId,
+                    Process = request.Process,
+                    KeyActionList = request.KeyActionList.Select(x => new KeyActionAssessmentDto()
+                    {
+                        KeyActId = x.KeyActId,
+                        IsChecked = x.IsChecked,
+                        Notation = x.Notation,
+                        ResponsePersonId = x.ResponsePersonId,
+                        Cost = x.Cost,
+                        DueDate = x.DueDate
                     }).ToList()
                 });
                 response = new ResponseModel<bool>

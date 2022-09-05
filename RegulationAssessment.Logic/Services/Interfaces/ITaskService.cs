@@ -20,6 +20,7 @@ namespace RegulationAssessment.Logic.Services.Interfaces
         Task<List<TaskListSortByProcessDto>> GetTaskListByLocationId(Guid locationId, string searchTerms);
         Task<bool> UpdateTaskRelevant(TaskAssessmentDto model);
         Task<bool> UpdateTaskApproveRelevant(TaskAssessmentDto model);
+        Task<bool> UpdateTaskConsistance(TaskAssessmentDto model);
         Task<TaskDataDto> GetTaskById(Guid taskId);
         Task<TaskInfoDto> GetTaskDetail(Guid taskId);
     }
