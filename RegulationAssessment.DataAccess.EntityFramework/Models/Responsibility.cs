@@ -18,7 +18,6 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
         public Guid Id { get; set; }
         public Guid? EmpId { get; set; }
         public int Cost { get; set; }
-        [Column(TypeName = "timestamp without time zone")]
         public DateTime DueDate { get; set; }
         public Guid TaskKeyActId { get; set; }
         public bool Status { get; set; }

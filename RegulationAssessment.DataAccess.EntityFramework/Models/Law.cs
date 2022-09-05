@@ -21,11 +21,8 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
         public Guid Id { get; set; }
         [StringLength(500)]
         public string Title { get; set; } = null!;
-        [Column(TypeName = "timestamp without time zone")]
         public DateTime AnnounceDate { get; set; }
-        [Column(TypeName = "timestamp without time zone")]
         public DateTime? EnforceDate { get; set; }
-        [Column(TypeName = "timestamp without time zone")]
         public DateTime? CancelDate { get; set; }
         [StringLength(500)]
         public string? PdfUrl { get; set; }

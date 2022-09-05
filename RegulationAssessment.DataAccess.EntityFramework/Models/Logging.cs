@@ -11,7 +11,6 @@ namespace RegulationAssessment.DataAccess.EntityFramework.Models
     {
         [Key]
         public Guid Id { get; set; }
-        [Column(TypeName = "timestamp without time zone")]
         public DateTime CreateDate { get; set; }
         [StringLength(255)]
         public string? Notation { get; set; }
