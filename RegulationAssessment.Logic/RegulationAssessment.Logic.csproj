@@ -45,6 +45,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\RegulationAssessment.Common\RegulationAssessment.Common.csproj" />
     <ProjectReference Include="..\RegulationAssessment.DataAccess.Dapper\RegulationAssessment.DataAccess.Dapper.csproj" />
     <ProjectReference Include="..\RegulationAssessment.DataAccess.EntityFramework\RegulationAssessment.DataAccess.EntityFramework.csproj" />

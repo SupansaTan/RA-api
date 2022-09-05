@@ -21,6 +21,7 @@ namespace RegulationAssessment.Logic.Services.Interfaces
         Task<bool> UpdateTaskRelevant(TaskAssessmentDto model);
         Task<bool> UpdateTaskApproveRelevant(TaskAssessmentDto model);
         Task<bool> UpdateTaskConsistance(TaskAssessmentDto model);
+        Task<bool> UpdateTaskApproveConsistance(TaskAssessmentDto model);
         Task<TaskDataDto> GetTaskById(Guid taskId);
         Task<TaskInfoDto> GetTaskDetail(Guid taskId);
     }

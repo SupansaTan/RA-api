@@ -79,4 +79,11 @@ namespace RegulationAssessment.Logic.DomainModel
         public int? Cost { get; set; }
         public DateTime? DueDate { get; set; }
     }
+
+    public class ResponsibleDataDto
+    {
+        public List<Guid> EmployeeId { get; set; }
+        public int Cost { get; set; }
+        public DateTime DueDate { get; set; }
+    }
 }

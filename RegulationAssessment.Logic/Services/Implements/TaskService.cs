@@ -12,6 +12,7 @@ using RegulationAssessment.Common.Helper;
 using TaskResult = RegulationAssessment.DataAccess.EntityFramework.Models.Task;
 using RegulationAssessment.DataAccess.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace RegulationAssessment.Logic.Services.Implements
 {
@@ -177,6 +178,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                 List<TaskKeyAct> taskKeyActList = new List<TaskKeyAct>();
                 List<Logging> loggingList = new List<Logging>();
                 List<Notification> notificationList = new List<Notification>();
+                TaskKeyAct taskKeyAct;
 
                 // add log & task key act
                 foreach (var keyAct in model.KeyActionList)
@@ -185,42 +187,32 @@ namespace RegulationAssessment.Logic.Services.Implements
 
                     if (taskKeyActItem == null)
                     {
-                        var taskKeyAct = new TaskKeyAct()
+                        taskKeyAct = new TaskKeyAct()
                         {
                             Id = Guid.NewGuid(),
                             TaskId = model.TaskId,
                             KeyActId = keyAct.KeyActId
                         };
                         taskKeyActList.Add(taskKeyAct);
-
-                        var log = new Logging()
-                        {
-                            Id = Guid.NewGuid(),
-                            CreateDate = DateTime.UtcNow,
-                            Notation = keyAct.Notation,
-                            Process = (int)model.Process,
-                            Status = keyAct.IsChecked,
-                            TaskKeyActId = taskKeyAct.Id,
-                            EmpId = model.EmployeeId
-                        };
-                        loggingList.Add(log);
                     }
                     else
                     {
-                        var log = new Logging()
-                        {
-                            Id = Guid.NewGuid(),
-                            CreateDate = DateTime.UtcNow,
-                            Notation = keyAct.Notation,
-                            Process = (int)model.Process,
-                            Status = keyAct.IsChecked,
-                            TaskKeyActId = taskKeyActItem.Id,
-                            EmpId = model.EmployeeId
-                        };
-                        loggingList.Add(log);
+                        taskKeyAct = taskKeyActItem;
                     }
-                }
 
+                    var log = new Logging()
+                    {
+                        Id = Guid.NewGuid(),
+                        CreateDate = DateTime.UtcNow,
+                        Notation = keyAct.Notation,
+                        Process = (int)model.Process,
+                        Status = keyAct.IsChecked,
+                        TaskKeyActId = taskKeyAct.Id,
+                        EmpId = model.EmployeeId
+                    };
+                    loggingList.Add(log);
+                }
+                
                 // add notification
                 var employeeList = await _entityUnitOfWork.DutyRepository.GetAll(x => x.Role)
                                                                          .Where(x => x.Role.Name == "Approver" && x.LocationId == taskItem.LocationId)
@@ -234,16 +226,20 @@ namespace RegulationAssessment.Logic.Services.Implements
                         EmpId = employee.Id,
                         NotifyDate = DateTime.UtcNow,
                         Read = false,
-                        Process = (int)model.Process
+                        Process = (int)TaskProcess.ApproveRelevant
                     };
                     notificationList.Add(noti);
+                }
+
+                if (!taskKeyActList.Any())
+                {
+                    _entityUnitOfWork.TaskKeyActionRepository.AddRange(taskKeyActList);
                 }
 
                 // update task process
                 taskItem.Process = (int)TaskProcess.ApproveRelevant;
                 taskItem.DueDate = DateTime.UtcNow.AddDays(7);
                 _entityUnitOfWork.TaskRepository.Update(taskItem);
-                _entityUnitOfWork.TaskKeyActionRepository.AddRange(taskKeyActList);
                 _entityUnitOfWork.LoggingRepository.AddRange(loggingList);
                 _entityUnitOfWork.NotificationRepository.AddRange(notificationList);
                 await _entityUnitOfWork.SaveAsync();
@@ -262,53 +258,157 @@ namespace RegulationAssessment.Logic.Services.Implements
                 List<TaskKeyAct> taskKeyActList = new List<TaskKeyAct>();
                 List<Logging> loggingList = new List<Logging>();
                 List<Notification> notificationList = new List<Notification>();
+                TaskKeyAct taskKeyAct;
 
                 // add log & task key act
                 foreach (var keyAct in model.KeyActionList)
                 {
                     var taskKeyActItem = await _entityUnitOfWork.TaskKeyActionRepository.GetSingleAsync(x => x.TaskId == model.TaskId && x.KeyActId == keyAct.KeyActId);
-
                     if (taskKeyActItem == null)
                     {
-                        var taskKeyAct = new TaskKeyAct()
+                        taskKeyAct = new TaskKeyAct()
                         {
                             Id = Guid.NewGuid(),
                             TaskId = model.TaskId,
                             KeyActId = keyAct.KeyActId
                         };
                         taskKeyActList.Add(taskKeyAct);
-
-                        var log = new Logging()
-                        {
-                            Id = Guid.NewGuid(),
-                            CreateDate = DateTime.UtcNow,
-                            Notation = keyAct.Notation,
-                            Process = (int)model.Process,
-                            Status = keyAct.IsChecked,
-                            TaskKeyActId = taskKeyAct.Id,
-                            EmpId = model.EmployeeId
-                        };
-                        loggingList.Add(log);
                     }
                     else
                     {
-                        var log = new Logging()
+                        taskKeyAct = taskKeyActItem;
+                    }
+
+                    var log = new Logging()
+                    {
+                        Id = Guid.NewGuid(),
+                        CreateDate = DateTime.UtcNow,
+                        Notation = keyAct.Notation,
+                        Process = (int)model.Process,
+                        Status = keyAct.IsChecked,
+                        TaskKeyActId = taskKeyAct.Id,
+                        EmpId = model.EmployeeId
+                    };
+                    loggingList.Add(log);
+                }
+
+                if (model.KeyActionList.Any(x => x.IsChecked == false))
+                {
+                    // approve all key action --> next process
+                    var employeeList = await _entityUnitOfWork.DutyRepository.GetAll(x => x.Role)
+                                                                             .Where(x => (x.Role.Name == "BU" || x.Role.Name == "Approver") && x.LocationId == taskItem.LocationId)
+                                                                             .ToListAsync();
+                    // add notification
+                    foreach (var employee in employeeList)
+                    {
+                        var noti = new Notification()
                         {
                             Id = Guid.NewGuid(),
-                            CreateDate = DateTime.UtcNow,
-                            Notation = keyAct.Notation,
-                            Process = (int)model.Process,
-                            Status = keyAct.IsChecked,
-                            TaskKeyActId = taskKeyActItem.Id,
-                            EmpId = model.EmployeeId
+                            TaskId = model.TaskId,
+                            EmpId = employee.Id,
+                            NotifyDate = DateTime.UtcNow,
+                            Read = false,
+                            Process = (int)TaskProcess.Consistance
                         };
-                        loggingList.Add(log);
+                        notificationList.Add(noti);
                     }
+
+                    // update task process
+                    taskItem.Process = (int)TaskProcess.Consistance;
+                }
+                else
+                {
+                    // disapprove some key action --> re-evaluate the relevance
+                    var employeeList = await _entityUnitOfWork.DutyRepository.GetAll(x => x.Role)
+                                                                             .Where(x => x.Role.Name == "BU" && x.LocationId == taskItem.LocationId)
+                                                                             .ToListAsync();
+                    // add notification
+                    foreach (var employee in employeeList)
+                    {
+                        var noti = new Notification()
+                        {
+                            Id = Guid.NewGuid(),
+                            TaskId = model.TaskId,
+                            EmpId = employee.Id,
+                            NotifyDate = DateTime.UtcNow,
+                            Read = false,
+                            Process = (int)TaskProcess.Relevant
+                        };
+                        notificationList.Add(noti);
+                    }
+
+                    // update task process
+                    taskItem.Process = (int)TaskProcess.Relevant;
+                }
+
+                if (!taskKeyActList.Any())
+                {
+                    _entityUnitOfWork.TaskKeyActionRepository.AddRange(taskKeyActList);
+                }
+
+                taskItem.DueDate = DateTime.UtcNow.AddDays(7);
+                _entityUnitOfWork.TaskRepository.Update(taskItem);
+                _entityUnitOfWork.LoggingRepository.AddRange(loggingList);
+                _entityUnitOfWork.NotificationRepository.AddRange(notificationList);
+                await _entityUnitOfWork.SaveAsync();
+                return true;
+            }
+        }
+        public async Task<bool> UpdateTaskConsistance(TaskAssessmentDto model)
+        {
+            var taskItem = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == model.TaskId);
+            if (taskItem == null)
+            {
+                throw new ArgumentException("Task does not exist.");
+            }
+            else
+            {
+                List<TaskKeyAct> taskKeyActList = new List<TaskKeyAct>();
+                List<Logging> loggingList = new List<Logging>();
+                List<Notification> notificationList = new List<Notification>();
+                TaskKeyAct taskKeyAct;
+
+                foreach (var keyAct in model.KeyActionList)
+                {
+                    var taskKeyActItem = await _entityUnitOfWork.TaskKeyActionRepository.GetSingleAsync(x => x.TaskId == model.TaskId && x.KeyActId == keyAct.KeyActId);
+                    if (taskKeyActItem == null)
+                    {
+                        taskKeyAct = new TaskKeyAct()
+                        {
+                            Id = Guid.NewGuid(),
+                            TaskId = model.TaskId,
+                            KeyActId = keyAct.KeyActId
+                        };
+                        taskKeyActList.Add(taskKeyAct);
+                    }
+                    else
+                    {
+                        taskKeyAct = taskKeyActItem;
+                    }
+
+                    // add log
+                    var log = new Logging()
+                    {
+                        Id = Guid.NewGuid(),
+                        CreateDate = DateTime.UtcNow,
+                        Notation = keyAct.Notation,
+                        Process = (int)model.Process,
+                        Status = keyAct.IsChecked,
+                        TaskKeyActId = taskKeyAct.Id,
+                        EmpId = model.EmployeeId,
+                        ResponsibleData = keyAct.IsChecked ? null : JsonConvert.SerializeObject(new ResponsibleDataDto()
+                        {
+                            EmployeeId = keyAct.ResponsePersonId,
+                            Cost = keyAct.Cost ?? 0,
+                            DueDate = keyAct.DueDate ?? DateTime.UtcNow.AddDays(7)
+                        }),
+                    };
+                    loggingList.Add(log);
                 }
 
                 // add notification
                 var employeeList = await _entityUnitOfWork.DutyRepository.GetAll(x => x.Role)
-                                                                         .Where(x => (x.Role.Name == "BU" || x.Role.Name == "Approver") && x.LocationId == taskItem.LocationId)
+                                                                         .Where(x => x.Role.Name == "Approver" && x.LocationId == taskItem.LocationId)
                                                                          .ToListAsync();
                 foreach (var employee in employeeList)
                 {
@@ -319,13 +419,13 @@ namespace RegulationAssessment.Logic.Services.Implements
                         EmpId = employee.Id,
                         NotifyDate = DateTime.UtcNow,
                         Read = false,
-                        Process = (int)model.Process
+                        Process = (int)TaskProcess.ApproveConsistance
                     };
                     notificationList.Add(noti);
                 }
 
                 // update task process
-                taskItem.Process = (int)TaskProcess.Consistance;
+                taskItem.Process = (int)TaskProcess.ApproveConsistance;
                 taskItem.DueDate = DateTime.UtcNow.AddDays(7);
                 _entityUnitOfWork.TaskRepository.Update(taskItem);
                 _entityUnitOfWork.TaskKeyActionRepository.AddRange(taskKeyActList);
@@ -335,7 +435,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                 return true;
             }
         }
-        public async Task<bool> UpdateTaskConsistance(TaskAssessmentDto model)
+        public async Task<bool> UpdateTaskApproveConsistance(TaskAssessmentDto model)
         {
             var taskItem = await _entityUnitOfWork.TaskRepository.GetSingleAsync(x => x.Id == model.TaskId);
             if (taskItem == null)
@@ -367,7 +467,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                     {
                         taskKeyAct = taskKeyActItem;
                     }
-                    
+
                     // add log
                     var log = new Logging()
                     {
@@ -380,52 +480,88 @@ namespace RegulationAssessment.Logic.Services.Implements
                         EmpId = model.EmployeeId
                     };
                     loggingList.Add(log);
+                }
 
-                    // add responsible person
-                    if (!keyAct.ResponsePersonId.Any())
+                if (model.KeyActionList.Any(x => x.IsChecked == false))
+                {
+                    // approve all key action --> next process
+                    var consistanceLog = await _entityUnitOfWork.LoggingRepository.GetAll(x => x.TaskKeyAct)
+                                                                                  .Where(x => x.Process == (int)TaskProcess.Consistance && 
+                                                                                              x.TaskKeyAct.TaskId == model.TaskId)
+                                                                                  .ToListAsync();
+                    if (consistanceLog.Any(x => x.Status == false))
                     {
-                        foreach (var person in keyAct.ResponsePersonId)
+                        // all key act are consistent
+                        taskItem.Process = (int)TaskProcess.Done;
+                    }
+                    else
+                    {
+                        var inconsistentList = consistanceLog.Where(x => x.Status == false);
+                        foreach (var keyAct in inconsistentList)
                         {
-                            var responsePerson = new Responsibility()
+                            var responsibleData = JsonConvert.DeserializeObject<ResponsibleDataDto>(keyAct.ResponsibleData);
+
+                            foreach (var person in responsibleData.EmployeeId)
                             {
-                                Id = Guid.NewGuid(),
-                                EmpId = person,
-                                Cost = keyAct.Cost ?? 0,
-                                DueDate = keyAct.DueDate ?? DateTime.UtcNow.AddDays(7),
-                                TaskKeyActId = taskKeyAct.Id,
-                                Status = false
-                            };
-                            responsibleList.Add(responsePerson);
+                                var responsePerson = new Responsibility()
+                                {
+                                    Id = Guid.NewGuid(),
+                                    EmpId = person,
+                                    Cost = responsibleData.Cost,
+                                    DueDate = responsibleData.DueDate,
+                                    TaskKeyActId = keyAct.TaskKeyActId,
+                                    Status = false
+                                };
+                                responsibleList.Add(responsePerson);
+
+                                var noti = new Notification()
+                                {
+                                    Id = Guid.NewGuid(),
+                                    TaskId = model.TaskId,
+                                    EmpId = person,
+                                    NotifyDate = DateTime.UtcNow,
+                                    Read = false,
+                                    Process = (int)TaskProcess.Response
+                                };
+                                notificationList.Add(noti);
+                            }
                         }
+                        _entityUnitOfWork.ResponsibilityRepository.AddRange(responsibleList);
+                    }
+                }
+                else
+                {
+                    // disapprove some key action --> re-evaluate the consistance
+                    taskItem.Process = (int)TaskProcess.Consistance;
+
+                    // add notification
+                    var employeeList = await _entityUnitOfWork.DutyRepository.GetAll(x => x.Role)
+                                                                             .Where(x => (x.Role.Name == "Approver" || x.Role.Name == "BU") && x.LocationId == taskItem.LocationId)
+                                                                             .ToListAsync();
+                    foreach (var employee in employeeList)
+                    {
+                        var noti = new Notification()
+                        {
+                            Id = Guid.NewGuid(),
+                            TaskId = model.TaskId,
+                            EmpId = employee.Id,
+                            NotifyDate = DateTime.UtcNow,
+                            Read = false,
+                            Process = (int)TaskProcess.Consistance
+                        };
+                        notificationList.Add(noti);
                     }
                 }
 
-                // add notification
-                var employeeList = await _entityUnitOfWork.DutyRepository.GetAll(x => x.Role)
-                                                                         .Where(x => x.Role.Name == "Approver" && x.LocationId == taskItem.LocationId)
-                                                                         .ToListAsync();
-                foreach (var employee in employeeList)
+                if (!taskKeyActList.Any())
                 {
-                    var noti = new Notification()
-                    {
-                        Id = Guid.NewGuid(),
-                        TaskId = model.TaskId,
-                        EmpId = employee.Id,
-                        NotifyDate = DateTime.UtcNow,
-                        Read = false,
-                        Process = (int)model.Process
-                    };
-                    notificationList.Add(noti);
+                    _entityUnitOfWork.TaskKeyActionRepository.AddRange(taskKeyActList);
                 }
 
-                // update task process
-                taskItem.Process = (int)TaskProcess.ApproveConsistance;
                 taskItem.DueDate = DateTime.UtcNow.AddDays(7);
                 _entityUnitOfWork.TaskRepository.Update(taskItem);
-                _entityUnitOfWork.TaskKeyActionRepository.AddRange(taskKeyActList);
                 _entityUnitOfWork.LoggingRepository.AddRange(loggingList);
                 _entityUnitOfWork.NotificationRepository.AddRange(notificationList);
-                _entityUnitOfWork.ResponsibilityRepository.AddRange(responsibleList);
                 await _entityUnitOfWork.SaveAsync();
                 return true;
             }
