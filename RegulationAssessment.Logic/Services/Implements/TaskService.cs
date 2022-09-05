@@ -223,7 +223,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                     {
                         Id = Guid.NewGuid(),
                         TaskId = model.TaskId,
-                        EmpId = employee.Id,
+                        EmpId = employee.EmpId,
                         NotifyDate = DateTime.UtcNow,
                         Read = false,
                         Process = (int)TaskProcess.ApproveRelevant
@@ -329,7 +329,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                         {
                             Id = Guid.NewGuid(),
                             TaskId = model.TaskId,
-                            EmpId = employee.Id,
+                            EmpId = employee.EmpId,
                             NotifyDate = DateTime.UtcNow,
                             Read = false,
                             Process = (int)TaskProcess.Relevant
@@ -416,7 +416,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                     {
                         Id = Guid.NewGuid(),
                         TaskId = model.TaskId,
-                        EmpId = employee.Id,
+                        EmpId = employee.EmpId,
                         NotifyDate = DateTime.UtcNow,
                         Read = false,
                         Process = (int)TaskProcess.ApproveConsistance
@@ -546,7 +546,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                         {
                             Id = Guid.NewGuid(),
                             TaskId = model.TaskId,
-                            EmpId = employee.Id,
+                            EmpId = employee.EmpId,
                             NotifyDate = DateTime.UtcNow,
                             Read = false,
                             Process = (int)TaskProcess.Consistance
@@ -616,7 +616,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                         {
                             Id = Guid.NewGuid(),
                             TaskId = model.TaskId,
-                            EmpId = employee.Id,
+                            EmpId = employee.EmpId,
                             NotifyDate = DateTime.UtcNow,
                             Read = false,
                             Process = (int)TaskProcess.ApproveResponse
