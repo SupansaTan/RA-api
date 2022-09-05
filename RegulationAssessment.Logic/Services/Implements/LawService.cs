@@ -68,11 +68,11 @@ namespace RegulationAssessment.Logic.Services.Implements
             }
             if (model.IsFilterByEnforceDate)
             {
-                lawList = lawList.Where(x => x.EnforceDate.GetValueOrDefault().Date == model.EnforceDate.GetValueOrDefault().Date);
+                lawList = lawList.Where(x => x.EnforceDate == model.EnforceDate.GetValueOrDefault().Date);
             }
             if (model.IsFilterByCancelDate)
             {
-                lawList = lawList.Where(x => x.CancelDate.GetValueOrDefault().Date == model.CancelDate.GetValueOrDefault().Date);
+                lawList = lawList.Where(x => x.CancelDate == model.CancelDate.GetValueOrDefault().Date);
             }
 
             var result = new LawListDto()
