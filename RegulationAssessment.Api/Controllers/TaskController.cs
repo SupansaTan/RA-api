@@ -405,7 +405,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-        [HttpPut("UpdateTaskRelevant")]
+        [HttpPost("UpdateTaskRelevant")]
         public async Task<ResponseModel<bool>> UpdateTaskRelevant([FromBody] TaskAssessmentModel request)
         {
             ResponseModel<bool> response;
@@ -450,7 +450,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-        [HttpPut("UpdateTaskApproveRelevant")]
+        [HttpPost("UpdateTaskApproveRelevant")]
         public async Task<ResponseModel<bool>> UpdateTaskApproveRelevant([FromBody] TaskAssessmentModel request)
         {
             ResponseModel<bool> response;
@@ -495,7 +495,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-        [HttpPut("UpdateTaskConsistance")]
+        [HttpPost("UpdateTaskConsistance")]
         public async Task<ResponseModel<bool>> UpdateTaskConsistance([FromBody] TaskAssessmentModel request)
         {
             ResponseModel<bool> response;
@@ -543,7 +543,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-        [HttpPut("UpdateTaskApproveConsistance")]
+        [HttpPost("UpdateTaskApproveConsistance")]
         public async Task<ResponseModel<bool>> UpdateTaskApproveConsistance([FromBody] TaskAssessmentModel request)
         {
             ResponseModel<bool> response;
@@ -588,7 +588,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-        [HttpPut("UpdateTaskResponse")]
+        [HttpPost("UpdateTaskResponse")]
         public async Task<ResponseModel<bool>> UpdateTaskResponse([FromBody] TaskAssessmentModel request)
         {
             ResponseModel<bool> response;
@@ -633,7 +633,7 @@ namespace RegulationAssessment.Api.Controllers
             }
             return response;
         }
-        [HttpPut("UpdateTaskApproveResponse")]
+        [HttpPost("UpdateTaskApproveResponse")]
         public async Task<ResponseModel<bool>> UpdateTaskApproveResponse([FromBody] TaskAssessmentModel request)
         {
             ResponseModel<bool> response;
