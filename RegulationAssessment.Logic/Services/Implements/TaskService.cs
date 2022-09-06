@@ -748,10 +748,10 @@ namespace RegulationAssessment.Logic.Services.Implements
                     ActType = task.Law.ActType,
                     TotalKeyAct = task.Law.KeyActions.Count,
                     DatetimeStatus = task.DueDate < now
-                                     ? TaskTimeStatus.Remain
-                                     : (task.DueDate == DateTime.Today) && (task.DueDate >= now)
+                                     ? TaskTimeStatus.Overdue
+                                     : (task.DueDate.Date == DateTime.Today.Date) && (task.DueDate >= now)
                                      ? TaskTimeStatus.Today
-                                     : TaskTimeStatus.Overdue
+                                     : TaskTimeStatus.Remain
                 };
             }
         }
