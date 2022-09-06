@@ -33,7 +33,7 @@ namespace RegulationAssessment.Api.Controllers
                     Data = data_.Select(x => new NotificationListDataModel()
                     {
                         date = x.date,
-                        data = result.Select(i => new NotificationModel()
+                        data = result.Where(noti => noti.time.Date == x.date.Date).Select(i => new NotificationModel()
                         {
                             type = i.type,
                             title = i.title,
