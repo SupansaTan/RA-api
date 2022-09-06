@@ -41,6 +41,23 @@ namespace RegulationAssessment.Logic.Services.Implements
                                                                     Order = x.Order,
                                                                     LawId = x.LawId,
                                                                 }).OrderBy(x => x.Order).ToListAsync();
+
+            if (task.Process > (int)TaskProcess.ApproveRelevant && task.Process < (int)TaskProcess.Response)
+            {
+                var relevantLoggingList = await _entityUnitOfWork.LoggingRepository.GetAll(x => x.TaskKeyAct)
+                                                                                   .Where(x => x.Process == (int)TaskProcess.Relevant && x.TaskKeyAct.TaskId == taskId && x.Status == true)
+                                                                                   .Select(x => x.TaskKeyAct.KeyActId)
+                                                                                   .ToListAsync();
+                keyactions = keyactions.Where(x => relevantLoggingList.Contains(x.Id)).ToList();
+            }
+            else if (task.Process > (int)TaskProcess.ApproveConsistance && task.Process < (int)TaskProcess.Done)
+            {
+                var inconsistanceLoggingList = await _entityUnitOfWork.LoggingRepository.GetAll(x => x.TaskKeyAct)
+                                                                                   .Where(x => x.Process == (int)TaskProcess.Consistance && x.TaskKeyAct.TaskId == taskId && x.Status == false)
+                                                                                   .Select(x => x.TaskKeyAct.KeyActId)
+                                                                                   .ToListAsync();
+                keyactions = keyactions.Where(x => inconsistanceLoggingList.Contains(x.Id)).ToList();
+            }
             return keyactions;
         }
 
