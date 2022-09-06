@@ -21,6 +21,15 @@ namespace RegulationAssessment.Api.Models
         public Guid KeyActId { get; set; }
     }
 
+    public class ConsistanceAssessmentModel
+    {
+        public bool Status { get; set; }
+        public string Notation { get; set; }
+        public List<string>? ResponsiblePersonList { get; set; }
+        public int? Cost { get; set; }
+        public DateTime? DueDate { get; set; }
+    }
+
     public class LoggingAllHistoryListModel
     {
         public int KeyActOrder { get; set; }

@@ -152,6 +152,48 @@ namespace RegulationAssessment.Api.Controllers
             return response;
         }
 
+        [HttpGet("GetConsistanceLogList")]
+        public async Task<ResponseModel<List<ConsistanceAssessmentModel>>> GetConsistanceLogList([FromQuery] Guid taskId)
+        {
+            ResponseModel<List<ConsistanceAssessmentModel>> response;
+            try
+            {
+                var result = await _logicUnitOfWork.LoggingService.GetConsistanceLogList(taskId);
+                response = new ResponseModel<List<ConsistanceAssessmentModel>>
+                {
+                    Data = result.Select(x => new ConsistanceAssessmentModel()
+                    {
+                        Status = x.Status,
+                        Notation = x.Notation,
+                        Cost = x.Cost,
+                        DueDate = x.DueDate,
+                        ResponsiblePersonList = x.ResponsiblePersonList
+                    }).ToList(),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<ConsistanceAssessmentModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<ConsistanceAssessmentModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+
         [HttpGet("GetAllLoggingAssessment")]
         public async Task<ResponseModel<List<LoggingAllHistoryListModel>>> GetAllLoggingAssessment([FromQuery] Guid taskId)
         {

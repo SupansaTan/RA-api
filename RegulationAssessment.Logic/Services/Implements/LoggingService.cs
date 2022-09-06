@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using RegulationAssessment.DataAccess.EntityFramework.Models;
 using RegulationAssessment.Common.Helper;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace RegulationAssessment.Logic.Services.Implements
 {
@@ -32,13 +33,48 @@ namespace RegulationAssessment.Logic.Services.Implements
 
         public async Task<List<LoggingAssessmentDto>> GetLogging(Guid taskId, int process)
         {
-                var queryGetLog = QueryService.GetCommand(QUERY_PATH + "getLogging",
-                            new ParamCommand { Key = "_taskId", Value = taskId.ToString() }
-                        );
-                var logList = (await _dapperUnitOfWork.RARepository.QueryAsync<LoggingAssessmentDto>(queryGetLog)).ToList();
-                var result = logList.FindAll(x => x.Process == process);
+            var queryGetLog = QueryService.GetCommand(QUERY_PATH + "getLogging",
+                        new ParamCommand { Key = "_taskId", Value = taskId.ToString() }
+                    );
+            var logList = (await _dapperUnitOfWork.RARepository.QueryAsync<LoggingAssessmentDto>(queryGetLog)).ToList();
+            var result = logList.FindAll(x => x.Process == process);
                 
-                return result;
+            return result;
+        }
+
+        public async Task<List<ConsistanceAssessmentDto>> GetConsistanceLogList(Guid taskId)
+        {
+            var consistanceLogging = await _entityUnitOfWork.LoggingRepository.GetAll(x => x.TaskKeyAct, x => x.TaskKeyAct.KeyAct)
+                                                                              .Where(x => x.Process == (int)TaskProcess.Consistance && x.TaskKeyAct.TaskId == taskId)
+                                                                              .OrderBy(x => x.TaskKeyAct.KeyAct.Order)
+                                                                              .ToListAsync();
+            var result = new List<ConsistanceAssessmentDto>();
+            foreach (var consistency in consistanceLogging)
+            {
+                var responsibleData = String.IsNullOrEmpty(consistency.ResponsibleData)
+                                      ? null
+                                      : JsonConvert.DeserializeObject<ResponsibleDataDto>(consistency.ResponsibleData);
+                var personNameList = new List<string>();
+                if (responsibleData?.EmployeeId != null)
+                {
+                    foreach (var person in responsibleData.EmployeeId)
+                    {
+                        var personItem = await _entityUnitOfWork.EmployeeRepository.GetSingleAsync(x => x.Id == person);
+                        personNameList.Add($"{personItem.FirstName} {personItem.LastName}");
+                    }
+                }
+
+                var log = new ConsistanceAssessmentDto()
+                {
+                    Status = consistency.Status,
+                    Notation = consistency.Notation,
+                    Cost = responsibleData?.Cost,
+                    ResponsiblePersonList = personNameList,
+                    DueDate = responsibleData?.DueDate,
+                };
+                result.Add(log);
+            }
+            return result;
         }
 
         public async Task<List<LoggingAllHistoryListDto>> GetAllLogging(Guid taskId)

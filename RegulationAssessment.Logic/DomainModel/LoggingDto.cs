@@ -21,6 +21,15 @@ namespace RegulationAssessment.Logic.DomainModel
         public Guid KeyActId { get; set; }
     }
 
+    public class ConsistanceAssessmentDto
+    {
+        public bool Status { get; set; }
+        public string Notation { get; set; }
+        public List<string>? ResponsiblePersonList { get; set; }
+        public int? Cost { get; set; }
+        public DateTime? DueDate { get; set; }
+    }
+
     public class LoggingAllHistoryListDto
     {
         public int KeyActOrder { get; set; }
