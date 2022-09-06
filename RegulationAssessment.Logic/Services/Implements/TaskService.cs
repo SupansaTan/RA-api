@@ -292,7 +292,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                     loggingList.Add(log);
                 }
 
-                if (model.KeyActionList.Any(x => x.IsChecked == false))
+                if (!model.KeyActionList.Any(x => x.IsChecked == false))
                 {
                     // approve all key action --> next process
                     var employeeList = await _entityUnitOfWork.DutyRepository.GetAll(x => x.Role)
@@ -305,7 +305,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                         {
                             Id = Guid.NewGuid(),
                             TaskId = model.TaskId,
-                            EmpId = employee.Id,
+                            EmpId = employee.EmpId,
                             NotifyDate = DateTime.UtcNow,
                             Read = false,
                             Process = (int)TaskProcess.Consistance
@@ -482,14 +482,14 @@ namespace RegulationAssessment.Logic.Services.Implements
                     loggingList.Add(log);
                 }
 
-                if (model.KeyActionList.Any(x => x.IsChecked == false))
+                if (!model.KeyActionList.Any(x => x.IsChecked == false))
                 {
                     // approve all key action --> next process
                     var consistanceLog = await _entityUnitOfWork.LoggingRepository.GetAll(x => x.TaskKeyAct)
                                                                                   .Where(x => x.Process == (int)TaskProcess.Consistance && 
                                                                                               x.TaskKeyAct.TaskId == model.TaskId)
                                                                                   .ToListAsync();
-                    if (consistanceLog.Any(x => x.Status == false))
+                    if (!consistanceLog.Any(x => x.Status == false))
                     {
                         // all key act are consistent
                         taskItem.Process = (int)TaskProcess.Done;
@@ -581,7 +581,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                 List<Responsibility> responsibilities = new List<Responsibility>();
                 List<Notification> notificationList = new List<Notification>();
 
-                if (model.KeyActionList.Any(x => x.IsChecked == false))
+                if (!model.KeyActionList.Any(x => x.IsChecked == false))
                 {
                     taskItem.Process = (int)TaskProcess.ApproveResponse;
 
@@ -679,7 +679,7 @@ namespace RegulationAssessment.Logic.Services.Implements
                 }
 
                 // update task process
-                if (model.KeyActionList.Any(x => x.IsChecked == false))
+                if (!model.KeyActionList.Any(x => x.IsChecked == false))
                 {
                     taskItem.Process = (int)TaskProcess.Done;
                 }
