@@ -20,8 +20,10 @@
 		WHEN "Notification"."Process" = 3
 			THEN 'ประเมินความสอดคล้อง'
 		-- approve
-		WHEN "Notification"."Process" = 2 OR "Notification"."Process" = 4
-			THEN 'รออนุมัติ'
+		WHEN "Notification"."Process" = 2
+			THEN 'รออนุมัติความเกี่ยวข้อง'
+		WHEN "Notification"."Process" = 4
+			THEN 'รออนุมัติความสอดคล้อง'
 		-- follow-up
 		ELSE 'รอปฏิบัติให้สอดคล้อง'
 	END AS "title",
