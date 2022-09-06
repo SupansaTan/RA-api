@@ -111,7 +111,7 @@ namespace RegulationAssessment.Api.Controllers
         */
         
         [HttpGet("GetLoggingAssessment")]
-        public async Task<ResponseModel<List<LoggingAssessmentModel>>> GetLoggingAssessment(Guid taskId, int process)
+        public async Task<ResponseModel<List<LoggingAssessmentModel>>> GetLoggingAssessment([FromQuery] Guid taskId, int process)
         {
             ResponseModel<List<LoggingAssessmentModel>> response;
             try
