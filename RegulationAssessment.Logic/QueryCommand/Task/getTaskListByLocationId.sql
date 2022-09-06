@@ -17,7 +17,7 @@ FROM "Task"
 LEFT JOIN "Law" ON "Law"."Id" = "Task"."LawId"
 WHERE 
 	"Task"."LocationId" = '_locationId'
-	AND "Process" != 6
+	AND "Process" != 7
 
 	-- search by keywords 
 	AND LOWER("Law"."Title") LIKE ALL(string_to_array('_keyword', ' '))
