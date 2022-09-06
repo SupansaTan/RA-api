@@ -20,4 +20,17 @@ namespace RegulationAssessment.Logic.DomainModel
         public string Notation { get; set; }
         public Guid KeyActId { get; set; }
     }
+
+    public class LoggingAllHistoryListDto
+    {
+        public int KeyActOrder { get; set; }
+        public List<LoggingAllHistoryDto> LoggingList { get; set; }
+    }
+
+    public class LoggingAllHistoryDto
+    {
+        public DateTime CreateDate { get; set; }
+        public string EmployeeName { get; set; }
+        public string TaskProcessTitle { get; set; }
+    }
 }

@@ -13,5 +13,6 @@ namespace RegulationAssessment.Logic.Services.Interfaces
     {
         Task<List<LoggingAssessmentDto>> GetLogging(Guid taskId, int process);
         Task<bool> AddKeyActionLog(Logging logging);
+        Task<List<LoggingAllHistoryListDto>> GetAllLogging(Guid taskId);
     }
 }

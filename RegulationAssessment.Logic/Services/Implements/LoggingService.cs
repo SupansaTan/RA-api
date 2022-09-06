@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RegulationAssessment.DataAccess.EntityFramework.Models;
 using RegulationAssessment.Common.Helper;
+using Microsoft.EntityFrameworkCore;
 
 namespace RegulationAssessment.Logic.Services.Implements
 {
@@ -38,6 +39,51 @@ namespace RegulationAssessment.Logic.Services.Implements
                 var result = logList.FindAll(x => x.Process == process);
                 
                 return result;
+        }
+
+        public async Task<List<LoggingAllHistoryListDto>> GetAllLogging(Guid taskId)
+        {
+            var taskKeyActList = await _entityUnitOfWork.TaskKeyActionRepository.GetAll(x => x.KeyAct)
+                                                                                .Where(x => x.TaskId == taskId)
+                                                                                .OrderBy(x => x.KeyAct.Order)
+                                                                                .ToListAsync();
+            List<LoggingAllHistoryListDto> result = new List<LoggingAllHistoryListDto>();
+            foreach (var taskKeyAct in taskKeyActList)
+            {
+                var logging = await _entityUnitOfWork.LoggingRepository.GetAll(x => x.Emp)
+                                                                       .Where(x => x.TaskKeyActId == taskKeyAct.Id)
+                                                                       .OrderBy(x => x.CreateDate)
+                                                                       .ToListAsync();
+                List<LoggingAllHistoryDto> historyList = new List<LoggingAllHistoryDto>();
+                foreach (var log in logging)
+                {
+                    var newLog = new LoggingAllHistoryDto()
+                    {
+                        CreateDate = log.CreateDate,
+                        EmployeeName = $"{log.Emp.FirstName} {log.Emp.LastName}",
+                        TaskProcessTitle = log.Process == (int)TaskProcess.Relevant
+                                           ? "ประเมินความเกี่ยวข้อง"
+                                           : log.Process == (int)TaskProcess.Consistance
+                                           ? "ประเมินความสอดคล้อง"
+                                           : log.Process == (int)TaskProcess.ApproveRelevant
+                                           ? "อนุมัติความเกี่ยวข้อง"
+                                           : log.Process == (int)TaskProcess.ApproveConsistance
+                                           ? "อนุมัติความสอดคล้อง"
+                                           : log.Process == (int)TaskProcess.Response
+                                           ? "ปฏิบัติให้สอดคล้อง"
+                                           : "อนุมัติการปฏิบัติให้สอดคล้อง"
+                    };
+                    historyList.Add(newLog);
+                }
+
+                var keyAct = new LoggingAllHistoryListDto()
+                {
+                    KeyActOrder = taskKeyAct.KeyAct.Order,
+                    LoggingList = historyList
+                };
+                result.Add(keyAct);
+            }
+            return result;
         }
 
         public async Task<bool> AddKeyActionLog(Logging logging)

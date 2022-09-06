@@ -152,6 +152,50 @@ namespace RegulationAssessment.Api.Controllers
             return response;
         }
 
+        [HttpGet("GetAllLoggingAssessment")]
+        public async Task<ResponseModel<List<LoggingAllHistoryListModel>>> GetAllLoggingAssessment([FromQuery] Guid taskId)
+        {
+            ResponseModel<List<LoggingAllHistoryListModel>> response;
+            try
+            {
+                var result = await _logicUnitOfWork.LoggingService.GetAllLogging(taskId);
+                response = new ResponseModel<List<LoggingAllHistoryListModel>>
+                {
+                    Data = result.Select(x => new LoggingAllHistoryListModel()
+                    {
+                        KeyActOrder = x.KeyActOrder,
+                        LoggingList = x.LoggingList.Select(x => new LoggingAllHistoryModel()
+                        {
+                            CreateDate = x.CreateDate,
+                            EmployeeName = x.EmployeeName,
+                            TaskProcessTitle = x.TaskProcessTitle
+                        }).ToList()
+                    }).ToList(),
+                    Message = "success",
+                    Status = 200
+                };
+            }
+            catch (ArgumentException e)
+            {
+                response = new ResponseModel<List<LoggingAllHistoryListModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 400
+                };
+            }
+            catch (Exception e)
+            {
+                response = new ResponseModel<List<LoggingAllHistoryListModel>>
+                {
+                    Data = null,
+                    Message = e.Message,
+                    Status = 500
+                };
+            }
+            return response;
+        }
+
 
         [HttpPost("LoggingAssessment/Add")]
         public ResponseModel<bool> AddLoggingAssessment([FromBody] RelevantAssessmentModel request)
