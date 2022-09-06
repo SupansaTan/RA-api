@@ -8,5 +8,6 @@ namespace RegulationAssessment.Logic.Services.Interfaces
         List<ResponsibilityDto> GetResponsibilityList();
         Task<ResponsibilityDto> GetResponsibilityById(Guid id);
         Task<Responsibility> AddResponsibility(Responsibility resp);
+        Task<ResponsibilityListDto> GetTrackingDataByLocationId(Guid locationId);
     }
 }
