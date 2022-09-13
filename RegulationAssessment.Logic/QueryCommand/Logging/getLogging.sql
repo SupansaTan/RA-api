@@ -7,6 +7,6 @@ FROM "TaskKeyAct"
 INNER JOIN "Logging" ON "Logging"."TaskKeyActId" = "TaskKeyAct"."Id" AND "Logging"."Process" = '_taskProcess' AND "Logging"."CreateDate" = (
 		SELECT MAX("CreateDate")
 		FROM "Logging"
-		WHERE "TaskKeyActId" = "TaskKeyAct"."Id"
+		WHERE "TaskKeyActId" = "TaskKeyAct"."Id" AND "Logging"."Process" = '_taskProcess'
 	)
 WHERE "TaskKeyAct"."TaskId" = '_taskId';
