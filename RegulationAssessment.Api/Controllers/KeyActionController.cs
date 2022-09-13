@@ -26,7 +26,6 @@ namespace RegulationAssessment.Api.Controllers
             ResponseModel<List<KeyActionModel>> response;
             try
             {
-                // for only task process: Relevant Assessment
                 var result = await _logicUnitOfWork.KeyActionService.GetAllKeyAction(taskId);
                 response = new ResponseModel<List<KeyActionModel>>
                 {

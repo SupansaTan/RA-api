@@ -34,12 +34,10 @@ namespace RegulationAssessment.Logic.Services.Implements
         public async Task<List<LoggingAssessmentDto>> GetLogging(Guid taskId, int process)
         {
             var queryGetLog = QueryService.GetCommand(QUERY_PATH + "getLogging",
-                        new ParamCommand { Key = "_taskId", Value = taskId.ToString() }
+                        new ParamCommand { Key = "_taskId", Value = taskId.ToString() },
+                        new ParamCommand { Key = "_taskProcess", Value = process.ToString() }
                     );
-            var logList = (await _dapperUnitOfWork.RARepository.QueryAsync<LoggingAssessmentDto>(queryGetLog)).ToList();
-            var result = logList.FindAll(x => x.Process == process);
-                
-            return result;
+            return (await _dapperUnitOfWork.RARepository.QueryAsync<LoggingAssessmentDto>(queryGetLog)).ToList();
         }
 
         public async Task<List<ConsistanceAssessmentDto>> GetConsistanceLogList(Guid taskId)

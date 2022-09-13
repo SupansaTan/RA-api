@@ -4,5 +4,9 @@
 		"Logging"."Notation" AS "Notation",
 		"TaskKeyAct"."KeyActId" AS "KeyActId"
 FROM "TaskKeyAct"
-INNER JOIN "Logging" ON "Logging"."TaskKeyActId" = "TaskKeyAct"."Id"
-WHERE "TaskKeyAct"."TaskId" = '_taskId' ;
+INNER JOIN "Logging" ON "Logging"."TaskKeyActId" = "TaskKeyAct"."Id" AND "Logging"."Process" = '_taskProcess' AND "Logging"."CreateDate" = (
+		SELECT MAX("CreateDate")
+		FROM "Logging"
+		WHERE "TaskKeyActId" = "TaskKeyAct"."Id"
+	)
+WHERE "TaskKeyAct"."TaskId" = '_taskId';
