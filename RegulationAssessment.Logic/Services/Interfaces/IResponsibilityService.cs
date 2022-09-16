@@ -5,9 +5,6 @@ namespace RegulationAssessment.Logic.Services.Interfaces
 {
     public interface IResponsibilityService
     {
-        List<ResponsibilityDto> GetResponsibilityList();
-        Task<ResponsibilityDto> GetResponsibilityById(Guid id);
-        Task<Responsibility> AddResponsibility(Responsibility resp);
         Task<ResponsibilityListDto> GetTrackingDataByLocationId(Guid locationId);
     }
 }

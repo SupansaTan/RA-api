@@ -29,21 +29,6 @@ namespace RegulationAssessment.Logic.Services.Implements
             _dapperUnitOfWork = dapperUnitOfWork;
         }
 
-        public List<EmployeeDto> GetAllEmployees()
-        {
-            var employees = _entityUnitOfWork.EmployeeRepository.GetAll()
-                                                                .Select(x => new EmployeeDto()
-                                                                {
-                                                                    FirstName = x.FirstName,
-                                                                    LastName = x.LastName,
-                                                                    CreateAt = x.CreateAt,
-                                                                    DarkTheme = (bool)x.DarkTheme,
-                                                                    NotificationStatus = x.NotificationStatus,
-                                                                    AdvanceNotify = x.AdvanceNotify,
-                                                                }).ToList();
-            return employees;
-        }
-
         public async Task<EmployeeDto> GetEmployeeById(Guid empId)
         {
             var employee = await _entityUnitOfWork.EmployeeRepository.GetSingleAsync(x => x.Id == empId);

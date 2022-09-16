@@ -11,9 +11,5 @@ namespace RegulationAssessment.Logic.Services.Interfaces
     public interface IKeyActionService
     {
         Task<List<KeyActionDto>> GetAllKeyAction(Guid taskId);
-        List<KeyActionDto> GetKeyActionByLawId(Guid lawId);
-        Task<Guid> GetTaskKeyActionIdAsync(Guid keyactId, Guid taskId);
-        Guid GetTaskKeyActionId(Guid keyactId, Guid taskId);
-        Task<KeyAction> AddKeyAction(KeyAction keyaction);
     }
 }

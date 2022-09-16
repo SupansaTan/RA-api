@@ -11,7 +11,6 @@ namespace RegulationAssessment.Logic.Services.Interfaces
     public interface ILawService
     {
         LawListDto GetLawList(LawListFilterDto model);
-        Task<Law> AddLaw(Law law);
         Task<LawDetailDto> GetLawbyId(Guid lawid);
         Task<LawDetailDto> GetLawDetailByTaskId(Guid taskId);
         List<NameDataDto> GetActTypeName();

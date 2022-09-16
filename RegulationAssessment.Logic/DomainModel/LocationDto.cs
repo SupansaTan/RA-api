@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 
 namespace RegulationAssessment.Logic.DomainModel
 {
-    public class LocationDto
-    {
-
-    }
-
     public class LocationListDto
     {
         public Guid LocationId { get; set; }

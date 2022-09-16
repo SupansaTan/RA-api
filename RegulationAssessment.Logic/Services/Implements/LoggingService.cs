@@ -120,13 +120,5 @@ namespace RegulationAssessment.Logic.Services.Implements
             return result;
         }
 
-        public async Task<bool> AddKeyActionLog(Logging logging)
-        {
-            _entityUnitOfWork.LoggingRepository.Add(logging);
-            await _entityUnitOfWork.SaveAsync();
-            return true;
-        }
-
-
     }
 }

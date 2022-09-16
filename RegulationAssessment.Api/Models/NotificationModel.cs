@@ -6,11 +6,6 @@
         public List<NotificationModel> data { get; set; }
     }
 
-    public class NotificationDateModel
-    {
-        public DateTime date { get; set; }
-    }
-
     public class NotificationModel
     {
         public string type { get; set; }

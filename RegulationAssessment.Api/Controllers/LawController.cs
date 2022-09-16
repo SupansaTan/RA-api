@@ -78,64 +78,6 @@ namespace RegulationAssessment.Api.Controllers
             return response;
         }
 
-        [HttpPost("Add")]
-        public ResponseModel<Law> GetLawbyId(
-            string title,
-            DateTime announceDate,
-            DateTime? enforceDate,
-            DateTime? cancelDate,
-            string? pdfUrl,
-            string catagory,
-            string actType,
-            string legislationType,
-            string legislationUnit
-         )
-        {
-            ResponseModel<Law> response;
-            try
-            {
-                var newlaw = new Law()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = title,
-                    AnnounceDate = announceDate,
-                    EnforceDate = enforceDate,
-                    CancelDate = cancelDate,
-                    PdfUrl = pdfUrl,
-                    Catagory = catagory,
-                    ActType = actType,
-                    LegislationType = legislationType,
-                    LegislationUnit = legislationUnit
-                };
-                var result = _logicUnitOfWork.LawService.AddLaw(newlaw);
-                response = new ResponseModel<Law>
-                {
-                    Data = newlaw,
-                    Message = "success",
-                    Status = 200
-                };
-            }
-            catch (ArgumentException e)
-            {
-                response = new ResponseModel<Law>
-                {
-                    Data = null,
-                    Message = e.Message,
-                    Status = 400
-                };
-            }
-            catch (Exception e)
-            {
-                response = new ResponseModel<Law>
-                {
-                    Data = null,
-                    Message = e.Message,
-                    Status = 500
-                };
-            }
-            return response;
-        }
-
         [HttpGet("GetLawDetailByTaskId")]
         public async Task<ResponseModel<LawDetailModel>> GetLawDetailByTaskId(Guid taskId)
         {

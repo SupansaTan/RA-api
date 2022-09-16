@@ -169,13 +169,6 @@ namespace RegulationAssessment.Logic.Services.Implements
             }
         }
 
-        public async Task<Law> AddLaw(Law law)
-        {
-            _entityUnitOfWork.LawRepository.Add(law);
-            await _entityUnitOfWork.SaveAsync();
-            return law;
-        }
-
         public List<NameDataDto> GetActTypeName()
         {
             var data = _entityUnitOfWork.LawRepository.GetAll()

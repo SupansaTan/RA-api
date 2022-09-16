@@ -28,42 +28,6 @@ namespace RegulationAssessment.Logic.Services.Implements
             _dapperUnitOfWork = dapperUnitOfWork;
         }
 
-        public List<ResponsibilityDto> GetResponsibilityList()
-        {
-            return _entityUnitOfWork.ResponsibilityRepository.GetAll()
-                                                    .Select(x => new ResponsibilityDto()
-                                                    {
-                                                        Id = x.Id,
-                                                        EmpId = (Guid)x.EmpId,
-                                                        Cost = x.Cost,
-                                                        DueDate = x.DueDate,
-                                                        TaskKeyActId = x.TaskKeyActId,
-                                                        Status = x.Status
-                                                    }).ToList();
-        }
-
-        public async Task<ResponsibilityDto> GetResponsibilityById(Guid id) 
-        {
-            var data = _entityUnitOfWork.ResponsibilityRepository.GetSingle(x => x.Id == id);
-            var resp = new ResponsibilityDto()
-            {
-                Id = data.Id,
-                EmpId = (Guid)data.EmpId,
-                Cost = data.Cost,
-                DueDate = data.DueDate,
-                TaskKeyActId = data.TaskKeyActId,
-                Status = data.Status,
-            };
-            return resp;
-        }
-
-        public async Task<Responsibility> AddResponsibility(Responsibility resp)
-        {
-            _entityUnitOfWork.ResponsibilityRepository.Add(resp);
-            await _entityUnitOfWork.SaveAsync();
-            return resp;
-        }
-
         public async Task<ResponsibilityListDto> GetTrackingDataByLocationId(Guid locationId)
         {
             var location = _entityUnitOfWork.LocationRepository.GetSingle(x => x.Id == locationId);

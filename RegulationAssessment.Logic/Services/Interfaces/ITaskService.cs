@@ -10,12 +10,6 @@ namespace RegulationAssessment.Logic.Services.Interfaces
 {
     public interface ITaskService
     {
-        List<TaskDto> GetRelevantTaskList();
-        List<TaskDto> GetApproveRelevantTaskList();
-        List<TaskDto> GetConsistanceTaskList();
-        List<TaskDto> GetApproveConsistanceTaskList();
-        List<TaskDto> GetResponseTaskList();
-        List<TaskDto> GetDoneTaskList();
         Task<List<TaskItemDto>> GetTaskListByEmpId(Guid empId);
         Task<List<TaskListSortByProcessDto>> GetTaskListByLocationId(Guid locationId, string searchTerms);
         Task<bool> UpdateTaskRelevant(TaskAssessmentDto model);

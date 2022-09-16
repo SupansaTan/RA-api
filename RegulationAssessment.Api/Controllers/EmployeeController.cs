@@ -21,48 +21,6 @@ namespace RegulationAssessment.Api.Controllers
             _logicUnitOfWork = logicUnitOfWork;
         }
 
-        [HttpGet("GetAllEmployees")]
-        public ResponseModel<List<EmployeeModel>> GetAllEmployees()
-        {
-            ResponseModel<List<EmployeeModel>> response;
-            try
-            {
-                var result = _logicUnitOfWork.EmployeeService.GetAllEmployees();
-                response = new ResponseModel<List<EmployeeModel>>
-                {
-                    Data = result.Select(x => new EmployeeModel()
-                    {
-                        FirstName = x.FirstName,
-                        LastName = x.LastName,
-                        DarkTheme = x.DarkTheme,
-                        NotificationStatus = x.NotificationStatus,
-                        AdvanceNotify = x.AdvanceNotify,
-                    }).ToList(),
-                    Message = "success",
-                    Status = 200
-                };
-            }
-            catch (ArgumentException e)
-            {
-                response = new ResponseModel<List<EmployeeModel>>
-                {
-                    Data = null,
-                    Message = e.Message,
-                    Status = 400
-                };
-            }
-            catch (Exception e)
-            {
-                response = new ResponseModel<List<EmployeeModel>>
-                {
-                    Data = null,
-                    Message = e.Message,
-                    Status = 500
-                };
-            }
-            return response;
-        }
-
         [HttpGet("GetEmployee")]
         public async Task<ResponseModel<EmployeeModel>> GetEmployee(Guid empId)
         {

@@ -60,56 +60,5 @@ namespace RegulationAssessment.Logic.Services.Implements
             }
             return keyactions;
         }
-
-        public List<KeyActionDto> GetKeyActionByLawId(Guid lawId)
-        {
-            var keyactions = _entityUnitOfWork.KeyActionRepository.GetAll(x => x.LawId == lawId)
-                                                                .Select(x => new KeyActionDto()
-                                                                {
-                                                                    Id = x.Id,
-                                                                    KeyReq = x.KeyReq,
-                                                                    Standard = x.Standard,
-                                                                    Practice = x.Practice,
-                                                                    Frequency = x.Frequency,
-                                                                    Order = x.Order,
-                                                                    LawId = x.LawId,
-                                                                }).ToList();
-            return keyactions;
-        }
-
-        public async Task<Guid> GetTaskKeyActionIdAsync(Guid keyactId, Guid taskId)
-        {
-            var data = await _entityUnitOfWork.TaskKeyActionRepository.GetSingleAsync(x => x.TaskId == taskId && x.KeyActId == keyactId);
-            if (data == null)
-            {
-                throw new ArgumentException("TaskKeyAction does not exist.");
-            }
-            else
-            {
-                return data.Id;
-            }
-                
-        }
-
-        public Guid GetTaskKeyActionId(Guid keyactId, Guid taskId)
-        {
-            var data = _entityUnitOfWork.TaskKeyActionRepository.GetSingle(x => x.TaskId == taskId && x.KeyActId == keyactId);
-            if (data == null)
-            {
-                throw new ArgumentException("TaskKeyAction does not exist.");
-            }
-            else
-            {
-                return data.Id;
-            }
-
-        }
-
-        public async Task<KeyAction> AddKeyAction(KeyAction keyaction)
-        {
-            var result = _entityUnitOfWork.KeyActionRepository.Add(keyaction);
-            await _entityUnitOfWork.SaveAsync();
-            return keyaction;
-        }
     }
 }
